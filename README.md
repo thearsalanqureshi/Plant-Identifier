@@ -1,10 +1,10 @@
 # Plant-Identifier
 A Flutter-based plant recognition application that helps users identify plants, diagnose issues, calculate water needs, and measure light conditions using AI technology.
 
-# Frontend:
+### Frontend:
 - Flutter 
 
-# Backend
+### Backend
 - Firebase (Analytics, Crashlytics, Push Notifications, In-App Messaging) 
 - AI/ML: Google Gemini API 
 - Local Storage: Hive 
@@ -13,7 +13,7 @@ A Flutter-based plant recognition application that helps users identify plants, 
 
 
 
-### Project Overview
+# Project Overview
 A plant care application that uses Google's Gemini AI to identify plant species, diagnose health issues, calculate watering needs, and measure light conditions through image recognition and analysis. The app provides instant, accurate plant information to help users properly care for their plants. Built with local Hive storage for offline history and Firebase for analytics and crash reporting.
 
 ### Problem Statement
