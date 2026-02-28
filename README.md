@@ -11,8 +11,6 @@ A Flutter-based plant recognition application that helps users identify plants, 
 - State Management: Provider 
 - Architecture: MVVM (Model-View-ViewModel)
 
-
-
 # Project Overview
 A plant care application that uses Google's Gemini AI to identify plant species, diagnose health issues, calculate watering needs, and measure light conditions through image recognition and analysis. The app provides instant, accurate plant information to help users properly care for their plants. Built with local Hive storage for offline history and Firebase for analytics and crash reporting.
 
