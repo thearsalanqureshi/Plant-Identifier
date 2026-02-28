@@ -13,12 +13,6 @@ A Flutter-based plant recognition application that helps users identify plants, 
 - State Management: Provider 
 - Architecture: MVVM (Model-View-ViewModel)
 
-**Utilities:**
-- **HTTP** - API calls
-- **Connectivity Plus** - Network status
-- **URL Launcher** - Open external links
-- **Share Plus** - Sharing functionality
-- **Package Info Plus** - App version details
 
 
 ### Project Overview
