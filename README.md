@@ -1,21 +1,8 @@
-## App Mockup
+# Plant-Identifier
 ![Plant Identifier](https://github.com/thearsalanqureshi/Plant-Identifier/raw/badf304f62d8522c528c366710ec9bde01d22f1b/mockup%20plant%20identifier.png)
 
-# Plant-Identifier
+# Project-Overview
 A Flutter-based plant recognition application that helps users identify plants, diagnose issues, calculate water needs, and measure light conditions using AI technology.
-
-### Frontend:
-- Flutter 
-
-### Backend
-- Firebase (Analytics, Crashlytics, Push Notifications, In-App Messaging) 
-- AI/ML: Google Gemini API 
-- Local Storage: Hive 
-- State Management: Provider 
-- Architecture: MVVM (Model-View-ViewModel)
-
-# Project Overview
-A plant care application that uses Google's Gemini AI to identify plant species, diagnose health issues, calculate watering needs, and measure light conditions through image recognition and analysis. The app provides instant, accurate plant information to help users properly care for their plants. Built with local Hive storage for offline history and Firebase for analytics and crash reporting.
 
 ### Problem Statement
 Plant enthusiasts struggle to identify unknown plants, diagnose health issues, determine proper watering schedules, and assess light conditions for optimal plant care.
@@ -29,11 +16,15 @@ Developed a comprehensive 4-feature mobile app leveraging Google's Gemini AI for
 3. **Water Calculator** - Personalized watering schedules based on plant type
 4. **Light Meter** - Ambient light measurement for optimal placement
 
-### **Technical Architecture**
-- **MVVM Architecture** - Clean separation of UI, logic, and data
-- **Local Storage** - Hive database for offline history (13+ scans)
-- **Cloud Services** - Firebase for analytics, crash reporting, and backend
-- **AI Integration** - Gemini 2.5 Flash API for image-to-text analysis
+### Frontend:
+- Flutter 
+
+### Backend
+- Firebase (Analytics, Crashlytics, Push Notifications, In-App Messaging) 
+- AI/ML: Google Gemini API 
+- Local Storage: Hive 
+- State Management: Provider 
+- Architecture: MVVM (Model-View-ViewModel)
 
 ### **Development Timeline**
 - **Phase 1:** Core features & UI implementation
@@ -58,9 +49,4 @@ Developed a comprehensive 4-feature mobile app leveraging Google's Gemini AI for
 - Gemini API delivers accurate plant identification
 - Proper permission handling is critical for Android
 - Analytics tracking invaluable for user behavior insights
-
-- Add community features
-- Expand plant database
-- Implement AR plant placement
-- Add social sharing capabilities
 
