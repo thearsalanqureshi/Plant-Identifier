@@ -1,3 +1,7 @@
+## App Mockup
+
+![Plant Identifier Mockup](plant%20identifier%20mockup.png)
+
 # Plant-Identifier
 A Flutter-based plant recognition application that helps users identify plants, diagnose issues, calculate water needs, and measure light conditions using AI technology.
 
