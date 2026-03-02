@@ -1,7 +1,7 @@
 # Plant-Identifier
 ![Plant Identifier](https://github.com/thearsalanqureshi/Plant-Identifier/raw/badf304f62d8522c528c366710ec9bde01d22f1b/mockup%20plant%20identifier.png)
 
-# Project-Overview
+### Project-Overview
 A Flutter-based plant recognition application that helps users identify plants, diagnose issues, calculate water needs, and measure light conditions using AI technology.
 
 ### Problem Statement
