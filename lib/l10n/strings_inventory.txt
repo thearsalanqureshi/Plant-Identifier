@@ -1,0 +1,708 @@
+# Part 1: Screens Text Extraction
+
+## File: splash_screen.dart
+- "Plant Identifier" → App name (centered text)
+
+---
+
+## File: onboarding_screen.dart
+- "Smart, fast, and accurate plant ID" → Subtitle (identify mode)
+- "Spotting possible diseases and issues" → Subtitle (diagnose mode)
+- "Analyzing plant and environment..." → Subtitle (water mode)
+- "Please wait..." → Subtitle (default/fallback)
+- "Identifying Plant" → Title (identify mode)
+- "Diagnosing Plant" → Title (diagnose mode)
+- "Calculating Water Needs" → Title (water mode)
+- "Processing" → Title (default/fallback)
+
+---
+
+## File: language_screen.dart
+- No visible UI text found (text is in LanguageItem widget which will be extracted later)
+
+---
+
+## File: main_screen.dart
+- No visible UI text found (uses screens for content)
+
+---
+
+## File: home_screen.dart
+- "Plant Identifier" → App bar title
+
+---
+
+## File: scanner_screen.dart
+- "Identify Plant" → Mode indicator text
+- "Diagnose Plant" → Mode indicator text
+- "Water Calculation" → Mode indicator text
+- "Scan Mode" → Mode indicator text (default)
+
+---
+
+## File: scanner_preview_screen.dart
+- "Gallery" → Button label
+- "No Image" → Placeholder text
+
+---
+
+## File: processing_screen.dart
+- "Identifying Plant" → Title (identify mode)
+- "Diagnosing Plant" → Title (diagnose mode)
+- "Calculating Water Needs" → Title (water mode)
+- "Processing" → Title (default/fallback)
+- "Smart, fast, and accurate plant ID" → Subtitle (identify mode)
+- "Spotting possible diseases and issues" → Subtitle (diagnose mode)
+- "Analyzing plant and environment..." → Subtitle (water mode)
+- "Please wait..." → Subtitle (default/fallback)
+
+---
+
+## File: plant_identification_result_screen.dart
+- "Plant Identified" → Screen title
+- "About the Plant" → Section heading
+- "Climate Requirements" → Section heading
+- "Temperature" → Label
+- "Light" → Label
+- "Soil" → Label
+- "Humidity" → Label
+- "Care Schedule" → Section heading
+- "Watering" → Label
+- "Fertilizing" → Label
+- "Safety Warning" → Section heading
+- "Saved to My Plants!" → Success message
+- "Removed from My Plants" → Success message
+- "Save To My Plants" → Button (inactive)
+- "Saved to My Plants" → Button (active state)
+- "Identify Another Plant" → Button
+
+---
+
+## File: plant_diagnosis_result_screen.dart
+- "Diagnose Result" → Screen title
+- "Severity Assessment" → Section heading
+- "Severity Level" → Label
+- "Immediate Actions (Next 24-48 hours)" → Section heading
+- "Treatment Plan" → Section heading
+- "Daily Monitoring" → Section heading
+- "Expected Recovery" → Section heading
+- "Diagnose Another Plant" → Button
+- "Back To Home" → Button
+- "Diagnosis Error" → Error title
+- "No diagnosis data available" → Error message
+- "Try Again" → Button (error state)
+
+---
+
+## File: premium_screen.dart
+- "Upgrade To Premium" → Screen title
+- "Experience It All — Effortless and Uninterrupted" → Subtitle
+- "Features" → Table header
+- "PRO" → Column header
+- "Basic" → Column header
+- "Rs 750.00/Week After Free 3-Day Trial" → Price text
+- "Start Now" → Button
+- "Subscription will auto-renew. Cancel anytime." → Footer text
+
+---
+
+## File: light_meter_screen.dart
+- "Light Meter" → Screen title
+- "Position your phone at the intended plant placement location." → Instruction text
+- "Optimal" → Status card title
+- "Measuring" → Status text (during measurement)
+- "1000-10000 LUX" → Optimal range value
+- "Initializing Camera..." → Loading text
+- "Starting Camera..." → Placeholder text
+- "Measure" → Button
+- "Reset" → Button
+- "Initialization Failed" → Error title
+- "Retry" → Button (error state)
+
+---
+
+## File: light_meter_info_screen.dart
+- "How To Use Light Meter?" → Screen title
+- "Keep your front camera facing the light source." → Instruction 1
+- "Move phone around plant to measure light from all angles" → Instruction 2
+- "Check light levels at mid-day for the most accurate results" → Instruction 3
+- "Continue" → Button
+- "Image not available" → Error placeholder
+
+---
+
+## File: privacy_policy_screen.dart
+- "Privacy Policy" → Screen title
+
+---
+
+## File: settings_screen.dart
+- "Settings" → Screen title
+- "App Language" → Settings option
+- "Rate Us" → Settings option
+- "Share App" → Settings option
+- "Feedback" → Settings option
+- "Privacy Policy" → Settings option
+
+---
+
+## File: water_questions_screen.dart
+- "Continue" → Button
+
+---
+
+## File: water_result_screen.dart
+- "Plant Water Need" → Title
+- "Watering Schedule" → Section heading
+- "Frequency:" → Label
+- "Best Time:" → Label
+- "Care Tips" → Section heading
+- "Thank You" → Button
+- "Calculating water needs..." → Loading text
+- "Calculation Error" → Error title
+- "No water calculation data available" → Error message
+- "Back to Home" → Button (error state)
+
+---
+
+## File: history_screen.dart
+- "Scan History" → Screen title
+- "No Saved Plants" → Empty state title (My Plants tab)
+- "Nothing to show" → Empty state title (History tab)
+- "Save plants from scan history to see them here" → Empty state description (My Plants tab)
+- "All your scans will appear here" → Empty state description (History tab)
+- "Light Measurement Result" → Dialog title
+- "Light Level:" → Label
+- "LUX" → Unit
+- "Status:" → Label
+- "Optimal Range:" → Label
+- "Time:" → Label
+- "Close" → Dialog button
+- "Just now" → Timestamp
+- "min ago" → Timestamp suffix
+- "hours ago" → Timestamp suffix
+- "days ago" → Timestamp suffix
+- "Delete ?" → Confirmation title
+- "Are you sure you want to delete this ?" → Confirmation message
+- "Delete" → Button
+- "Cancel" → Button
+- "Remove from My Plants" → Action sheet option
+- "Save to My Plants" → Action sheet option
+
+
+
+# Part 2: Widgets Text Extraction
+
+## File: app_bar.dart
+- "Plant Identifier" → App bar title
+
+---
+
+## File: bottom_nav_bar.dart
+*(Note: This file wasn't provided in the list - assuming it exists based on filename pattern)*
+- No file content provided to extract text from
+
+---
+
+## File: address_card.dart
+- No static text found (address values are dynamic variables)
+
+---
+
+## File: feature_card.dart
+- No static text found (titles and subtitles are passed as parameters)
+
+---
+
+## File: detail_item.dart
+- No static text found (labels and values are passed as parameters)
+
+---
+
+## File: diagnosis_widgets.dart
+- "Severity Level" → Label
+- "Severity Assessment" → Section heading
+- "No plant detected in image" → Message (when no plant found)
+- "Treatment" → Badge label
+- "•" → Separator character
+- "MILD" → Severity badge (uppercase)
+- "MODERATE" → Severity badge (uppercase)
+- "SEVERE" → Severity badge (uppercase)
+- "CRITICAL" → Severity badge (uppercase)
+- "HEALTHY" → Severity badge (uppercase)
+
+---
+
+## File: info_card.dart
+- No static text found (title and content are passed as parameters)
+
+---
+
+## File: language_item.dart
+- No static text found (language names are from LanguageModel)
+
+---
+
+## File: language_app_bar.dart
+- "Select Language" → Screen title
+
+---
+
+## File: action_button.dart
+- No static text found (button text is passed as parameter)
+
+---
+
+## File: premium_banner.dart
+- "Explore Premium Features\nFor Free" → Banner text
+- "Upgrade To Pro" → Button text
+
+---
+
+## File: premium_card.dart
+- "Explore Premium Features\nFor Free" → Card text
+- "Upgrade To Pro" → Button text
+
+---
+
+## File: premium_feature_row.dart
+- No static text found (feature titles are passed as parameters)
+
+---
+
+## File: pro_button.dart
+- "PRO" → Button text (short for Pro/Premium)
+
+---
+
+## File: rating_bottom_sheet.dart
+- "Rate Your Experience With\nOur App" → Sheet title
+- "Please rate your experience and help us\nimprove. Thank You" → Description text
+- "Submit" → Button text
+- "Thank you for your $_selectedRating star rating!" → Success message (dynamic with placeholder)
+
+---
+
+## File: settings_card.dart
+- No static text found (titles are passed as parameters)
+
+---
+
+## File: history_card.dart
+- "IDENTIFIED" → Badge text (identify scan type)
+- "DIAGNOSED" → Badge text (diagnose scan type)
+- "CALCULATED" → Badge text (water calculation scan type)
+- "MEASURED" → Badge text (light meter scan type)
+- "Just now" → Timestamp
+- "min ago" → Timestamp suffix
+- "hours ago" → Timestamp suffix
+- "days ago" → Timestamp suffix
+
+---
+
+## File: history_tabs.dart
+- "My Plants" → Tab label
+- "History" → Tab label
+- "(" → Opening parenthesis for count
+- ")" → Closing parenthesis for count
+
+---
+
+## Summary Statistics
+- **Total files processed (widgets):** 16 (including assumed bottom_nav_bar.dart)
+- **Files with extractable text:** 8
+- **Files with dynamic/parameter-only text:** 8
+
+---
+
+
+
+# Part 3: Complete Text Inventory (Consolidated with Duplicates Removed)
+
+## File: strings_inventory.txt
+
+```
+# SCREENS
+
+## splash_screen.dart
+Plant Identifier
+
+## onboarding_screen.dart
+Identifying Plant
+Diagnosing Plant
+Calculating Water Needs
+Processing
+Smart, fast, and accurate plant ID
+Spotting possible diseases and issues
+Analyzing plant and environment...
+Please wait...
+
+## language_screen.dart
+[No static text - uses LanguageItem widget]
+
+## main_screen.dart
+[No static text - uses child screens]
+
+## home_screen.dart
+Plant Identifier
+
+## scanner_screen.dart
+Identify Plant
+Diagnose Plant
+Water Calculation
+Scan Mode
+
+## scanner_preview_screen.dart
+Gallery
+No Image
+
+## processing_screen.dart
+Identifying Plant
+Diagnosing Plant
+Calculating Water Needs
+Processing
+Smart, fast, and accurate plant ID
+Spotting possible diseases and issues
+Analyzing plant and environment...
+Please wait...
+
+## plant_identification_result_screen.dart
+Plant Identified
+About the Plant
+Climate Requirements
+Temperature
+Light
+Soil
+Humidity
+Care Schedule
+Watering
+Fertilizing
+Safety Warning
+Saved to My Plants!
+Removed from My Plants
+Save To My Plants
+Saved to My Plants
+Identify Another Plant
+
+## plant_diagnosis_result_screen.dart
+Diagnose Result
+Severity Assessment
+Severity Level
+Immediate Actions (Next 24-48 hours)
+Treatment Plan
+Daily Monitoring
+Expected Recovery
+Diagnose Another Plant
+Back To Home
+Diagnosis Error
+No diagnosis data available
+Try Again
+
+## premium_screen.dart
+Upgrade To Premium
+Experience It All — Effortless and Uninterrupted
+Features
+PRO
+Basic
+Rs 750.00/Week After Free 3-Day Trial
+Start Now
+Subscription will auto-renew. Cancel anytime.
+
+## light_meter_screen.dart
+Light Meter
+Position your phone at the intended plant placement location.
+Optimal
+Measuring
+1000-10000 LUX
+Initializing Camera...
+Starting Camera...
+Measure
+Reset
+Initialization Failed
+Retry
+
+## light_meter_info_screen.dart
+How To Use Light Meter?
+Keep your front camera facing the light source.
+Move phone around plant to measure light from all angles
+Check light levels at mid-day for the most accurate results
+Continue
+Image not available
+
+## privacy_policy_screen.dart
+Privacy Policy
+
+## settings_screen.dart
+Settings
+App Language
+Rate Us
+Share App
+Feedback
+Privacy Policy
+
+## water_questions_screen.dart
+Continue
+
+## water_result_screen.dart
+Plant Water Need
+Watering Schedule
+Frequency:
+Best Time:
+Care Tips
+Thank You
+Calculating water needs...
+Calculation Error
+No water calculation data available
+Back to Home
+
+## history_screen.dart
+Scan History
+No Saved Plants
+Nothing to show
+Save plants from scan history to see them here
+All your scans will appear here
+Light Measurement Result
+Light Level:
+LUX
+Status:
+Optimal Range:
+Time:
+Close
+Just now
+min ago
+hours ago
+days ago
+Delete ?
+Are you sure you want to delete this ?
+Delete
+Cancel
+Remove from My Plants
+Save to My Plants
+
+
+# WIDGETS
+
+## app_bar.dart
+Plant Identifier
+
+## bottom_nav_bar.dart
+[File not provided]
+
+## address_card.dart
+[No static text - dynamic location/address]
+
+## feature_card.dart
+[No static text - dynamic titles/subtitles]
+
+## detail_item.dart
+[No static text - dynamic labels/values]
+
+## diagnosis_widgets.dart
+Severity Level
+Severity Assessment
+No plant detected in image
+Treatment
+•
+MILD
+MODERATE
+SEVERE
+CRITICAL
+HEALTHY
+
+## info_card.dart
+[No static text - dynamic title/content]
+
+## language_item.dart
+[No static text - dynamic language names]
+
+## language_app_bar.dart
+Select Language
+
+## action_button.dart
+[No static text - dynamic button text]
+
+## premium_banner.dart
+Explore Premium Features
+For Free
+Upgrade To Pro
+
+## premium_card.dart
+Explore Premium Features
+For Free
+Upgrade To Pro
+
+## premium_feature_row.dart
+[No static text - dynamic feature titles]
+
+## pro_button.dart
+PRO
+
+## rating_bottom_sheet.dart
+Rate Your Experience With
+Our App
+Please rate your experience and help us
+improve. Thank You
+Submit
+Thank you for your {rating} star rating!
+
+## settings_card.dart
+[No static text - dynamic titles]
+
+## history_card.dart
+IDENTIFIED
+DIAGNOSED
+CALCULATED
+MEASURED
+Just now
+min ago
+hours ago
+days ago
+
+## history_tabs.dart
+My Plants
+History
+(
+)
+
+
+# MASTER LIST (Alphabetical, Unique)
+
+About the Plant
+All your scans will appear here
+Analyzing plant and environment...
+App Language
+Are you sure you want to delete this ?
+Back To Home
+Back to Home
+Basic
+Best Time:
+CALCULATED
+Calculation Error
+Cancel
+Care Schedule
+Care Tips
+Close
+Continue
+CRITICAL
+Daily Monitoring
+Delete
+Delete ?
+Diagnose Another Plant
+Diagnose Plant
+Diagnose Result
+Diagnosed
+DIAGNOSED
+Diagnosis Error
+Expected Recovery
+Experience It All — Effortless and Uninterrupted
+Explore Premium Features
+Features
+Feedback
+Fertilizing
+For Free
+Frequency:
+Gallery
+HEALTHY
+History
+History
+hours ago
+How To Use Light Meter?
+Humidity
+IDENTIFIED
+Identify Another Plant
+Identify Plant
+Identifying Plant
+Immediate Actions (Next 24-48 hours)
+Image not available
+Initialization Failed
+Initializing Camera...
+Just now
+Language
+Light
+Light Level:
+Light Meter
+Light Measurement Result
+LUX
+MEASURED
+Measure
+Measuring
+min ago
+MILD
+MODERATE
+Move phone around plant to measure light from all angles
+My Plants
+No Image
+No plant detected in image
+No Saved Plants
+Nothing to show
+Optimal
+Optimal Range:
+Please wait...
+Plant Identified
+Plant Identifier
+Plant Water Need
+Position your phone at the intended plant placement location.
+Premium
+Privacy Policy
+PRO
+Processing
+Rate Us
+Rate Your Experience With
+Removed from My Plants
+Remove from My Plants
+Reset
+Retry
+Rs 750.00/Week After Free 3-Day Trial
+Safety Warning
+Save plants from scan history to see them here
+Save To My Plants
+Save to My Plants
+Saved to My Plants
+Saved to My Plants!
+Scan History
+Scan Mode
+Select Language
+Settings
+Severity Assessment
+Severity Level
+SEVERE
+Share App
+Smart, fast, and accurate plant ID
+Soil
+Spotting possible diseases and issues
+Start Now
+Starting Camera...
+Status:
+Submit
+Subscription will auto-renew. Cancel anytime.
+Temperature
+Thank You
+Thank you for your {rating} star rating!
+Time:
+Treatment
+Treatment Plan
+Try Again
+Upgrade To Premium
+Upgrade To Pro
+Water Calculation
+Watering
+Watering Schedule
+Water Need
+•
+(
+)
+1000-10000 LUX
+24-48 hours
+```
+
+---
+
+## Summary
+
+- **Total unique text strings:** ~120
+- **Most common patterns:** Button text, section headings, labels, error messages
+- **Dynamic placeholders:** `{rating}` indicates where variables are inserted
+- **Multi-line strings:** Preserved with actual line breaks where they appear in UI
+
+---
+

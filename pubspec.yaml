@@ -1,0 +1,145 @@
+name: plant_identifier_app
+description: "Plant Identifier App"
+publish_to: 'none'
+version: 1.0.0+1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/app_logo.svg"
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:  
+    sdk: flutter
+  intl: ^0.20.2
+
+  webview_flutter:
+  store_redirect:
+  package_info_plus: 
+  device_info_plus:
+  url_launcher: 
+  connectivity_plus: 
+  flutter_dotenv: 
+  google_fonts: 
+  flutter_launcher_icons:
+  permission_handler:
+  cupertino_icons:
+  provider:
+  path:
+  path_provider:
+  flutter_svg:
+  http:
+  image: 
+  image_picker:
+  camera: ^0.11.3
+  camera_android: ^0.10.10+14
+  hive:
+  hive_flutter:
+  google_generative_ai:
+  firebase_core:
+  firebase_analytics:
+  firebase_crashlytics:
+  firebase_messaging:
+  flutter_local_notifications: ^17.2.2
+  test_api: 
+  share_plus:
+  flutter_gen: ^5.9.0
+ # intl: ^0.19.0
+  
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  hive_generator: 
+  build_runner: 
+  
+
+flutter:
+  uses-material-design: true
+  generate: true 
+
+  assets:
+    - assets/images/ 
+    - assets/images/app_logo.svg
+    - assets/images/onboarding_1_4x.png
+    - assets/images/onboarding_2_4x.png
+    - assets/images/onboarding_3_4x.png
+    - assets/images/bg_identify.svg
+    - assets/images/bg_diagnose.svg
+    - assets/images/bg_water_calc.svg
+    - assets/images/bg_light_meter.svg
+    - assets/images/bg_identify.png
+    - assets/images/bg_diagnose.png
+    - assets/images/bg_water_calc.png
+    - assets/images/bg_light_meter.png
+    - assets/images/water_result.svg
+    - assets/images/water_result.png
+    - assets/images/premium_left.png
+    - assets/images/premium_right.png
+    - assets/images/premium_crown.png
+    - assets/images/divider_line.png
+    - assets/images/light_meter_step_1.svg
+    - assets/images/light_meter_step_2.svg  
+    - assets/images/light_meter_step_3.svg
+    - assets/images/light_meter_step_1.png
+    - assets/images/light_meter_step_2.png  
+    - assets/images/light_meter_step_3.png
+    - assets/images/empty_history.svg
+
+
+    - assets/icons/
+    - assets/icons/back_icon.svg
+    - assets/icons/tick_icon.svg
+    - assets/icons/ic_checked.svg
+    - assets/icons/ic_unchecked.svg
+    - assets/icons/ic_location.svg
+    - assets/icons/ic_identify.svg
+    - assets/icons/ic_diagnose.svg
+    - assets/icons/ic_location.svg
+    - assets/icons/ic_edit.svg
+    - assets/icons/ic_home.svg
+    - assets/icons/ic_home_active.svg
+    - assets/icons/ic_record.svg
+    - assets/icons/ic_record_active.svg
+    - assets/icons/ic_settings_active.svg
+    - assets/icons/ic_settings.svg
+    - assets/icons/ic_processing_loader.svg
+    - assets/icons/ic_share.svg
+    - assets/icons/ic_temperature.svg
+    - assets/icons/ic_sunlight.svg
+    - assets/icons/ic_soil.svg
+    - assets/icons/ic_humidity.svg
+    - assets/icons/ic_watering.svg
+    - assets/icons/ic_fertilizing.svg
+    - assets/icons/ic_warning.svg
+    - assets/icons/ic_gallery.svg
+    - assets/icons/ic_flash_on.svg
+    - assets/icons/ic_close.png
+    - assets/icons/ic_language.png
+    - assets/icons/ic_rate.png
+    - assets/icons/ic_privacy.png
+    - assets/icons/star_filled.svg
+    - assets/icons/star_outline.svg
+    - assets/icons/ic_right_arrow.svg
+    - assets/icons/ic_close.png
+    - assets/icons/ic_tick_green.svg
+    - assets/icons/ic_lock.svg
+    - assets/icons/ic_share.png
+
+  fonts:
+    - family: DMSans
+      fonts:
+        - asset: assets/fonts/DMSans-Regular.ttf
+        - asset: assets/fonts/DMSans-SemiBold.ttf
+          weight: 600
+
+
+
+
+           

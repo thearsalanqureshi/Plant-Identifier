@@ -1,0 +1,1373 @@
+{
+  "@@locale": "ja",
+
+  "app_name": "植物識別アプリ",
+  "@app_name": {
+    "description": "Application name displayed in splash screen and app bar"
+  },
+
+  "splash_title": "植物識別アプリ",
+  "@splash_title": {
+    "description": "Title text on splash screen"
+  },
+
+  "onboarding1Title": "植物を識別する",
+  "@onboarding1Title": {
+    "description": "Onboarding screen 1 title (alternative key)"
+  },
+
+  "onboarding1Body": "AIで植物をスキャンして、あらゆる植物の種類を即座に識別し、詳しい情報を取得できます。",
+  "@onboarding1Body": {
+    "description": "Onboarding screen 1 body text (alternative key)"
+  },
+
+  "onboarding2Title": "植物を診断する",
+  "@onboarding2Title": {
+    "description": "Onboarding screen 2 title (alternative key)"
+  },
+
+  "onboarding2Body": "植物の病気を検出し、大切な植物を健やかに育てるための専門的なケアアドバイスを受け取れます。",
+  "@onboarding2Body": {
+    "description": "Onboarding screen 2 body text (alternative key)"
+  },
+
+  "onboarding3Title": "植物のお手入れが簡単に",
+  "@onboarding3Title": {
+    "description": "Onboarding screen 3 title (alternative key)"
+  },
+
+  "onboarding3Body": "植物の記録を保存して、個別のアドバイスを受け取り、水やりの日を忘れないようにリマインダーを設定しましょう。",
+  "@onboarding3Body": {
+    "description": "Onboarding screen 3 body text (alternative key)"
+  },
+
+  "next": "次へ",
+  "@next": {
+    "description": "Next button on onboarding (alternative key)"
+  },
+
+  "letsGo": "はじめる",
+  "@letsGo": {
+    "description": "Let's Go button on final onboarding screen (alternative key)"
+  },
+
+  "onboarding_identifying": "植物を識別中",
+  "@onboarding_identifying": {
+    "description": "Title for plant identification during onboarding"
+  },
+
+  "onboarding_diagnosing": "植物を診断中",
+  "@onboarding_diagnosing": {
+    "description": "Title for plant diagnosis during onboarding"
+  },
+
+  "onboarding_calculating_water": "水やり量を計算中",
+  "@onboarding_calculating_water": {
+    "description": "Title for water calculation during onboarding"
+  },
+
+  "onboarding_processing": "処理中",
+  "@onboarding_processing": {
+    "description": "Default processing title during onboarding"
+  },
+
+  "onboarding_subtitle_identify": "スマートで速くて正確な植物識別",
+  "@onboarding_subtitle_identify": {
+    "description": "Subtitle for identification mode"
+  },
+
+  "onboarding_subtitle_diagnose": "考えられる病気や問題を検出中",
+  "@onboarding_subtitle_diagnose": {
+    "description": "Subtitle for diagnosis mode"
+  },
+
+  "onboarding_subtitle_water": "植物と環境を分析中...",
+  "@onboarding_subtitle_water": {
+    "description": "Subtitle for water calculation mode"
+  },
+
+  "onboarding_subtitle_default": "しばらくお待ちください...",
+  "@onboarding_subtitle_default": {
+    "description": "Default loading subtitle"
+  },
+
+  "onboarding_title_identify": "植物を識別する",
+  "@onboarding_title_identify": {
+    "description": "Onboarding screen 1 title"
+  },
+
+  "onboarding_body_identify": "AIで植物をスキャンして、あらゆる植物の種類を即座に識別し、詳しい情報を取得できます。",
+  "@onboarding_body_identify": {
+    "description": "Onboarding screen 1 body text"
+  },
+
+  "onboarding_title_diagnose": "植物を診断する",
+  "@onboarding_title_diagnose": {
+    "description": "Onboarding screen 2 title"
+  },
+
+  "onboarding_body_diagnose": "植物の病気を検出し、大切な植物を健やかに育てるための専門的なケアアドバイスを受け取れます。",
+  "@onboarding_body_diagnose": {
+    "description": "Onboarding screen 2 body text"
+  },
+
+  "onboarding_title_care": "植物のお手入れが簡単に",
+  "@onboarding_title_care": {
+    "description": "Onboarding screen 3 title"
+  },
+
+  "onboarding_body_care": "植物の記録を保存して、個別のアドバイスを受け取り、水やりの日を忘れないようにリマインダーを設定しましょう。",
+  "@onboarding_body_care": {
+    "description": "Onboarding screen 3 body text"
+  },
+
+  "onboarding_next": "次へ",
+  "@onboarding_next": {
+    "description": "Next button on onboarding"
+  },
+
+  "onboarding_lets_go": "はじめる",
+  "@onboarding_lets_go": {
+    "description": "Let's Go button on final onboarding screen"
+  },
+
+  "home_title": "植物識別アプリ",
+  "@home_title": {
+    "description": "Home screen app bar title"
+  },
+
+  "appBarTitle": "グリーンスキャン",
+  "@appBarTitle": {
+    "description": "App bar title for the main screen"
+  },
+
+  "home_identify_subtitle": "あらゆる植物を識別",
+  "@home_identify_subtitle": {
+    "description": "Subtitle for identify feature card on home screen"
+  },
+
+  "home_diagnose_subtitle": "植物の健康状態をチェック",
+  "@home_diagnose_subtitle": {
+    "description": "Subtitle for diagnose feature card on home screen"
+  },
+
+  "home_water_subtitle": "水やりを最適化",
+  "@home_water_subtitle": {
+    "description": "Subtitle for water calculator feature card on home screen"
+  },
+
+  "home_light_subtitle": "最適な光量を測定",
+  "@home_light_subtitle": {
+    "description": "Subtitle for light meter feature card on home screen"
+  },
+
+  "home_feature_not_available": "機能 {featureId} は利用できません",
+  "@home_feature_not_available": {
+    "description": "Error message when feature is unavailable",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "ID of the unavailable feature"
+      }
+    }
+  },
+
+  "selectLanguage": "言語を選択",
+  "@selectLanguage": {
+    "description": "Title for language selection screen"
+  },
+
+  "languageEnglish": "英語",
+  "languageSpanish": "スペイン語",
+  "languageFrench": "フランス語",
+
+  
+  "english": "英語",
+  "@english": {
+    "description": "English language name"
+  },
+
+  "urdu": "ウルドゥー語",
+  "@urdu": {
+    "description": "Urdu language name"
+  },
+
+  "german": "ドイツ語",
+  "@german": {
+    "description": "German language name"
+  },
+
+  "french": "フランス語",
+  "@french": {
+    "description": "French language name"
+  },
+
+  "arabic": "アラビア語",
+  "@arabic": {
+    "description": "Arabic language name"
+  },
+
+  "spanish": "スペイン語",
+  "@spanish": {
+    "description": "Spanish language name"
+  },
+
+  "japanese": "日本語",
+  "@japanese": {
+    "description": "Japanese language name"
+  },
+
+  "korean": "韓国語",
+  "@korean": {
+    "description": "Korean language name"
+  },
+
+  "identify": "識別",
+  "@identify": {
+    "description": "Button or tab label for identify feature"
+  },
+
+  "diagnose": "診断",
+  "@diagnose": {
+    "description": "Button or tab label for diagnose feature"
+  },
+
+  "scanner_mode_identify": "植物を識別",
+  "@scanner_mode_identify": {
+    "description": "Scanner mode indicator for plant identification"
+  },
+
+  "scanner_identify_plant": "植物を識別",
+  "@scanner_identify_plant": {
+    "description": "Scanner screen identify plant button/label"
+  },
+
+  "scanner_mode_diagnose": "植物を診断",
+  "@scanner_mode_diagnose": {
+    "description": "Scanner mode indicator for plant diagnosis"
+  },
+
+  "scanner_diagnose_plant": "植物を診断",
+  "@scanner_diagnose_plant": {
+    "description": "Scanner screen diagnose plant button/label"
+  },
+
+  "scanner_mode_water": "水やり計算",
+  "@scanner_mode_water": {
+    "description": "Scanner mode indicator for water calculation"
+  },
+
+  "scanner_water_calculation": "水やり計算",
+  "@scanner_water_calculation": {
+    "description": "Scanner screen water calculation button/label"
+  },
+
+  "scanner_mode_default": "スキャンモード",
+  "@scanner_mode_default": {
+    "description": "Default scanner mode text"
+  },
+
+  "scanner_scan_mode": "スキャンモード",
+  "@scanner_scan_mode": {
+    "description": "Scanner screen mode indicator"
+  },
+
+  "scanner_capture_error": "画像の撮影に失敗しました",
+  "@scanner_capture_error": {
+    "description": "Error message when image capture fails"
+  },
+
+  "scanner_gallery_error": "ギャラリーからの画像選択に失敗しました",
+  "@scanner_gallery_error": {
+    "description": "Error message when gallery image pick fails"
+  },
+
+  "scanner_take_photo": "写真を撮る",
+  "@scanner_take_photo": {
+    "description": "Button to take a photo in scanner"
+  },
+
+  "scanner_retake": "撮り直す",
+  "@scanner_retake": {
+    "description": "Button to retake photo"
+  },
+
+  "scanner_use_photo": "この写真を使う",
+  "@scanner_use_photo": {
+    "description": "Button to use the taken photo"
+  },
+
+  "preview_gallery": "ギャラリー",
+  "@preview_gallery": {
+    "description": "Gallery button text in preview screen"
+  },
+
+  "preview_no_image": "画像なし",
+  "@preview_no_image": {
+    "description": "Placeholder text when no image is selected"
+  },
+
+  "preview_select_image_error": "先に画像を選択してください",
+  "@preview_select_image_error": {
+    "description": "Error message when trying to proceed without selecting an image"
+  },
+
+  "processing_title_identify": "植物を識別中",
+  "@processing_title_identify": {
+    "description": "Processing screen title for identification"
+  },
+
+  "processing_identifying": "植物を識別中",
+  "@processing_identifying": {
+    "description": "Processing screen identifying text"
+  },
+
+  "processing_title_diagnose": "植物を診断中",
+  "@processing_title_diagnose": {
+    "description": "Processing screen title for diagnosis"
+  },
+
+  "processing_diagnosing": "植物を診断中",
+  "@processing_diagnosing": {
+    "description": "Processing screen diagnosing text"
+  },
+
+  "processing_title_water": "水やり量を計算中",
+  "@processing_title_water": {
+    "description": "Processing screen title for water calculation"
+  },
+
+  "processing_calculating_water": "水やり量を計算中",
+  "@processing_calculating_water": {
+    "description": "Processing screen calculating water text"
+  },
+
+  "processing_title_default": "処理中",
+  "@processing_title_default": {
+    "description": "Default processing screen title"
+  },
+
+  "processing_processing": "処理中",
+  "@processing_processing": {
+    "description": "Processing screen default text"
+  },
+
+  "processing_subtitle_identify": "スマートで速くて正確な植物識別",
+  "@processing_subtitle_identify": {
+    "description": "Processing subtitle for identification"
+  },
+
+  "processing_smart_fast_accurate": "スマートで速くて正確な植物識別",
+  "@processing_smart_fast_accurate": {
+    "description": "Processing subtitle for identification"
+  },
+
+  "processing_subtitle_diagnose": "考えられる病気や問題を検出中",
+  "@processing_subtitle_diagnose": {
+    "description": "Processing subtitle for diagnosis"
+  },
+
+  "processing_spotting_diseases": "考えられる病気や問題を検出中",
+  "@processing_spotting_diseases": {
+    "description": "Processing subtitle for diagnosis"
+  },
+
+  "processing_subtitle_water": "植物と環境を分析中...",
+  "@processing_subtitle_water": {
+    "description": "Processing subtitle for water calculation"
+  },
+
+  "processing_analyzing": "植物と環境を分析中...",
+  "@processing_analyzing": {
+    "description": "Processing subtitle for water calculation"
+  },
+
+  "processing_subtitle_default": "しばらくお待ちください...",
+  "@processing_subtitle_default": {
+    "description": "Default processing subtitle"
+  },
+
+  "processing_please_wait": "しばらくお待ちください...",
+  "@processing_please_wait": {
+    "description": "Default processing subtitle"
+  },
+
+  "result_plant_identified": "植物を識別しました",
+  "@result_plant_identified": {
+    "description": "Title for plant identification result screen"
+  },
+
+  "result_about_plant": "植物について",
+  "@result_about_plant": {
+    "description": "Section heading for plant description"
+  },
+
+  "result_climate_requirements": "気候条件",
+  "@result_climate_requirements": {
+    "description": "Section heading for climate information"
+  },
+
+  "result_temperature": "温度",
+  "@result_temperature": {
+    "description": "Label for temperature requirement"
+  },
+
+  "result_light": "光",
+  "@result_light": {
+    "description": "Label for light requirement"
+  },
+
+  "result_soil": "土壌",
+  "@result_soil": {
+    "description": "Label for soil requirement"
+  },
+
+  "result_humidity": "湿度",
+  "@result_humidity": {
+    "description": "Label for humidity requirement"
+  },
+
+  "result_care_schedule": "お手入れスケジュール",
+  "@result_care_schedule": {
+    "description": "Section heading for care information"
+  },
+
+  "result_watering": "水やり",
+  "@result_watering": {
+    "description": "Label for watering schedule"
+  },
+
+  "result_fertilizing": "施肥",
+  "@result_fertilizing": {
+    "description": "Label for fertilizing schedule"
+  },
+
+  "result_safety_warning": "安全上の注意",
+  "@result_safety_warning": {
+    "description": "Section heading for toxicity/safety information"
+  },
+
+  "result_saved_success": "マイ植物に保存しました！",
+  "@result_saved_success": {
+    "description": "Success message when plant is saved"
+  },
+
+  "result_removed_success": "マイ植物から削除しました",
+  "@result_removed_success": {
+    "description": "Success message when plant is removed"
+  },
+
+  "result_save_button": "マイ植物に保存",
+  "@result_save_button": {
+    "description": "Button text to save plant (inactive state)"
+  },
+
+  "result_saved_button": "マイ植物に保存済み",
+  "@result_saved_button": {
+    "description": "Button text when plant is already saved (active state)"
+  },
+
+  "result_identify_another": "別の植物を識別する",
+  "@result_identify_another": {
+    "description": "Button to start new plant identification"
+  },
+
+  "result_error": "エラー",
+  "@result_error": {
+    "description": "Error title for identification result"
+  },
+
+  "result_no_data": "植物データが見つかりません",
+  "@result_no_data": {
+    "description": "Error message when plant data is missing"
+  },
+
+  "result_try_again": "もう一度試す",
+  "@result_try_again": {
+    "description": "Button to retry identification"
+  },
+
+  "diagnosis_title": "診断結果",
+  "@diagnosis_title": {
+    "description": "Title for plant diagnosis result screen"
+  },
+
+  "diagnosis_result": "診断結果",
+  "@diagnosis_result": {
+    "description": "Title for diagnosis result screen"
+  },
+
+  "diagnosis_severity_assessment": "重症度の評価",
+  "@diagnosis_severity_assessment": {
+    "description": "Section heading for severity information"
+  },
+
+  "diagnosis_severity_level": "重症度",
+  "@diagnosis_severity_level": {
+    "description": "Label for severity level indicator"
+  },
+
+  "diagnosis_immediate_actions": "緊急対応（今後24〜48時間以内）",
+  "@diagnosis_immediate_actions": {
+    "description": "Section heading for immediate care actions"
+  },
+
+  "diagnosis_treatment_plan": "治療計画",
+  "@diagnosis_treatment_plan": {
+    "description": "Section heading for treatment information"
+  },
+
+  "diagnosis_daily_monitoring": "毎日の観察",
+  "@diagnosis_daily_monitoring": {
+    "description": "Section heading for monitoring checklist"
+  },
+
+  "diagnosis_expected_recovery": "回復の見通し",
+  "@diagnosis_expected_recovery": {
+    "description": "Section heading for recovery timeline"
+  },
+
+  "diagnosis_diagnose_another": "別の植物を診断する",
+  "@diagnosis_diagnose_another": {
+    "description": "Button to start new diagnosis"
+  },
+
+  "diagnosis_back_home": "ホームに戻る",
+  "@diagnosis_back_home": {
+    "description": "Button to return to home screen"
+  },
+
+  "diagnosis_error_title": "診断エラー",
+  "@diagnosis_error_title": {
+    "description": "Error dialog title"
+  },
+
+  "diagnosis_error": "診断エラー",
+  "@diagnosis_error": {
+    "description": "Error title for diagnosis result"
+  },
+
+  "diagnosis_error_no_data": "診断データが見つかりません",
+  "@diagnosis_error_no_data": {
+    "description": "Error message when diagnosis data is missing"
+  },
+
+  "diagnosis_no_data": "診断データが見つかりません",
+  "@diagnosis_no_data": {
+    "description": "Error message when diagnosis data is missing"
+  },
+
+  "diagnosis_try_again": "もう一度試す",
+  "@diagnosis_try_again": {
+    "description": "Button to retry diagnosis"
+  },
+
+  "premium_title": "プレミアムにアップグレード",
+  "@premium_title": {
+    "description": "Title for premium subscription screen"
+  },
+
+  "premium_upgrade": "プレミアムにアップグレード",
+  "@premium_upgrade": {
+    "description": "Button/text for premium upgrade"
+  },
+
+  "premium_subtitle": "すべての機能を快適に、途切れなく体験",
+  "@premium_subtitle": {
+    "description": "Subtitle text for premium screen"
+  },
+
+  "premium_experience": "すべての機能を快適に、途切れなく体験",
+  "@premium_experience": {
+    "description": "Premium experience description"
+  },
+
+  "premium_features_header": "機能",
+  "@premium_features_header": {
+    "description": "Header for features comparison table"
+  },
+
+  "premium_features": "機能",
+  "@premium_features": {
+    "description": "Features section title"
+  },
+
+  "premium_pro_header": "PRO",
+  "@premium_pro_header": {
+    "description": "Column header for PRO tier"
+  },
+
+  "premium_pro": "PRO",
+  "@premium_pro": {
+    "description": "PRO tier label"
+  },
+
+  "premium_basic_header": "ベーシック",
+  "@premium_basic_header": {
+    "description": "Column header for Basic tier"
+  },
+
+  "premium_basic": "ベーシック",
+  "@premium_basic": {
+    "description": "Basic tier label"
+  },
+
+  "premium_price": "3日間の無料トライアル後、750.00ルピー/週",
+  "@premium_price": {
+    "description": "Price text for premium subscription"
+  },
+
+  "premium_start_now": "今すぐ始める",
+  "@premium_start_now": {
+    "description": "Button to start premium subscription"
+  },
+
+  "premium_footer": "サブスクリプションは自動更新されます。いつでもキャンセル可能です。",
+  "@premium_footer": {
+    "description": "Footer disclaimer text"
+  },
+
+  "light_meter_title": "光量計",
+  "@light_meter_title": {
+    "description": "Title for light meter screen"
+  },
+
+  "light_meter_instruction": "植物を置く予定の場所にスマートフォンをかざしてください。",
+  "@light_meter_instruction": {
+    "description": "Instruction text for using light meter"
+  },
+
+  "light_meter_optimal": "最適",
+  "@light_meter_optimal": {
+    "description": "Label for optimal light range card"
+  },
+
+  "light_meter_measuring": "測定中",
+  "@light_meter_measuring": {
+    "description": "Status text during measurement"
+  },
+
+  "light_meter_optimal_range": "1000〜10000 LUX",
+  "@light_meter_optimal_range": {
+    "description": "Optimal light range value"
+  },
+
+  "light_meter_initializing": "カメラを起動中...",
+  "@light_meter_initializing": {
+    "description": "Loading text during camera initialization"
+  },
+
+  "light_meter_starting": "カメラを準備中...",
+  "@light_meter_starting": {
+    "description": "Placeholder text when camera is starting"
+  },
+
+  "light_meter_measure": "測定する",
+  "@light_meter_measure": {
+    "description": "Button to take light measurement"
+  },
+
+  "light_meter_reset": "リセット",
+  "@light_meter_reset": {
+    "description": "Button to reset measurement"
+  },
+
+  "light_meter_error_title": "起動に失敗しました",
+  "@light_meter_error_title": {
+    "description": "Error dialog title"
+  },
+
+  "light_meter_retry": "再試行",
+  "@light_meter_retry": {
+    "description": "Button to retry camera initialization"
+  },
+
+  "light_info_title": "光量計の使い方",
+  "@light_info_title": {
+    "description": "Title for light meter info screen"
+  },
+
+  "light_info_how_to_use": "光量計の使い方",
+  "@light_info_how_to_use": {
+    "description": "Title for light meter info screen"
+  },
+
+  "light_info_step1": "フロントカメラを光源に向けてください。",
+  "@light_info_step1": {
+    "description": "First instruction step"
+  },
+
+  "light_info_step2": "あらゆる角度から光を測定するために、植物の周りでスマートフォンを動かしてください",
+  "@light_info_step2": {
+    "description": "Second instruction step"
+  },
+
+  "light_info_step3": "最も正確な結果を得るために、日中に光量を測定してください",
+  "@light_info_step3": {
+    "description": "Third instruction step"
+  },
+
+  "light_info_continue": "続ける",
+  "@light_info_continue": {
+    "description": "Button to close info screen"
+  },
+
+  "light_info_image_error": "画像を表示できません",
+  "@light_info_image_error": {
+    "description": "Error text when instruction image fails to load"
+  },
+
+  "privacy_policy_title": "プライバシーポリシー",
+  "@privacy_policy_title": {
+    "description": "Title for privacy policy screen"
+  },
+
+  "settings_title": "設定",
+  "@settings_title": {
+    "description": "Title for settings screen"
+  },
+
+  "settings_app_language": "アプリの言語",
+  "@settings_app_language": {
+    "description": "Settings option for language selection"
+  },
+
+  "settings_rate_us": "レビューを書く",
+  "@settings_rate_us": {
+    "description": "Settings option to rate the app"
+  },
+
+  "settings_share_app": "アプリをシェア",
+  "@settings_share_app": {
+    "description": "Settings option to share the app"
+  },
+
+  "settings_feedback": "フィードバックを送る",
+  "@settings_feedback": {
+    "description": "Settings option to send feedback"
+  },
+
+  "settings_privacy_policy": "プライバシーポリシー",
+  "@settings_privacy_policy": {
+    "description": "Settings option to view privacy policy"
+  },
+
+  "settings_feature_unavailable": "機能 {featureId} は利用できません",
+  "@settings_feature_unavailable": {
+    "description": "Error message when a feature is not available",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "ID of the unavailable feature"
+      }
+    }
+  },
+
+  "settings_could_not_open_email": "メールを開けませんでした。{email} までご連絡ください",
+  "@settings_could_not_open_email": {
+    "description": "Error message when email cannot be opened",
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "description": "Email address to contact"
+      }
+    }
+  },
+
+  "debug_token_copied": "トークンをクリップボードにコピーしました",
+  "@debug_token_copied": {
+    "description": "Message shown when FCM token is copied"
+  },
+
+  "debug_get_token": "FCMトークンを取得",
+  "@debug_get_token": {
+    "description": "Button text to get FCM token (debug)"
+  },
+
+  "settings_token_copied": "トークンをクリップボードにコピーしました",
+  "@settings_token_copied": {
+    "description": "Message shown when FCM token is copied"
+  },
+
+  "settings_get_fcm_token": "FCMトークンを取得",
+  "@settings_get_fcm_token": {
+    "description": "Button text to get FCM token (debug)"
+  },
+
+  "settings_test_crash": "クラッシュテスト",
+  "@settings_test_crash": {
+    "description": "Button text to test crash (debug)"
+  },
+
+  "water_calculator": "水やり計算機",
+  "@water_calculator": {
+    "description": "Title for water calculator feature"
+  },
+
+  "water_continue": "続ける",
+  "@water_continue": {
+    "description": "Button to continue to next question"
+  },
+
+  "water_question_location": "植物をどこに置く予定ですか？",
+  "@water_question_location": {
+    "description": "Question about plant location"
+  },
+
+  "water_location_q1": "植物をどこに置く予定ですか？",
+  "@water_location_q1": {
+    "description": "First water calculation question"
+  },
+
+  "water_question_temperature": "現在の気温はどのくらいですか？",
+  "@water_question_temperature": {
+    "description": "Question about current temperature"
+  },
+
+  "water_location_q2": "現在の気温はどのくらいですか？",
+  "@water_location_q2": {
+    "description": "Second water calculation question"
+  },
+
+  "water_question_frequency": "どのくらいの頻度で水やりをしますか？",
+  "@water_question_frequency": {
+    "description": "Question about watering frequency"
+  },
+
+  "water_location_q3": "どのくらいの頻度で水やりをしますか？",
+  "@water_location_q3": {
+    "description": "Third water calculation question"
+  },
+
+  "water_location_indoor_window": "室内、窓の近く",
+  "@water_location_indoor_window": {
+    "description": "Option for indoor location near window"
+  },
+
+  "water_location_indoor_shaded": "室内、日陰のコーナー",
+  "@water_location_indoor_shaded": {
+    "description": "Option for indoor shaded location"
+  },
+
+  "water_location_outdoor_sun": "屋外、直射日光が当たる場所",
+  "@water_location_outdoor_sun": {
+    "description": "Option for outdoor full sun location"
+  },
+
+  "water_location_outdoor_shade": "屋外、半日陰",
+  "@water_location_outdoor_shade": {
+    "description": "Option for outdoor partial shade location"
+  },
+
+  "water_temperature_very_cold": "非常に寒い（5°C / 41°F未満）",
+  "@water_temperature_very_cold": {
+    "description": "Very cold temperature option"
+  },
+
+  "water_temperature_cold": "寒い（15°C / 59°F未満）",
+  "@water_temperature_cold": {
+    "description": "Cold temperature option"
+  },
+
+  "water_temperature_moderate": "穏やか（15°C〜25°C / 59°F〜77°F）",
+  "@water_temperature_moderate": {
+    "description": "Moderate temperature option"
+  },
+
+  "water_temperature_warm": "暖かい（25°C〜30°C / 77°F〜86°F）",
+  "@water_temperature_warm": {
+    "description": "Warm temperature option"
+  },
+
+  "water_temperature_hot": "暑い（30°C / 86°F以上）",
+  "@water_temperature_hot": {
+    "description": "Hot temperature option"
+  },
+
+  "water_frequency_daily": "毎日",
+  "@water_frequency_daily": {
+    "description": "Daily watering frequency"
+  },
+
+  "water_frequency_2_3_days": "2〜3日ごと",
+  "@water_frequency_2_3_days": {
+    "description": "Every 2-3 days watering frequency"
+  },
+
+  "water_frequency_weekly": "週に1回",
+  "@water_frequency_weekly": {
+    "description": "Weekly watering frequency"
+  },
+
+  "water_frequency_biweekly": "2週間に1回",
+  "@water_frequency_biweekly": {
+    "description": "Every two weeks watering frequency"
+  },
+
+  "water_frequency_rarely": "めったにやらない / 土が乾いたとき",
+  "@water_frequency_rarely": {
+    "description": "Rarely or when dry watering frequency"
+  },
+
+  "water_result_title": "植物の水やり量",
+  "@water_result_title": {
+    "description": "Title for water calculation result screen"
+  },
+
+  "water_plant_water_need": "植物の水やり量",
+  "@water_plant_water_need": {
+    "description": "Title for water calculation result screen"
+  },
+
+  "water_result_schedule": "水やりスケジュール",
+  "@water_result_schedule": {
+    "description": "Section heading for watering schedule"
+  },
+
+  "water_schedule": "水やりスケジュール",
+  "@water_schedule": {
+    "description": "Watering schedule section title"
+  },
+
+  "water_result_frequency_label": "頻度：",
+  "@water_result_frequency_label": {
+    "description": "Label for watering frequency"
+  },
+
+  "water_frequency": "頻度：",
+  "@water_frequency": {
+    "description": "Frequency label"
+  },
+
+  "water_result_best_time_label": "最適な時間帯：",
+  "@water_result_best_time_label": {
+    "description": "Label for best watering time"
+  },
+
+  "water_best_time": "最適な時間帯：",
+  "@water_best_time": {
+    "description": "Best time label"
+  },
+
+  "water_result_tips": "お手入れのヒント",
+  "@water_result_tips": {
+    "description": "Section heading for care tips"
+  },
+
+  "water_care_tips": "お手入れのヒント",
+  "@water_care_tips": {
+    "description": "Care tips section title"
+  },
+
+  "water_result_thank_you": "ありがとう",
+  "@water_result_thank_you": {
+    "description": "Button to return to home"
+  },
+
+  "water_thank_you": "ありがとう",
+  "@water_thank_you": {
+    "description": "Thank you message"
+  },
+
+  "water_result_guide": "このガイドに従って、植物を元気で潤いのある状態に保ちましょう",
+  "@water_result_guide": {
+    "description": "Guide text on water result screen"
+  },
+
+  "water_result_amount": "76 mL",
+  "@water_result_amount": {
+    "description": "Water amount recommendation"
+  },
+
+  "water_result_loading": "水やり量を計算中...",
+  "@water_result_loading": {
+    "description": "Loading text during water calculation"
+  },
+
+  "water_calculating": "水やり量を計算中...",
+  "@water_calculating": {
+    "description": "Loading text during water calculation"
+  },
+
+  "water_result_error_title": "計算エラー",
+  "@water_result_error_title": {
+    "description": "Error dialog title"
+  },
+
+  "water_error_title": "計算エラー",
+  "@water_error_title": {
+    "description": "Error title for water calculation"
+  },
+
+  "water_result_error_no_data": "水やりデータが見つかりません",
+  "@water_result_error_no_data": {
+    "description": "Error message when water calculation data is missing"
+  },
+
+  "water_no_data": "水やりデータが見つかりません",
+  "@water_no_data": {
+    "description": "Error message when water data is missing"
+  },
+
+  "water_result_back_home": "ホームに戻る",
+  "@water_result_back_home": {
+    "description": "Button to return home from error state"
+  },
+
+  "water_back_home": "ホームに戻る",
+  "@water_back_home": {
+    "description": "Button to return home"
+  },
+
+  "history_title": "スキャン履歴",
+  "@history_title": {
+    "description": "Title for history screen"
+  },
+
+  "history_empty_my_plants": "保存済みの植物はありません",
+  "@history_empty_my_plants": {
+    "description": "Empty state title for My Plants tab"
+  },
+
+  "history_empty_history": "表示するものがありません",
+  "@history_empty_history": {
+    "description": "Empty state title for History tab"
+  },
+
+  "history_empty_my_plants_desc": "スキャン履歴から植物を保存するとここに表示されます",
+  "@history_empty_my_plants_desc": {
+    "description": "Empty state description for My Plants tab"
+  },
+
+  "history_empty_history_desc": "すべてのスキャン結果がここに表示されます",
+  "@history_empty_history_desc": {
+    "description": "Empty state description for History tab"
+  },
+
+  "history_light_dialog_title": "光量測定結果",
+  "@history_light_dialog_title": {
+    "description": "Dialog title for light measurement history item"
+  },
+
+  "history_light_level": "光量：",
+  "@history_light_level": {
+    "description": "Label for light level value"
+  },
+
+  "history_lux_unit": "LUX",
+  "@history_lux_unit": {
+    "description": "Unit for light measurement"
+  },
+
+  "history_status": "状態：",
+  "@history_status": {
+    "description": "Label for light status"
+  },
+
+  "history_status_unknown": "不明",
+  "@history_status_unknown": {
+    "description": "Unknown status text"
+  },
+
+  "history_optimal_range": "最適範囲：",
+  "@history_optimal_range": {
+    "description": "Label for optimal light range"
+  },
+
+  "history_time": "時刻：",
+  "@history_time": {
+    "description": "Label for timestamp"
+  },
+
+  "history_close": "閉じる",
+  "@history_close": {
+    "description": "Button to close dialog"
+  },
+
+  "history_timestamp_just_now": "たった今",
+  "@history_timestamp_just_now": {
+    "description": "Timestamp for very recent scans"
+  },
+
+  "history_timestamp_min_ago": "分前",
+  "@history_timestamp_min_ago": {
+    "description": "Suffix for minutes ago"
+  },
+
+  "history_timestamp_hours_ago": "時間前",
+  "@history_timestamp_hours_ago": {
+    "description": "Suffix for hours ago"
+  },
+
+  "history_timestamp_days_ago": "日前",
+  "@history_timestamp_days_ago": {
+    "description": "Suffix for days ago"
+  },
+
+  "history_delete_title": "削除しますか？",
+  "@history_delete_title": {
+    "description": "Title for delete confirmation dialog"
+  },
+
+  "history_delete_confirmation": "本当に削除しますか？",
+  "@history_delete_confirmation": {
+    "description": "Confirmation message for delete action"
+  },
+
+  "history_delete_button": "削除",
+  "@history_delete_button": {
+    "description": "Button to confirm deletion"
+  },
+
+  "history_cancel_button": "キャンセル",
+  "@history_cancel_button": {
+    "description": "Button to cancel deletion"
+  },
+
+  "history_remove_from_my_plants": "マイ植物から削除",
+  "@history_remove_from_my_plants": {
+    "description": "Action sheet option to remove from saved plants"
+  },
+
+  "history_save_to_my_plants": "マイ植物に保存",
+  "@history_save_to_my_plants": {
+    "description": "Action sheet option to save to plants"
+  },
+
+  "history_share": "シェア",
+  "@history_share": {
+    "description": "Share option in action sheet"
+  },
+
+  "bottom_nav_home": "ホーム",
+  "@bottom_nav_home": {
+    "description": "Home tab label in bottom navigation"
+  },
+
+  "bottom_nav_history": "履歴",
+  "@bottom_nav_history": {
+    "description": "History tab label in bottom navigation"
+  },
+
+  "bottom_nav_settings": "設定",
+  "@bottom_nav_settings": {
+    "description": "Settings tab label in bottom navigation"
+  },
+
+  "language_updated": "言語を{language}に変更しました",
+  "@language_updated": {
+    "description": "Message when language is changed",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "description": "Name of the selected language"
+      }
+    }
+  },
+
+  "language_english": "英語",
+  "@language_english": {
+    "description": "English language name"
+  },
+
+  "language_urdu": "ウルドゥー語",
+  "@language_urdu": {
+    "description": "Urdu language name"
+  },
+
+  "language_german": "ドイツ語",
+  "@language_german": {
+    "description": "German language name"
+  },
+
+  "language_french": "フランス語",
+  "@language_french": {
+    "description": "French language name"
+  },
+
+  "language_arabic": "アラビア語",
+  "@language_arabic": {
+    "description": "Arabic language name"
+  },
+
+  "language_spanish": "スペイン語",
+  "@language_spanish": {
+    "description": "Spanish language name"
+  },
+
+  "language_japanese": "日本語",
+  "@language_japanese": {
+    "description": "Japanese language name"
+  },
+
+  "language_korean": "韓国語",
+  "@language_korean": {
+    "description": "Korean language name"
+  },
+
+  "widget_language_app_bar_title": "言語を選択",
+  "@widget_language_app_bar_title": {
+    "description": "Title for language selection screen app bar"
+  },
+
+  "widget_severity_level": "重症度",
+  "@widget_severity_level": {
+    "description": "Label for severity level indicator"
+  },
+
+  "widget_severity_assessment": "重症度の評価",
+  "@widget_severity_assessment": {
+    "description": "Section heading for severity assessment"
+  },
+
+  "widget_no_plant_detected": "画像に植物が検出されませんでした",
+  "@widget_no_plant_detected": {
+    "description": "Message when no plant is found in image"
+  },
+
+  "widget_treatment_badge": "治療",
+  "@widget_treatment_badge": {
+    "description": "Badge label for treatment items"
+  },
+
+  "widget_bullet_separator": "•",
+  "@widget_bullet_separator": {
+    "description": "Bullet point separator character"
+  },
+
+  "widget_severity_mild": "軽度",
+  "@widget_severity_mild": {
+    "description": "Severity level badge text - mild"
+  },
+
+  "widget_severity_moderate": "中度",
+  "@widget_severity_moderate": {
+    "description": "Severity level badge text - moderate"
+  },
+
+  "widget_severity_severe": "重度",
+  "@widget_severity_severe": {
+    "description": "Severity level badge text - severe"
+  },
+
+  "widget_severity_critical": "重篤",
+  "@widget_severity_critical": {
+    "description": "Severity level badge text - critical"
+  },
+
+  "widget_severity_healthy": "健康",
+  "@widget_severity_healthy": {
+    "description": "Severity level badge text - healthy"
+  },
+
+  "widget_premium_banner_text": "プレミアム機能を無料で\n試してみよう",
+  "@widget_premium_banner_text": {
+    "description": "Premium banner text with line break"
+  },
+
+  "widget_premium_banner_button": "PROにアップグレード",
+  "@widget_premium_banner_button": {
+    "description": "Button text on premium banner"
+  },
+
+  "widget_premium_card_text": "プレミアム機能を無料で\n試してみよう",
+  "@widget_premium_card_text": {
+    "description": "Premium card text with line break"
+  },
+
+  "widget_premium_card_button": "PROにアップグレード",
+  "@widget_premium_card_button": {
+    "description": "Button text on premium card"
+  },
+
+  "widget_pro_button": "PRO",
+  "@widget_pro_button": {
+    "description": "Text on Pro/Premium button"
+  },
+
+  "widget_rating_title": "アプリのご使用感を\n教えてください",
+  "@widget_rating_title": {
+    "description": "Title for rating bottom sheet with line break"
+  },
+
+  "widget_rating_description": "ご評価いただき、アプリの改善に\nご協力ください。ありがとうございます",
+  "@widget_rating_description": {
+    "description": "Description text for rating sheet with line break"
+  },
+
+  "widget_rating_submit": "送信",
+  "@widget_rating_submit": {
+    "description": "Button to submit rating"
+  },
+
+  "widget_rating_thank_you": "{rating}つ星の評価をありがとうございます！",
+  "@widget_rating_thank_you": {
+    "description": "Thank you message with placeholder for rating value",
+    "placeholders": {
+      "rating": {
+        "type": "int",
+        "description": "Number of stars selected by user"
+      }
+    }
+  },
+
+  "widget_history_badge_identified": "識別済み",
+  "@widget_history_badge_identified": {
+    "description": "Badge text for identification scan type"
+  },
+
+  "widget_history_badge_diagnosed": "診断済み",
+  "@widget_history_badge_diagnosed": {
+    "description": "Badge text for diagnosis scan type"
+  },
+
+  "widget_history_badge_calculated": "計算済み",
+  "@widget_history_badge_calculated": {
+    "description": "Badge text for water calculation scan type"
+  },
+
+  "widget_history_badge_measured": "測定済み",
+  "@widget_history_badge_measured": {
+    "description": "Badge text for light meter scan type"
+  },
+
+  "widget_history_timestamp_just_now": "たった今",
+  "@widget_history_timestamp_just_now": {
+    "description": "Timestamp text for very recent scans"
+  },
+
+  "widget_history_timestamp_min_ago": "分前",
+  "@widget_history_timestamp_min_ago": {
+    "description": "Suffix for minutes ago"
+  },
+
+  "widget_history_timestamp_hours_ago": "時間前",
+  "@widget_history_timestamp_hours_ago": {
+    "description": "Suffix for hours ago"
+  },
+
+  "widget_history_timestamp_days_ago": "日前",
+  "@widget_history_timestamp_days_ago": {
+    "description": "Suffix for days ago"
+  },
+
+  "widget_history_tab_my_plants": "マイ植物",
+  "@widget_history_tab_my_plants": {
+    "description": "Tab label for My Plants section"
+  },
+
+  "widget_history_tab_history": "履歴",
+  "@widget_history_tab_history": {
+    "description": "Tab label for History section"
+  },
+
+  "widget_history_tab_open_paren": "（",
+  "@widget_history_tab_open_paren": {
+    "description": "Opening parenthesis for count display"
+  },
+
+  "widget_history_tab_close_paren": "）",
+  "@widget_history_tab_close_paren": {
+    "description": "Closing parenthesis for count display"
+  }
+}

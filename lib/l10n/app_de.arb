@@ -1,0 +1,1373 @@
+{
+  "@@locale": "de",
+
+  "app_name": "Pflanzen-Identifier",
+  "@app_name": {
+    "description": "Application name displayed in splash screen and app bar"
+  },
+
+  "splash_title": "Pflanzen-Identifier",
+  "@splash_title": {
+    "description": "Title text on splash screen"
+  },
+
+  "onboarding1Title": "Pflanze bestimmen",
+  "@onboarding1Title": {
+    "description": "Onboarding screen 1 title (alternative key)"
+  },
+
+  "onboarding1Body": "Scanne Pflanzen mit KI und erhalte sofortige Bestimmung sowie detaillierte Informationen zu jeder Pflanzenart.",
+  "@onboarding1Body": {
+    "description": "Onboarding screen 1 body text (alternative key)"
+  },
+
+  "onboarding2Title": "Pflanze diagnostizieren",
+  "@onboarding2Title": {
+    "description": "Onboarding screen 2 title (alternative key)"
+  },
+
+  "onboarding2Body": "Erkenne Pflanzenkrankheiten und erhalte Expertentipps, um deine grünen Freunde gesund und vital zu halten.",
+  "@onboarding2Body": {
+    "description": "Onboarding screen 2 body text (alternative key)"
+  },
+
+  "onboarding3Title": "Pflanzenpflege leicht gemacht",
+  "@onboarding3Title": {
+    "description": "Onboarding screen 3 title (alternative key)"
+  },
+
+  "onboarding3Body": "Speichere deine Pflanzenhistorie, erhalte persönliche Tipps und stelle Erinnerungen ein, damit du keinen Gießtag verpasst.",
+  "@onboarding3Body": {
+    "description": "Onboarding screen 3 body text (alternative key)"
+  },
+
+  "next": "Weiter",
+  "@next": {
+    "description": "Next button on onboarding (alternative key)"
+  },
+
+  "letsGo": "Los geht's",
+  "@letsGo": {
+    "description": "Let's Go button on final onboarding screen (alternative key)"
+  },
+
+  "onboarding_identifying": "Pflanze wird bestimmt",
+  "@onboarding_identifying": {
+    "description": "Title for plant identification during onboarding"
+  },
+
+  "onboarding_diagnosing": "Pflanze wird diagnostiziert",
+  "@onboarding_diagnosing": {
+    "description": "Title for plant diagnosis during onboarding"
+  },
+
+  "onboarding_calculating_water": "Wasserbedarf wird berechnet",
+  "@onboarding_calculating_water": {
+    "description": "Title for water calculation during onboarding"
+  },
+
+  "onboarding_processing": "Wird verarbeitet",
+  "@onboarding_processing": {
+    "description": "Default processing title during onboarding"
+  },
+
+  "onboarding_subtitle_identify": "Schnelle, intelligente und genaue Pflanzenbestimmung",
+  "@onboarding_subtitle_identify": {
+    "description": "Subtitle for identification mode"
+  },
+
+  "onboarding_subtitle_diagnose": "Mögliche Krankheiten und Probleme werden erkannt",
+  "@onboarding_subtitle_diagnose": {
+    "description": "Subtitle for diagnosis mode"
+  },
+
+  "onboarding_subtitle_water": "Pflanze und Umgebung werden analysiert...",
+  "@onboarding_subtitle_water": {
+    "description": "Subtitle for water calculation mode"
+  },
+
+  "onboarding_subtitle_default": "Bitte warten...",
+  "@onboarding_subtitle_default": {
+    "description": "Default loading subtitle"
+  },
+
+  "onboarding_title_identify": "Pflanze bestimmen",
+  "@onboarding_title_identify": {
+    "description": "Onboarding screen 1 title"
+  },
+
+  "onboarding_body_identify": "Scanne Pflanzen mit KI und erhalte sofortige Bestimmung sowie detaillierte Informationen zu jeder Pflanzenart.",
+  "@onboarding_body_identify": {
+    "description": "Onboarding screen 1 body text"
+  },
+
+  "onboarding_title_diagnose": "Pflanze diagnostizieren",
+  "@onboarding_title_diagnose": {
+    "description": "Onboarding screen 2 title"
+  },
+
+  "onboarding_body_diagnose": "Erkenne Pflanzenkrankheiten und erhalte Expertentipps, um deine grünen Freunde gesund und vital zu halten.",
+  "@onboarding_body_diagnose": {
+    "description": "Onboarding screen 2 body text"
+  },
+
+  "onboarding_title_care": "Pflanzenpflege leicht gemacht",
+  "@onboarding_title_care": {
+    "description": "Onboarding screen 3 title"
+  },
+
+  "onboarding_body_care": "Speichere deine Pflanzenhistorie, erhalte persönliche Tipps und stelle Erinnerungen ein, damit du keinen Gießtag verpasst.",
+  "@onboarding_body_care": {
+    "description": "Onboarding screen 3 body text"
+  },
+
+  "onboarding_next": "Weiter",
+  "@onboarding_next": {
+    "description": "Next button on onboarding"
+  },
+
+  "onboarding_lets_go": "Los geht's",
+  "@onboarding_lets_go": {
+    "description": "Let's Go button on final onboarding screen"
+  },
+
+  "home_title": "Pflanzen-Identifier",
+  "@home_title": {
+    "description": "Home screen app bar title"
+  },
+
+  "appBarTitle": "Green Scan",
+  "@appBarTitle": {
+    "description": "App bar title for the main screen"
+  },
+
+  "home_identify_subtitle": "Jede Pflanze bestimmen",
+  "@home_identify_subtitle": {
+    "description": "Subtitle for identify feature card on home screen"
+  },
+
+  "home_diagnose_subtitle": "Gesundheit deiner Pflanze prüfen",
+  "@home_diagnose_subtitle": {
+    "description": "Subtitle for diagnose feature card on home screen"
+  },
+
+  "home_water_subtitle": "Bewässerung optimieren",
+  "@home_water_subtitle": {
+    "description": "Subtitle for water calculator feature card on home screen"
+  },
+
+  "home_light_subtitle": "Optimale Beleuchtung messen",
+  "@home_light_subtitle": {
+    "description": "Subtitle for light meter feature card on home screen"
+  },
+
+  "home_feature_not_available": "Funktion {featureId} nicht verfügbar",
+  "@home_feature_not_available": {
+    "description": "Error message when feature is unavailable",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "ID of the unavailable feature"
+      }
+    }
+  },
+
+  "selectLanguage": "Sprache wählen",
+  "@selectLanguage": {
+    "description": "Title for language selection screen"
+  },
+
+  "languageEnglish": "Englisch",
+  "languageSpanish": "Spanisch",
+  "languageFrench": "Französisch",
+
+  
+  "english": "Englisch",
+  "@english": {
+    "description": "English language name"
+  },
+
+  "urdu": "Urdu",
+  "@urdu": {
+    "description": "Urdu language name"
+  },
+
+  "german": "Deutsch",
+  "@german": {
+    "description": "German language name"
+  },
+
+  "french": "Französisch",
+  "@french": {
+    "description": "French language name"
+  },
+
+  "arabic": "Arabisch",
+  "@arabic": {
+    "description": "Arabic language name"
+  },
+
+  "spanish": "Spanisch",
+  "@spanish": {
+    "description": "Spanish language name"
+  },
+
+  "japanese": "Japanisch",
+  "@japanese": {
+    "description": "Japanese language name"
+  },
+
+  "korean": "Koreanisch",
+  "@korean": {
+    "description": "Korean language name"
+  },
+
+  "identify": "Bestimmen",
+  "@identify": {
+    "description": "Button or tab label for identify feature"
+  },
+
+  "diagnose": "Diagnostizieren",
+  "@diagnose": {
+    "description": "Button or tab label for diagnose feature"
+  },
+
+  "scanner_mode_identify": "Pflanze bestimmen",
+  "@scanner_mode_identify": {
+    "description": "Scanner mode indicator for plant identification"
+  },
+
+  "scanner_identify_plant": "Pflanze bestimmen",
+  "@scanner_identify_plant": {
+    "description": "Scanner screen identify plant button/label"
+  },
+
+  "scanner_mode_diagnose": "Pflanze diagnostizieren",
+  "@scanner_mode_diagnose": {
+    "description": "Scanner mode indicator for plant diagnosis"
+  },
+
+  "scanner_diagnose_plant": "Pflanze diagnostizieren",
+  "@scanner_diagnose_plant": {
+    "description": "Scanner screen diagnose plant button/label"
+  },
+
+  "scanner_mode_water": "Wasserberechnung",
+  "@scanner_mode_water": {
+    "description": "Scanner mode indicator for water calculation"
+  },
+
+  "scanner_water_calculation": "Wasserberechnung",
+  "@scanner_water_calculation": {
+    "description": "Scanner screen water calculation button/label"
+  },
+
+  "scanner_mode_default": "Scan-Modus",
+  "@scanner_mode_default": {
+    "description": "Default scanner mode text"
+  },
+
+  "scanner_scan_mode": "Scan-Modus",
+  "@scanner_scan_mode": {
+    "description": "Scanner screen mode indicator"
+  },
+
+  "scanner_capture_error": "Foto konnte nicht aufgenommen werden",
+  "@scanner_capture_error": {
+    "description": "Error message when image capture fails"
+  },
+
+  "scanner_gallery_error": "Bild aus Galerie konnte nicht geladen werden",
+  "@scanner_gallery_error": {
+    "description": "Error message when gallery image pick fails"
+  },
+
+  "scanner_take_photo": "Foto aufnehmen",
+  "@scanner_take_photo": {
+    "description": "Button to take a photo in scanner"
+  },
+
+  "scanner_retake": "Wiederholen",
+  "@scanner_retake": {
+    "description": "Button to retake photo"
+  },
+
+  "scanner_use_photo": "Foto verwenden",
+  "@scanner_use_photo": {
+    "description": "Button to use the taken photo"
+  },
+
+  "preview_gallery": "Galerie",
+  "@preview_gallery": {
+    "description": "Gallery button text in preview screen"
+  },
+
+  "preview_no_image": "Kein Bild",
+  "@preview_no_image": {
+    "description": "Placeholder text when no image is selected"
+  },
+
+  "preview_select_image_error": "Bitte zuerst ein Bild auswählen",
+  "@preview_select_image_error": {
+    "description": "Error message when trying to proceed without selecting an image"
+  },
+
+  "processing_title_identify": "Pflanze wird bestimmt",
+  "@processing_title_identify": {
+    "description": "Processing screen title for identification"
+  },
+
+  "processing_identifying": "Pflanze wird bestimmt",
+  "@processing_identifying": {
+    "description": "Processing screen identifying text"
+  },
+
+  "processing_title_diagnose": "Pflanze wird diagnostiziert",
+  "@processing_title_diagnose": {
+    "description": "Processing screen title for diagnosis"
+  },
+
+  "processing_diagnosing": "Pflanze wird diagnostiziert",
+  "@processing_diagnosing": {
+    "description": "Processing screen diagnosing text"
+  },
+
+  "processing_title_water": "Wasserbedarf wird berechnet",
+  "@processing_title_water": {
+    "description": "Processing screen title for water calculation"
+  },
+
+  "processing_calculating_water": "Wasserbedarf wird berechnet",
+  "@processing_calculating_water": {
+    "description": "Processing screen calculating water text"
+  },
+
+  "processing_title_default": "Wird verarbeitet",
+  "@processing_title_default": {
+    "description": "Default processing screen title"
+  },
+
+  "processing_processing": "Wird verarbeitet",
+  "@processing_processing": {
+    "description": "Processing screen default text"
+  },
+
+  "processing_subtitle_identify": "Schnelle, intelligente und genaue Pflanzenbestimmung",
+  "@processing_subtitle_identify": {
+    "description": "Processing subtitle for identification"
+  },
+
+  "processing_smart_fast_accurate": "Schnelle, intelligente und genaue Pflanzenbestimmung",
+  "@processing_smart_fast_accurate": {
+    "description": "Processing subtitle for identification"
+  },
+
+  "processing_subtitle_diagnose": "Mögliche Krankheiten und Probleme werden erkannt",
+  "@processing_subtitle_diagnose": {
+    "description": "Processing subtitle for diagnosis"
+  },
+
+  "processing_spotting_diseases": "Mögliche Krankheiten und Probleme werden erkannt",
+  "@processing_spotting_diseases": {
+    "description": "Processing subtitle for diagnosis"
+  },
+
+  "processing_subtitle_water": "Pflanze und Umgebung werden analysiert...",
+  "@processing_subtitle_water": {
+    "description": "Processing subtitle for water calculation"
+  },
+
+  "processing_analyzing": "Pflanze und Umgebung werden analysiert...",
+  "@processing_analyzing": {
+    "description": "Processing subtitle for water calculation"
+  },
+
+  "processing_subtitle_default": "Bitte warten...",
+  "@processing_subtitle_default": {
+    "description": "Default processing subtitle"
+  },
+
+  "processing_please_wait": "Bitte warten...",
+  "@processing_please_wait": {
+    "description": "Default processing subtitle"
+  },
+
+  "result_plant_identified": "Pflanze bestimmt",
+  "@result_plant_identified": {
+    "description": "Title for plant identification result screen"
+  },
+
+  "result_about_plant": "Über die Pflanze",
+  "@result_about_plant": {
+    "description": "Section heading for plant description"
+  },
+
+  "result_climate_requirements": "Klimaanforderungen",
+  "@result_climate_requirements": {
+    "description": "Section heading for climate information"
+  },
+
+  "result_temperature": "Temperatur",
+  "@result_temperature": {
+    "description": "Label for temperature requirement"
+  },
+
+  "result_light": "Licht",
+  "@result_light": {
+    "description": "Label for light requirement"
+  },
+
+  "result_soil": "Boden",
+  "@result_soil": {
+    "description": "Label for soil requirement"
+  },
+
+  "result_humidity": "Luftfeuchtigkeit",
+  "@result_humidity": {
+    "description": "Label for humidity requirement"
+  },
+
+  "result_care_schedule": "Pflegeplan",
+  "@result_care_schedule": {
+    "description": "Section heading for care information"
+  },
+
+  "result_watering": "Bewässerung",
+  "@result_watering": {
+    "description": "Label for watering schedule"
+  },
+
+  "result_fertilizing": "Düngung",
+  "@result_fertilizing": {
+    "description": "Label for fertilizing schedule"
+  },
+
+  "result_safety_warning": "Sicherheitshinweis",
+  "@result_safety_warning": {
+    "description": "Section heading for toxicity/safety information"
+  },
+
+  "result_saved_success": "In Meine Pflanzen gespeichert!",
+  "@result_saved_success": {
+    "description": "Success message when plant is saved"
+  },
+
+  "result_removed_success": "Aus Meine Pflanzen entfernt",
+  "@result_removed_success": {
+    "description": "Success message when plant is removed"
+  },
+
+  "result_save_button": "In Meine Pflanzen speichern",
+  "@result_save_button": {
+    "description": "Button text to save plant (inactive state)"
+  },
+
+  "result_saved_button": "In Meine Pflanzen gespeichert",
+  "@result_saved_button": {
+    "description": "Button text when plant is already saved (active state)"
+  },
+
+  "result_identify_another": "Weitere Pflanze bestimmen",
+  "@result_identify_another": {
+    "description": "Button to start new plant identification"
+  },
+
+  "result_error": "Fehler",
+  "@result_error": {
+    "description": "Error title for identification result"
+  },
+
+  "result_no_data": "Keine Pflanzendaten verfügbar",
+  "@result_no_data": {
+    "description": "Error message when plant data is missing"
+  },
+
+  "result_try_again": "Erneut versuchen",
+  "@result_try_again": {
+    "description": "Button to retry identification"
+  },
+
+  "diagnosis_title": "Diagnoseergebnis",
+  "@diagnosis_title": {
+    "description": "Title for plant diagnosis result screen"
+  },
+
+  "diagnosis_result": "Diagnoseergebnis",
+  "@diagnosis_result": {
+    "description": "Title for diagnosis result screen"
+  },
+
+  "diagnosis_severity_assessment": "Schweregradbeurteilung",
+  "@diagnosis_severity_assessment": {
+    "description": "Section heading for severity information"
+  },
+
+  "diagnosis_severity_level": "Schweregrad",
+  "@diagnosis_severity_level": {
+    "description": "Label for severity level indicator"
+  },
+
+  "diagnosis_immediate_actions": "Sofortmaßnahmen (nächste 24–48 Stunden)",
+  "@diagnosis_immediate_actions": {
+    "description": "Section heading for immediate care actions"
+  },
+
+  "diagnosis_treatment_plan": "Behandlungsplan",
+  "@diagnosis_treatment_plan": {
+    "description": "Section heading for treatment information"
+  },
+
+  "diagnosis_daily_monitoring": "Tägliche Überwachung",
+  "@diagnosis_daily_monitoring": {
+    "description": "Section heading for monitoring checklist"
+  },
+
+  "diagnosis_expected_recovery": "Voraussichtliche Genesungszeit",
+  "@diagnosis_expected_recovery": {
+    "description": "Section heading for recovery timeline"
+  },
+
+  "diagnosis_diagnose_another": "Weitere Pflanze diagnostizieren",
+  "@diagnosis_diagnose_another": {
+    "description": "Button to start new diagnosis"
+  },
+
+  "diagnosis_back_home": "Zur Startseite",
+  "@diagnosis_back_home": {
+    "description": "Button to return to home screen"
+  },
+
+  "diagnosis_error_title": "Diagnosefehler",
+  "@diagnosis_error_title": {
+    "description": "Error dialog title"
+  },
+
+  "diagnosis_error": "Diagnosefehler",
+  "@diagnosis_error": {
+    "description": "Error title for diagnosis result"
+  },
+
+  "diagnosis_error_no_data": "Keine Diagnosedaten verfügbar",
+  "@diagnosis_error_no_data": {
+    "description": "Error message when diagnosis data is missing"
+  },
+
+  "diagnosis_no_data": "Keine Diagnosedaten verfügbar",
+  "@diagnosis_no_data": {
+    "description": "Error message when diagnosis data is missing"
+  },
+
+  "diagnosis_try_again": "Erneut versuchen",
+  "@diagnosis_try_again": {
+    "description": "Button to retry diagnosis"
+  },
+
+  "premium_title": "Auf Premium upgraden",
+  "@premium_title": {
+    "description": "Title for premium subscription screen"
+  },
+
+  "premium_upgrade": "Auf Premium upgraden",
+  "@premium_upgrade": {
+    "description": "Button/text for premium upgrade"
+  },
+
+  "premium_subtitle": "Alles erleben – einfach und ohne Unterbrechungen",
+  "@premium_subtitle": {
+    "description": "Subtitle text for premium screen"
+  },
+
+  "premium_experience": "Alles erleben – einfach und ohne Unterbrechungen",
+  "@premium_experience": {
+    "description": "Premium experience description"
+  },
+
+  "premium_features_header": "Funktionen",
+  "@premium_features_header": {
+    "description": "Header for features comparison table"
+  },
+
+  "premium_features": "Funktionen",
+  "@premium_features": {
+    "description": "Features section title"
+  },
+
+  "premium_pro_header": "PRO",
+  "@premium_pro_header": {
+    "description": "Column header for PRO tier"
+  },
+
+  "premium_pro": "PRO",
+  "@premium_pro": {
+    "description": "PRO tier label"
+  },
+
+  "premium_basic_header": "Basis",
+  "@premium_basic_header": {
+    "description": "Column header for Basic tier"
+  },
+
+  "premium_basic": "Basis",
+  "@premium_basic": {
+    "description": "Basic tier label"
+  },
+
+  "premium_price": "750,00 Rs./Woche nach 3-tägiger kostenloser Testphase",
+  "@premium_price": {
+    "description": "Price text for premium subscription"
+  },
+
+  "premium_start_now": "Jetzt starten",
+  "@premium_start_now": {
+    "description": "Button to start premium subscription"
+  },
+
+  "premium_footer": "Abonnement verlängert sich automatisch. Jederzeit kündbar.",
+  "@premium_footer": {
+    "description": "Footer disclaimer text"
+  },
+
+  "light_meter_title": "Lichtmessgerät",
+  "@light_meter_title": {
+    "description": "Title for light meter screen"
+  },
+
+  "light_meter_instruction": "Halte dein Handy an den geplanten Standort der Pflanze.",
+  "@light_meter_instruction": {
+    "description": "Instruction text for using light meter"
+  },
+
+  "light_meter_optimal": "Optimal",
+  "@light_meter_optimal": {
+    "description": "Label for optimal light range card"
+  },
+
+  "light_meter_measuring": "Wird gemessen",
+  "@light_meter_measuring": {
+    "description": "Status text during measurement"
+  },
+
+  "light_meter_optimal_range": "1000–10000 LUX",
+  "@light_meter_optimal_range": {
+    "description": "Optimal light range value"
+  },
+
+  "light_meter_initializing": "Kamera wird initialisiert...",
+  "@light_meter_initializing": {
+    "description": "Loading text during camera initialization"
+  },
+
+  "light_meter_starting": "Kamera wird gestartet...",
+  "@light_meter_starting": {
+    "description": "Placeholder text when camera is starting"
+  },
+
+  "light_meter_measure": "Messen",
+  "@light_meter_measure": {
+    "description": "Button to take light measurement"
+  },
+
+  "light_meter_reset": "Zurücksetzen",
+  "@light_meter_reset": {
+    "description": "Button to reset measurement"
+  },
+
+  "light_meter_error_title": "Initialisierung fehlgeschlagen",
+  "@light_meter_error_title": {
+    "description": "Error dialog title"
+  },
+
+  "light_meter_retry": "Erneut versuchen",
+  "@light_meter_retry": {
+    "description": "Button to retry camera initialization"
+  },
+
+  "light_info_title": "Wie benutze ich das Lichtmessgerät?",
+  "@light_info_title": {
+    "description": "Title for light meter info screen"
+  },
+
+  "light_info_how_to_use": "Wie benutze ich das Lichtmessgerät?",
+  "@light_info_how_to_use": {
+    "description": "Title for light meter info screen"
+  },
+
+  "light_info_step1": "Halte die Frontkamera zur Lichtquelle hin.",
+  "@light_info_step1": {
+    "description": "First instruction step"
+  },
+
+  "light_info_step2": "Bewege das Handy rund um die Pflanze, um das Licht aus allen Richtungen zu messen",
+  "@light_info_step2": {
+    "description": "Second instruction step"
+  },
+
+  "light_info_step3": "Miss das Licht mittags für die genauesten Ergebnisse",
+  "@light_info_step3": {
+    "description": "Third instruction step"
+  },
+
+  "light_info_continue": "Weiter",
+  "@light_info_continue": {
+    "description": "Button to close info screen"
+  },
+
+  "light_info_image_error": "Bild nicht verfügbar",
+  "@light_info_image_error": {
+    "description": "Error text when instruction image fails to load"
+  },
+
+  "privacy_policy_title": "Datenschutzerklärung",
+  "@privacy_policy_title": {
+    "description": "Title for privacy policy screen"
+  },
+
+  "settings_title": "Einstellungen",
+  "@settings_title": {
+    "description": "Title for settings screen"
+  },
+
+  "settings_app_language": "App-Sprache",
+  "@settings_app_language": {
+    "description": "Settings option for language selection"
+  },
+
+  "settings_rate_us": "App bewerten",
+  "@settings_rate_us": {
+    "description": "Settings option to rate the app"
+  },
+
+  "settings_share_app": "App teilen",
+  "@settings_share_app": {
+    "description": "Settings option to share the app"
+  },
+
+  "settings_feedback": "Feedback senden",
+  "@settings_feedback": {
+    "description": "Settings option to send feedback"
+  },
+
+  "settings_privacy_policy": "Datenschutzerklärung",
+  "@settings_privacy_policy": {
+    "description": "Settings option to view privacy policy"
+  },
+
+  "settings_feature_unavailable": "Funktion {featureId} nicht verfügbar",
+  "@settings_feature_unavailable": {
+    "description": "Error message when a feature is not available",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "ID of the unavailable feature"
+      }
+    }
+  },
+
+  "settings_could_not_open_email": "E-Mail konnte nicht geöffnet werden. Bitte schreibe uns an {email}",
+  "@settings_could_not_open_email": {
+    "description": "Error message when email cannot be opened",
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "description": "Email address to contact"
+      }
+    }
+  },
+
+  "debug_token_copied": "Token in die Zwischenablage kopiert",
+  "@debug_token_copied": {
+    "description": "Message shown when FCM token is copied"
+  },
+
+  "debug_get_token": "FCM-Token abrufen",
+  "@debug_get_token": {
+    "description": "Button text to get FCM token (debug)"
+  },
+
+  "settings_token_copied": "Token in die Zwischenablage kopiert",
+  "@settings_token_copied": {
+    "description": "Message shown when FCM token is copied"
+  },
+
+  "settings_get_fcm_token": "FCM-Token abrufen",
+  "@settings_get_fcm_token": {
+    "description": "Button text to get FCM token (debug)"
+  },
+
+  "settings_test_crash": "Absturz testen",
+  "@settings_test_crash": {
+    "description": "Button text to test crash (debug)"
+  },
+
+  "water_calculator": "Gießrechner",
+  "@water_calculator": {
+    "description": "Title for water calculator feature"
+  },
+
+  "water_continue": "Weiter",
+  "@water_continue": {
+    "description": "Button to continue to next question"
+  },
+
+  "water_question_location": "Wo möchtest du die Pflanze aufstellen?",
+  "@water_question_location": {
+    "description": "Question about plant location"
+  },
+
+  "water_location_q1": "Wo möchtest du die Pflanze aufstellen?",
+  "@water_location_q1": {
+    "description": "First water calculation question"
+  },
+
+  "water_question_temperature": "Wie hoch ist die aktuelle Temperatur?",
+  "@water_question_temperature": {
+    "description": "Question about current temperature"
+  },
+
+  "water_location_q2": "Wie hoch ist die aktuelle Temperatur?",
+  "@water_location_q2": {
+    "description": "Second water calculation question"
+  },
+
+  "water_question_frequency": "Wie oft gießt du?",
+  "@water_question_frequency": {
+    "description": "Question about watering frequency"
+  },
+
+  "water_location_q3": "Wie oft gießt du?",
+  "@water_location_q3": {
+    "description": "Third water calculation question"
+  },
+
+  "water_location_indoor_window": "Drinnen, nahe am Fenster",
+  "@water_location_indoor_window": {
+    "description": "Option for indoor location near window"
+  },
+
+  "water_location_indoor_shaded": "Drinnen, in einer schattigen Ecke",
+  "@water_location_indoor_shaded": {
+    "description": "Option for indoor shaded location"
+  },
+
+  "water_location_outdoor_sun": "Draußen, volle Sonne",
+  "@water_location_outdoor_sun": {
+    "description": "Option for outdoor full sun location"
+  },
+
+  "water_location_outdoor_shade": "Draußen, Halbschatten",
+  "@water_location_outdoor_shade": {
+    "description": "Option for outdoor partial shade location"
+  },
+
+  "water_temperature_very_cold": "Sehr kalt (unter 5 °C / 41 °F)",
+  "@water_temperature_very_cold": {
+    "description": "Very cold temperature option"
+  },
+
+  "water_temperature_cold": "Kalt (unter 15 °C / 59 °F)",
+  "@water_temperature_cold": {
+    "description": "Cold temperature option"
+  },
+
+  "water_temperature_moderate": "Gemäßigt (15 °C – 25 °C / 59 °F – 77 °F)",
+  "@water_temperature_moderate": {
+    "description": "Moderate temperature option"
+  },
+
+  "water_temperature_warm": "Warm (25 °C – 30 °C / 77 °F – 86 °F)",
+  "@water_temperature_warm": {
+    "description": "Warm temperature option"
+  },
+
+  "water_temperature_hot": "Heiß (über 30 °C / 86 °F)",
+  "@water_temperature_hot": {
+    "description": "Hot temperature option"
+  },
+
+  "water_frequency_daily": "Täglich",
+  "@water_frequency_daily": {
+    "description": "Daily watering frequency"
+  },
+
+  "water_frequency_2_3_days": "Alle 2–3 Tage",
+  "@water_frequency_2_3_days": {
+    "description": "Every 2-3 days watering frequency"
+  },
+
+  "water_frequency_weekly": "Einmal pro Woche",
+  "@water_frequency_weekly": {
+    "description": "Weekly watering frequency"
+  },
+
+  "water_frequency_biweekly": "Alle zwei Wochen",
+  "@water_frequency_biweekly": {
+    "description": "Every two weeks watering frequency"
+  },
+
+  "water_frequency_rarely": "Selten / wenn die Erde trocken ist",
+  "@water_frequency_rarely": {
+    "description": "Rarely or when dry watering frequency"
+  },
+
+  "water_result_title": "Wasserbedarf der Pflanze",
+  "@water_result_title": {
+    "description": "Title for water calculation result screen"
+  },
+
+  "water_plant_water_need": "Wasserbedarf der Pflanze",
+  "@water_plant_water_need": {
+    "description": "Title for water calculation result screen"
+  },
+
+  "water_result_schedule": "Gießplan",
+  "@water_result_schedule": {
+    "description": "Section heading for watering schedule"
+  },
+
+  "water_schedule": "Gießplan",
+  "@water_schedule": {
+    "description": "Watering schedule section title"
+  },
+
+  "water_result_frequency_label": "Häufigkeit:",
+  "@water_result_frequency_label": {
+    "description": "Label for watering frequency"
+  },
+
+  "water_frequency": "Häufigkeit:",
+  "@water_frequency": {
+    "description": "Frequency label"
+  },
+
+  "water_result_best_time_label": "Beste Zeit:",
+  "@water_result_best_time_label": {
+    "description": "Label for best watering time"
+  },
+
+  "water_best_time": "Beste Zeit:",
+  "@water_best_time": {
+    "description": "Best time label"
+  },
+
+  "water_result_tips": "Pflegetipps",
+  "@water_result_tips": {
+    "description": "Section heading for care tips"
+  },
+
+  "water_care_tips": "Pflegetipps",
+  "@water_care_tips": {
+    "description": "Care tips section title"
+  },
+
+  "water_result_thank_you": "Danke",
+  "@water_result_thank_you": {
+    "description": "Button to return to home"
+  },
+
+  "water_thank_you": "Danke",
+  "@water_thank_you": {
+    "description": "Thank you message"
+  },
+
+  "water_result_guide": "Befolge diese Anleitung, damit deine Pflanze glücklich und gut bewässert bleibt",
+  "@water_result_guide": {
+    "description": "Guide text on water result screen"
+  },
+
+  "water_result_amount": "76 ml",
+  "@water_result_amount": {
+    "description": "Water amount recommendation"
+  },
+
+  "water_result_loading": "Wasserbedarf wird berechnet...",
+  "@water_result_loading": {
+    "description": "Loading text during water calculation"
+  },
+
+  "water_calculating": "Wasserbedarf wird berechnet...",
+  "@water_calculating": {
+    "description": "Loading text during water calculation"
+  },
+
+  "water_result_error_title": "Berechnungsfehler",
+  "@water_result_error_title": {
+    "description": "Error dialog title"
+  },
+
+  "water_error_title": "Berechnungsfehler",
+  "@water_error_title": {
+    "description": "Error title for water calculation"
+  },
+
+  "water_result_error_no_data": "Keine Wasserberechnungsdaten verfügbar",
+  "@water_result_error_no_data": {
+    "description": "Error message when water calculation data is missing"
+  },
+
+  "water_no_data": "Keine Wasserberechnungsdaten verfügbar",
+  "@water_no_data": {
+    "description": "Error message when water data is missing"
+  },
+
+  "water_result_back_home": "Zur Startseite",
+  "@water_result_back_home": {
+    "description": "Button to return home from error state"
+  },
+
+  "water_back_home": "Zur Startseite",
+  "@water_back_home": {
+    "description": "Button to return home"
+  },
+
+  "history_title": "Scan-Verlauf",
+  "@history_title": {
+    "description": "Title for history screen"
+  },
+
+  "history_empty_my_plants": "Keine gespeicherten Pflanzen",
+  "@history_empty_my_plants": {
+    "description": "Empty state title for My Plants tab"
+  },
+
+  "history_empty_history": "Nichts zum Anzeigen",
+  "@history_empty_history": {
+    "description": "Empty state title for History tab"
+  },
+
+  "history_empty_my_plants_desc": "Speichere Pflanzen aus dem Scan-Verlauf, um sie hier zu sehen",
+  "@history_empty_my_plants_desc": {
+    "description": "Empty state description for My Plants tab"
+  },
+
+  "history_empty_history_desc": "Alle deine Scans werden hier angezeigt",
+  "@history_empty_history_desc": {
+    "description": "Empty state description for History tab"
+  },
+
+  "history_light_dialog_title": "Ergebnis der Lichtmessung",
+  "@history_light_dialog_title": {
+    "description": "Dialog title for light measurement history item"
+  },
+
+  "history_light_level": "Lichtstärke:",
+  "@history_light_level": {
+    "description": "Label for light level value"
+  },
+
+  "history_lux_unit": "LUX",
+  "@history_lux_unit": {
+    "description": "Unit for light measurement"
+  },
+
+  "history_status": "Status:",
+  "@history_status": {
+    "description": "Label for light status"
+  },
+
+  "history_status_unknown": "Unbekannt",
+  "@history_status_unknown": {
+    "description": "Unknown status text"
+  },
+
+  "history_optimal_range": "Optimaler Bereich:",
+  "@history_optimal_range": {
+    "description": "Label for optimal light range"
+  },
+
+  "history_time": "Zeit:",
+  "@history_time": {
+    "description": "Label for timestamp"
+  },
+
+  "history_close": "Schließen",
+  "@history_close": {
+    "description": "Button to close dialog"
+  },
+
+  "history_timestamp_just_now": "Gerade eben",
+  "@history_timestamp_just_now": {
+    "description": "Timestamp for very recent scans"
+  },
+
+  "history_timestamp_min_ago": "Min. her",
+  "@history_timestamp_min_ago": {
+    "description": "Suffix for minutes ago"
+  },
+
+  "history_timestamp_hours_ago": "Std. her",
+  "@history_timestamp_hours_ago": {
+    "description": "Suffix for hours ago"
+  },
+
+  "history_timestamp_days_ago": "Tage her",
+  "@history_timestamp_days_ago": {
+    "description": "Suffix for days ago"
+  },
+
+  "history_delete_title": "Löschen?",
+  "@history_delete_title": {
+    "description": "Title for delete confirmation dialog"
+  },
+
+  "history_delete_confirmation": "Möchtest du das wirklich löschen?",
+  "@history_delete_confirmation": {
+    "description": "Confirmation message for delete action"
+  },
+
+  "history_delete_button": "Löschen",
+  "@history_delete_button": {
+    "description": "Button to confirm deletion"
+  },
+
+  "history_cancel_button": "Abbrechen",
+  "@history_cancel_button": {
+    "description": "Button to cancel deletion"
+  },
+
+  "history_remove_from_my_plants": "Aus Meine Pflanzen entfernen",
+  "@history_remove_from_my_plants": {
+    "description": "Action sheet option to remove from saved plants"
+  },
+
+  "history_save_to_my_plants": "In Meine Pflanzen speichern",
+  "@history_save_to_my_plants": {
+    "description": "Action sheet option to save to plants"
+  },
+
+  "history_share": "Teilen",
+  "@history_share": {
+    "description": "Share option in action sheet"
+  },
+
+  "bottom_nav_home": "Startseite",
+  "@bottom_nav_home": {
+    "description": "Home tab label in bottom navigation"
+  },
+
+  "bottom_nav_history": "Verlauf",
+  "@bottom_nav_history": {
+    "description": "History tab label in bottom navigation"
+  },
+
+  "bottom_nav_settings": "Einstellungen",
+  "@bottom_nav_settings": {
+    "description": "Settings tab label in bottom navigation"
+  },
+
+  "language_updated": "Sprache auf {language} geändert",
+  "@language_updated": {
+    "description": "Message when language is changed",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "description": "Name of the selected language"
+      }
+    }
+  },
+
+  "language_english": "Englisch",
+  "@language_english": {
+    "description": "English language name"
+  },
+
+  "language_urdu": "Urdu",
+  "@language_urdu": {
+    "description": "Urdu language name"
+  },
+
+  "language_german": "Deutsch",
+  "@language_german": {
+    "description": "German language name"
+  },
+
+  "language_french": "Französisch",
+  "@language_french": {
+    "description": "French language name"
+  },
+
+  "language_arabic": "Arabisch",
+  "@language_arabic": {
+    "description": "Arabic language name"
+  },
+
+  "language_spanish": "Spanisch",
+  "@language_spanish": {
+    "description": "Spanish language name"
+  },
+
+  "language_japanese": "Japanisch",
+  "@language_japanese": {
+    "description": "Japanese language name"
+  },
+
+  "language_korean": "Koreanisch",
+  "@language_korean": {
+    "description": "Korean language name"
+  },
+
+  "widget_language_app_bar_title": "Sprache wählen",
+  "@widget_language_app_bar_title": {
+    "description": "Title for language selection screen app bar"
+  },
+
+  "widget_severity_level": "Schweregrad",
+  "@widget_severity_level": {
+    "description": "Label for severity level indicator"
+  },
+
+  "widget_severity_assessment": "Schweregradbeurteilung",
+  "@widget_severity_assessment": {
+    "description": "Section heading for severity assessment"
+  },
+
+  "widget_no_plant_detected": "Keine Pflanze im Bild erkannt",
+  "@widget_no_plant_detected": {
+    "description": "Message when no plant is found in image"
+  },
+
+  "widget_treatment_badge": "Behandlung",
+  "@widget_treatment_badge": {
+    "description": "Badge label for treatment items"
+  },
+
+  "widget_bullet_separator": "•",
+  "@widget_bullet_separator": {
+    "description": "Bullet point separator character"
+  },
+
+  "widget_severity_mild": "LEICHT",
+  "@widget_severity_mild": {
+    "description": "Severity level badge text - mild"
+  },
+
+  "widget_severity_moderate": "MÄSSIG",
+  "@widget_severity_moderate": {
+    "description": "Severity level badge text - moderate"
+  },
+
+  "widget_severity_severe": "SCHWER",
+  "@widget_severity_severe": {
+    "description": "Severity level badge text - severe"
+  },
+
+  "widget_severity_critical": "KRITISCH",
+  "@widget_severity_critical": {
+    "description": "Severity level badge text - critical"
+  },
+
+  "widget_severity_healthy": "GESUND",
+  "@widget_severity_healthy": {
+    "description": "Severity level badge text - healthy"
+  },
+
+  "widget_premium_banner_text": "Premium-Funktionen kostenlos\nausprobieren",
+  "@widget_premium_banner_text": {
+    "description": "Premium banner text with line break"
+  },
+
+  "widget_premium_banner_button": "Auf PRO upgraden",
+  "@widget_premium_banner_button": {
+    "description": "Button text on premium banner"
+  },
+
+  "widget_premium_card_text": "Premium-Funktionen kostenlos\nausprobieren",
+  "@widget_premium_card_text": {
+    "description": "Premium card text with line break"
+  },
+
+  "widget_premium_card_button": "Auf PRO upgraden",
+  "@widget_premium_card_button": {
+    "description": "Button text on premium card"
+  },
+
+  "widget_pro_button": "PRO",
+  "@widget_pro_button": {
+    "description": "Text on Pro/Premium button"
+  },
+
+  "widget_rating_title": "Bewerte deine Erfahrung\nmit unserer App",
+  "@widget_rating_title": {
+    "description": "Title for rating bottom sheet with line break"
+  },
+
+  "widget_rating_description": "Bitte bewerte deine Erfahrung und hilf uns,\nuns zu verbessern. Danke!",
+  "@widget_rating_description": {
+    "description": "Description text for rating sheet with line break"
+  },
+
+  "widget_rating_submit": "Absenden",
+  "@widget_rating_submit": {
+    "description": "Button to submit rating"
+  },
+
+  "widget_rating_thank_you": "Danke für deine Bewertung mit {rating} Sternen!",
+  "@widget_rating_thank_you": {
+    "description": "Thank you message with placeholder for rating value",
+    "placeholders": {
+      "rating": {
+        "type": "int",
+        "description": "Number of stars selected by user"
+      }
+    }
+  },
+
+  "widget_history_badge_identified": "BESTIMMT",
+  "@widget_history_badge_identified": {
+    "description": "Badge text for identification scan type"
+  },
+
+  "widget_history_badge_diagnosed": "DIAGNOSTIZIERT",
+  "@widget_history_badge_diagnosed": {
+    "description": "Badge text for diagnosis scan type"
+  },
+
+  "widget_history_badge_calculated": "BERECHNET",
+  "@widget_history_badge_calculated": {
+    "description": "Badge text for water calculation scan type"
+  },
+
+  "widget_history_badge_measured": "GEMESSEN",
+  "@widget_history_badge_measured": {
+    "description": "Badge text for light meter scan type"
+  },
+
+  "widget_history_timestamp_just_now": "Gerade eben",
+  "@widget_history_timestamp_just_now": {
+    "description": "Timestamp text for very recent scans"
+  },
+
+  "widget_history_timestamp_min_ago": "Min. her",
+  "@widget_history_timestamp_min_ago": {
+    "description": "Suffix for minutes ago"
+  },
+
+  "widget_history_timestamp_hours_ago": "Std. her",
+  "@widget_history_timestamp_hours_ago": {
+    "description": "Suffix for hours ago"
+  },
+
+  "widget_history_timestamp_days_ago": "Tage her",
+  "@widget_history_timestamp_days_ago": {
+    "description": "Suffix for days ago"
+  },
+
+  "widget_history_tab_my_plants": "Meine Pflanzen",
+  "@widget_history_tab_my_plants": {
+    "description": "Tab label for My Plants section"
+  },
+
+  "widget_history_tab_history": "Verlauf",
+  "@widget_history_tab_history": {
+    "description": "Tab label for History section"
+  },
+
+  "widget_history_tab_open_paren": "(",
+  "@widget_history_tab_open_paren": {
+    "description": "Opening parenthesis for count display"
+  },
+
+  "widget_history_tab_close_paren": ")",
+  "@widget_history_tab_close_paren": {
+    "description": "Closing parenthesis for count display"
+  }
+}

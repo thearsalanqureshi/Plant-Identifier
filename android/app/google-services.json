@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "124686715238",
+    "project_id": "plant-identifier-android-1abb5",
+    "storage_bucket": "plant-identifier-android-1abb5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124686715238:android:e129d960971a09132ca0a7",
+        "android_client_info": {
+          "package_name": "com.plantidentifier.nature.rose.identifier.plant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATuqWsZ4qocX98k_ez05iSPvKMyuK98HY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
