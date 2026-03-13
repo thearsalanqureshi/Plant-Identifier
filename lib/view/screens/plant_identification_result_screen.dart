@@ -1,5 +1,686 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../../../app/navigation/app_routes.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../data/models/plant_model.dart';
+import '../../../utils/constants.dart';
+import '../../../view_models/plant_result_view_model.dart';
+import '../../l10n/app_localizations.dart';
+
+class PlantIdentificationResultScreen extends StatefulWidget {
+  const PlantIdentificationResultScreen({super.key});
+
+  @override
+  State<PlantIdentificationResultScreen> createState() =>
+      _PlantIdentificationResultScreenState();
+}
+
+class _PlantIdentificationResultScreenState
+    extends State<PlantIdentificationResultScreen> {
+  bool _didInitialize = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInitialize) return;
+    _didInitialize = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeScreen());
+  }
+
+  Future<void> _initializeScreen() async {
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final viewModel = context.read<PlantResultViewModel>();
+
+    if (args == null) return;
+
+    if (args['fromProcessing'] == true && args['imageFile'] is File) {
+      await viewModel.identifyPlant(args['imageFile'] as File);
+      return;
+    }
+
+    if (args['imageFile'] is File) {
+      final imageFile = args['imageFile'] as File;
+      if (viewModel.plant == null) {
+        await viewModel.identifyPlant(imageFile);
+      }
+      return;
+    }
+
+    if (args['scanData'] is Map<String, dynamic>) {
+      await viewModel.loadFromHistory(
+        args['scanData'] as Map<String, dynamic>,
+        args['imagePath'] as String?,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
+
+    return Consumer<PlantResultViewModel>(
+      builder: (context, viewModel, _) {
+        return Scaffold(
+          backgroundColor: AppColors.scaffoldBackground,
+          body: SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 980),
+                child: _buildBody(context, viewModel, isTablet),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildBody(
+    BuildContext context,
+    PlantResultViewModel viewModel,
+    bool isTablet,
+  ) {
+    if (viewModel.isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(color: AppColors.primaryGreen),
+      );
+    }
+
+    if (viewModel.error.isNotEmpty) {
+      return _buildErrorState(context, viewModel.error, isTablet);
+    }
+
+    if (viewModel.plant == null) {
+      return _buildEmptyState(context, isTablet);
+    }
+
+    return _buildSuccessState(context, viewModel, viewModel.plant!, isTablet);
+  }
+
+  Widget _buildSuccessState(
+    BuildContext context,
+    PlantResultViewModel viewModel,
+    Plant plant,
+    bool isTablet,
+  ) {
+    final horizontalPadding = isTablet ? 24.0 : 16.0;
+
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              isTablet ? 18 : 12,
+              horizontalPadding,
+              24,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildHeader(context, isTablet),
+                SizedBox(height: isTablet ? 18 : 12),
+                _buildPlantImage(viewModel, isTablet),
+                const SizedBox(height: 12),
+                _buildPlantDetailsCard(context, plant, isTablet),
+                const SizedBox(height: 12),
+                _buildClimateCard(context, plant, isTablet),
+                const SizedBox(height: 12),
+                _buildCareScheduleCard(context, plant, isTablet),
+                const SizedBox(height: 12),
+                _buildSafetyWarningCard(context, plant, isTablet),
+                const SizedBox(height: 12),
+                _buildActionButtons(context, viewModel, isTablet),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, bool isTablet) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(
+            Icons.arrow_back,
+            color: AppColors.black,
+            size: isTablet ? 28 : 24,
+          ),
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+        ),
+        Expanded(
+          child: Text(
+            AppLocalizations.of(context).result_plant_identified,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'DMSans',
+              fontWeight: FontWeight.w700,
+              fontSize: isTablet ? 28 : 20,
+              color: AppColors.black,
+            ),
+          ),
+        ),
+        const SizedBox(width: 40),
+      ],
+    );
+  }
+
+  Widget _buildPlantImage(PlantResultViewModel viewModel, bool isTablet) {
+    final imageHeight = isTablet ? 260.0 : 180.0;
+
+    return Container(
+      width: double.infinity,
+      height: imageHeight,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: AppColors.lightGreenBg,
+        image: viewModel.imageFile != null
+            ? DecorationImage(
+                image: FileImage(viewModel.imageFile!),
+                fit: BoxFit.cover,
+              )
+            : null,
+      ),
+      child: viewModel.imageFile == null
+          ? Center(
+              child: Icon(
+                Icons.photo,
+                color: AppColors.mediumGray,
+                size: isTablet ? 56 : 48,
+              ),
+            )
+          : null,
+    );
+  }
+
+  Widget _buildPlantDetailsCard(
+    BuildContext context,
+    Plant plant,
+    bool isTablet,
+  ) {
+    return _buildCardContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            plant.plantName,
+            style: TextStyle(
+              fontFamily: 'DMSans',
+              fontWeight: FontWeight.w700,
+              fontSize: isTablet ? 24 : 18,
+              color: AppColors.black,
+            ),
+          ),
+          if (plant.scientificName.trim().isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Text(
+              plant.scientificName,
+              style: TextStyle(
+                fontFamily: 'DMSans',
+                fontWeight: FontWeight.w500,
+                fontSize: isTablet ? 16 : 13,
+                fontStyle: FontStyle.italic,
+                color: AppColors.mediumGray,
+              ),
+            ),
+          ],
+          const SizedBox(height: 10),
+          Text(
+            AppLocalizations.of(context).result_about_plant,
+            style: TextStyle(
+              fontFamily: 'DMSans',
+              fontWeight: FontWeight.w700,
+              fontSize: isTablet ? 20 : 16,
+              color: AppColors.black,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            plant.description,
+            style: TextStyle(
+              fontFamily: 'DMSans',
+              fontWeight: FontWeight.w500,
+              fontSize: isTablet ? 16 : 14,
+              color: AppColors.darkGray,
+              height: 1.45,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildClimateCard(BuildContext context, Plant plant, bool isTablet) {
+    final items = [
+      (
+        AppConstants.temperatureIcon,
+        AppLocalizations.of(context).result_temperature,
+        plant.temperature,
+      ),
+      (
+        AppConstants.lightIcon,
+        AppLocalizations.of(context).result_light,
+        plant.light,
+      ),
+      (
+        AppConstants.soilIcon,
+        AppLocalizations.of(context).result_soil,
+        plant.soil,
+      ),
+      (
+        AppConstants.humidityIcon,
+        AppLocalizations.of(context).result_humidity,
+        plant.humidity,
+      ),
+    ];
+
+    return _buildCardContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context).result_climate_requirements,
+            style: TextStyle(
+              fontFamily: 'DMSans',
+              fontWeight: FontWeight.w700,
+              fontSize: isTablet ? 20 : 18,
+              color: AppColors.black,
+            ),
+          ),
+          const SizedBox(height: 14),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final itemWidth = (constraints.maxWidth - 16) / 2;
+              return Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                children: items.map((item) {
+                  return SizedBox(
+                    width: itemWidth,
+                    child: _buildClimateItem(
+                      icon: item.$1,
+                      title: item.$2,
+                      value: item.$3,
+                      isTablet: isTablet,
+                    ),
+                  );
+                }).toList(),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildClimateItem({
+    required String icon,
+    required String title,
+    required String value,
+    required bool isTablet,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            SvgPicture.asset(icon, width: 16, height: 16),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: 'DMSans',
+                  fontWeight: FontWeight.w500,
+                  fontSize: isTablet ? 15 : 14,
+                  color: AppColors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: TextStyle(
+            fontFamily: 'DMSans',
+            fontWeight: FontWeight.w400,
+            fontSize: isTablet ? 14 : 12,
+            color: AppColors.darkGray,
+            height: 1.35,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCareScheduleCard(
+    BuildContext context,
+    Plant plant,
+    bool isTablet,
+  ) {
+    return _buildCardContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context).result_care_schedule,
+            style: TextStyle(
+              fontFamily: 'DMSans',
+              fontWeight: FontWeight.w700,
+              fontSize: isTablet ? 20 : 18,
+              color: AppColors.black,
+            ),
+          ),
+          const SizedBox(height: 14),
+          _buildCareItem(
+            icon: AppConstants.wateringIcon,
+            title: AppLocalizations.of(context).result_watering,
+            description: plant.watering,
+            isTablet: isTablet,
+          ),
+          const SizedBox(height: 12),
+          _buildCareItem(
+            icon: AppConstants.fertilizingIcon,
+            title: AppLocalizations.of(context).result_fertilizing,
+            description: plant.fertilizing,
+            isTablet: isTablet,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCareItem({
+    required String icon,
+    required String title,
+    required String description,
+    required bool isTablet,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SvgPicture.asset(icon, width: 20, height: 20),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontFamily: 'DMSans',
+                  fontWeight: FontWeight.w600,
+                  fontSize: isTablet ? 15 : 14,
+                  color: AppColors.black,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                description,
+                style: TextStyle(
+                  fontFamily: 'DMSans',
+                  fontWeight: FontWeight.w400,
+                  fontSize: isTablet ? 14 : 12,
+                  color: AppColors.darkGray,
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSafetyWarningCard(
+    BuildContext context,
+    Plant plant,
+    bool isTablet,
+  ) {
+    return _buildCardContainer(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SvgPicture.asset(AppConstants.warningIcon, width: 20, height: 20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context).result_safety_warning,
+                  style: TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w600,
+                    fontSize: isTablet ? 15 : 14,
+                    color: AppColors.black,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  plant.toxicity,
+                  style: TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w400,
+                    fontSize: isTablet ? 14 : 12,
+                    color: AppColors.darkGray,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtons(
+    BuildContext context,
+    PlantResultViewModel viewModel,
+    bool isTablet,
+  ) {
+    final buttonHeight = isTablet ? 58.0 : 54.0;
+
+    return Column(
+      children: [
+        SizedBox(
+          width: double.infinity,
+          height: buttonHeight,
+          child: ElevatedButton(
+            onPressed: () async {
+              await viewModel.toggleSaveStatus();
+              if (!mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    viewModel.isSaved
+                        ? AppLocalizations.of(context).result_saved_success
+                        : AppLocalizations.of(context).result_removed_success,
+                  ),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: viewModel.isSaved
+                  ? AppColors.mediumGray
+                  : AppColors.primaryGreen,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+            child: Text(
+              viewModel.isSaved
+                  ? AppLocalizations.of(context).result_saved_button
+                  : AppLocalizations.of(context).result_save_button,
+              style: TextStyle(
+                fontFamily: 'DMSans',
+                fontWeight: FontWeight.w700,
+                fontSize: isTablet ? 18 : 16,
+                color: AppColors.white,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          width: double.infinity,
+          height: buttonHeight,
+          child: OutlinedButton(
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRoutes.scanner,
+              (route) => route.isFirst,
+              arguments: {'mode': 'identify'},
+            ),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: AppColors.primaryGreen, width: 0.8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+            child: Text(
+              AppLocalizations.of(context).result_identify_another,
+              style: TextStyle(
+                fontFamily: 'DMSans',
+                fontWeight: FontWeight.w700,
+                fontSize: isTablet ? 18 : 16,
+                color: AppColors.black,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context, bool isTablet) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.eco,
+              color: AppColors.mediumGray,
+              size: isTablet ? 60 : 48,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              AppLocalizations.of(context).result_no_data,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'DMSans',
+                fontSize: isTablet ? 18 : 16,
+                color: AppColors.darkGray,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorState(
+    BuildContext context,
+    String error,
+    bool isTablet,
+  ) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.error_outline,
+                color: AppColors.mediumGray,
+                size: isTablet ? 60 : 48,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                AppLocalizations.of(context).result_error,
+                style: TextStyle(
+                  fontFamily: 'DMSans',
+                  fontSize: isTablet ? 20 : 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.black,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                error,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'DMSans',
+                  fontSize: isTablet ? 16 : 14,
+                  color: AppColors.darkGray,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryGreen,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context).result_try_again,
+                  style: const TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCardContainer({required Widget child}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.primaryGreen.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: child,
+    );
+  }
+}
+
+
+
+// Still no Problem - Commenting out for Enhanced Responsiveness 13/03/26 - 07:51am
+/*import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -831,7 +1512,7 @@ class _PlantIdentificationResultScreenState extends State<PlantIdentificationRes
       ),
     );
   }
-}
+}*/
 
 
 /*import 'dart:io';

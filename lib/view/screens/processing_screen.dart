@@ -1,4 +1,287 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../app/navigation/app_routes.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../view_models/diagnosis_view_model.dart';
+import '../../../view_models/history_view_model.dart';
+import '../../../view_models/plant_result_view_model.dart';
+import '../../../view_models/water_calculation_view_model.dart';
+import '../../data/services/analytics_service.dart';
+import '../../l10n/app_localizations.dart';
+
+class ProcessingScreen extends StatefulWidget {
+  const ProcessingScreen({super.key});
+
+  @override
+  State<ProcessingScreen> createState() => _ProcessingScreenState();
+}
+
+class _ProcessingScreenState extends State<ProcessingScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _animationController;
+
+  File? _imageFile;
+  String _mode = 'identify';
+  String _location = '';
+  String _temperature = '';
+  String _wateringFrequency = '';
+
+  bool _didInitialize = false;
+  bool _didStartProcessing = false;
+  bool _hasLoggedProcessing = false;
+  late final DateTime _processingStartTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _processingStartTime = DateTime.now();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    )..repeat();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInitialize) return;
+    _didInitialize = true;
+    _initializeArguments();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _startProcessing());
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+
+    if (!_hasLoggedProcessing && _mode.isNotEmpty) {
+      _logProcessingEvent(
+        success: false,
+        error: 'Processing screen disposed before completion',
+      );
+    }
+
+    super.dispose();
+  }
+
+  void _initializeArguments() {
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    if (args == null) return;
+
+    _imageFile = args['imageFile'] as File?;
+    _mode = (args['mode'] ?? 'identify') as String;
+    _location = (args['location'] ?? '') as String;
+    _temperature = (args['temperature'] ?? '') as String;
+    _wateringFrequency = (args['wateringFrequency'] ?? '') as String;
+  }
+
+  Future<void> _startProcessing() async {
+    if (_didStartProcessing || !mounted) return;
+    _didStartProcessing = true;
+
+    if (_imageFile == null) {
+      _logProcessingEvent(success: false, error: 'Missing image file');
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, _getFallbackRoute());
+      }
+      return;
+    }
+
+    try {
+      switch (_mode) {
+        case 'identify':
+          await _processPlantIdentification();
+          break;
+        case 'diagnose':
+          await _processPlantDiagnosis();
+          break;
+        case 'water':
+          await _processWaterCalculation();
+          break;
+        default:
+          _logProcessingEvent(success: false, error: 'Unsupported mode: $_mode');
+          if (mounted) {
+            Navigator.pushReplacementNamed(context, _getFallbackRoute());
+          }
+      }
+    } catch (e) {
+      _logProcessingEvent(success: false, error: e.toString());
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, _getFallbackRoute());
+      }
+    }
+  }
+
+  Future<void> _processPlantIdentification() async {
+    final viewModel = context.read<PlantResultViewModel>();
+    await viewModel.identifyPlant(_imageFile!);
+
+    _logProcessingEvent(success: true);
+
+    if (!mounted) return;
+
+    try {
+      context.read<HistoryViewModel>().loadHistory(forceRefresh: true);
+    } catch (_) {}
+
+    Navigator.pushReplacementNamed(
+      context,
+      AppRoutes.plantIdentificationResult,
+      arguments: {'imageFile': _imageFile},
+    );
+  }
+
+  Future<void> _processPlantDiagnosis() async {
+    final diagnosisViewModel = context.read<DiagnosisViewModel>();
+    diagnosisViewModel.reset();
+    diagnosisViewModel.setImageFile(_imageFile!);
+    await diagnosisViewModel.diagnosePlant(_imageFile!);
+
+    _logProcessingEvent(success: true);
+
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(
+      context,
+      AppRoutes.plantDiagnosisResult,
+      arguments: {'imageFile': _imageFile},
+    );
+  }
+
+  Future<void> _processWaterCalculation() async {
+    final waterViewModel = context.read<WaterCalculationViewModel>();
+    waterViewModel.reset();
+
+    await waterViewModel.calculateWaterNeedsWithGemini(
+      plantImage: _imageFile!,
+      location: _location,
+      temperature: _temperature,
+      wateringFrequency: _wateringFrequency,
+    );
+
+    _logProcessingEvent(success: true);
+
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, AppRoutes.waterResult);
+  }
+
+  void _logProcessingEvent({required bool success, String? error}) {
+    if (_hasLoggedProcessing) return;
+
+    final processingTime =
+        DateTime.now().difference(_processingStartTime).inMilliseconds;
+
+    AnalyticsService.logProcessingComplete(
+      mode: _mode,
+      success: success,
+      error: error,
+      processingTime: processingTime,
+    );
+
+    _hasLoggedProcessing = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
+
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 520),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RotationTransition(
+                    turns: _animationController,
+                    child: Icon(
+                      Icons.autorenew,
+                      color: AppColors.primaryGreen,
+                      size: isTablet ? 52 : 40,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _getProcessingTitle(context),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'DMSans',
+                      fontWeight: FontWeight.w600,
+                      fontSize: isTablet ? 20 : 16,
+                      height: 1.2,
+                      color: AppColors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _getProcessingSubtitle(context),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'DMSans',
+                      fontWeight: FontWeight.w500,
+                      fontSize: isTablet ? 16 : 14,
+                      height: 1.35,
+                      color: AppColors.darkGray,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _getProcessingTitle(BuildContext context) {
+    switch (_mode) {
+      case 'identify':
+        return AppLocalizations.of(context).processing_title_identify;
+      case 'diagnose':
+        return AppLocalizations.of(context).processing_title_diagnose;
+      case 'water':
+        return AppLocalizations.of(context).processing_title_water;
+      default:
+        return AppLocalizations.of(context).processing_title_default;
+    }
+  }
+
+  String _getProcessingSubtitle(BuildContext context) {
+    switch (_mode) {
+      case 'identify':
+        return AppLocalizations.of(context).processing_subtitle_identify;
+      case 'diagnose':
+        return AppLocalizations.of(context).processing_subtitle_diagnose;
+      case 'water':
+        return AppLocalizations.of(context).processing_subtitle_water;
+      default:
+        return AppLocalizations.of(context).processing_subtitle_default;
+    }
+  }
+
+  String _getFallbackRoute() {
+    switch (_mode) {
+      case 'identify':
+        return AppRoutes.plantIdentificationResult;
+      case 'diagnose':
+        return AppRoutes.plantDiagnosisResult;
+      case 'water':
+        return AppRoutes.waterResult;
+      default:
+        return AppRoutes.home;
+    }
+  }
+}
+
+
+
+// Still no Problem - Commenting out for Enhanced Responsiveness 13/03/26 - 08:11am
+/*import 'dart:io';
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -620,4 +903,4 @@ try {
         return AppRoutes.home;
     }
   }
-}
+}*/

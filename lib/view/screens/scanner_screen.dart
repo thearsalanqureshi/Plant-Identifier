@@ -1,4 +1,322 @@
 import 'dart:io';
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../app/navigation/app_routes.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../view_models/scanner_view_model.dart';
+import '../../l10n/app_localizations.dart';
+
+class ScannerScreen extends StatefulWidget {
+  const ScannerScreen({super.key});
+
+  @override
+  State<ScannerScreen> createState() => _ScannerScreenState();
+}
+
+class _ScannerScreenState extends State<ScannerScreen> with SingleTickerProviderStateMixin {
+  bool _hasInitialized = false;
+  bool _isCapturing = false;
+  bool _isMounted = true;
+  bool _argsApplied = false;
+
+  late final AnimationController _fadeController;
+  late final Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _fadeController = AnimationController(
+      duration: const Duration(milliseconds: 280),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
+    _preloadCamera();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_argsApplied) return;
+    _argsApplied = true;
+
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is Map<String, dynamic>) {
+      final mode = (args['mode'] ?? 'identify') as String;
+      context.read<ScannerViewModel>().setMode(mode);
+    }
+  }
+
+  void _preloadCamera() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final vm = context.read<ScannerViewModel>();
+      await vm.initializeCamera();
+      _hasInitialized = true;
+      _fadeController.forward();
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _isMounted = false;
+    _fadeController.dispose();
+    final vm = context.read<ScannerViewModel>();
+    WidgetsBinding.instance.addPostFrameCallback((_) => vm.disposeCamera());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
+
+    return Scaffold(
+      backgroundColor: AppColors.black,
+      body: Stack(
+        children: [
+          Positioned.fill(child: _buildCameraPreview()),
+          Positioned.fill(
+            child: SafeArea(
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isTablet ? 28 : 16,
+                    vertical: isTablet ? 14 : 12,
+                  ),
+                  child: Column(
+                    children: [
+                      _buildTopControls(),
+                      const Spacer(),
+                      _buildBottomControls(isTablet),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCameraPreview() {
+    return Consumer<ScannerViewModel>(
+      builder: (context, vm, _) {
+        if (!vm.isCameraInitialized || vm.cameraController == null) {
+          return const ColoredBox(color: AppColors.black);
+        }
+
+        final CameraController controller = vm.cameraController!;
+        final previewSize = controller.value.previewSize;
+        if (previewSize == null) {
+          return CameraPreview(controller);
+        }
+
+        return ClipRect(
+          child: OverflowBox(
+            alignment: Alignment.center,
+            minWidth: 0,
+            minHeight: 0,
+            maxWidth: double.infinity,
+            maxHeight: double.infinity,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: previewSize.height,
+                height: previewSize.width,
+                child: CameraPreview(controller),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTopControls() {
+    return Consumer<ScannerViewModel>(
+      builder: (context, vm, _) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildCircleControlButton(
+              icon: Icons.close,
+              onTap: () => Navigator.of(context).pop(),
+            ),
+            vm.isCameraInitialized
+                ? _buildCircleControlButton(
+                    icon: vm.isFlashOn ? Icons.flash_on : Icons.flash_off,
+                    onTap: vm.toggleFlash,
+                  )
+                : const SizedBox(width: 44, height: 44),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomControls(bool isTablet) {
+    final modeTextStyle = TextStyle(
+      color: AppColors.white,
+      fontSize: isTablet ? 14 : 13,
+      fontWeight: FontWeight.w600,
+    );
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: isTablet ? 560 : 420),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Consumer<ScannerViewModel>(
+              builder: (context, vm, _) {
+                return Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isTablet ? 18 : 14,
+                    vertical: isTablet ? 10 : 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.black.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    _getModeText(vm.currentMode),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: modeTextStyle,
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: _buildCircleControlButton(
+                      icon: Icons.photo_library,
+                      onTap: () => _pickFromGallery(context),
+                    ),
+                  ),
+                ),
+                _buildCaptureButton(isTablet),
+                const Expanded(child: SizedBox()),
+              ],
+            ),
+            SizedBox(height: isTablet ? 8 : 4),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCircleControlButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: AppColors.black.withOpacity(0.5),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: AppColors.white, size: 22),
+      ),
+    );
+  }
+
+  Widget _buildCaptureButton(bool isTablet) {
+    final size = isTablet ? 76.0 : 70.0;
+    return InkWell(
+      onTap: () => _captureImage(context),
+      borderRadius: BorderRadius.circular(size / 2),
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: AppColors.primaryGreen,
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.white, width: 3),
+        ),
+        child: const Icon(Icons.camera_alt, color: AppColors.white, size: 30),
+      ),
+    );
+  }
+
+  String _getModeText(String mode) {
+    final l10n = AppLocalizations.of(context);
+    switch (mode) {
+      case 'identify':
+        return l10n.scanner_identify_plant;
+      case 'diagnose':
+        return l10n.scanner_diagnose_plant;
+      case 'water':
+        return l10n.scanner_water_calculation;
+      default:
+        return l10n.scanner_scan_mode;
+    }
+  }
+
+  Future<void> _captureImage(BuildContext context) async {
+    if (_isCapturing) return;
+    _isCapturing = true;
+
+    try {
+      final vm = context.read<ScannerViewModel>();
+      final File? imageFile = await vm.captureImage();
+      if (imageFile != null && mounted) {
+        _navigateToPreview(context, imageFile, vm.currentMode);
+      }
+    } catch (_) {
+      _showError(AppLocalizations.of(context).scanner_capture_error);
+    } finally {
+      Future.delayed(const Duration(milliseconds: 700), () {
+        _isCapturing = false;
+      });
+    }
+  }
+
+  Future<void> _pickFromGallery(BuildContext context) async {
+    try {
+      final vm = context.read<ScannerViewModel>();
+      final File? imageFile = await vm.pickImageFromGallery();
+      if (imageFile != null && mounted) {
+        _navigateToPreview(context, imageFile, vm.currentMode);
+      }
+    } catch (_) {
+      _showError(AppLocalizations.of(context).scanner_gallery_error);
+    }
+  }
+
+  void _navigateToPreview(BuildContext context, File imageFile, String mode) {
+    Navigator.pushNamed(
+      context,
+      AppRoutes.scannerPreview,
+      arguments: {'imageFile': imageFile, 'mode': mode},
+    );
+  }
+
+  void _showError(String message) {
+    if (!_isMounted || !mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+}
+
+
+// Before Refact 12/03/26 02:51pm 
+/*import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
@@ -494,6 +812,6 @@ Widget build(BuildContext context) {
       ),
     );
   }
-}
+}*/
 
 

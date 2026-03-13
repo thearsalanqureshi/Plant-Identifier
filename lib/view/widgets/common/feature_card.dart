@@ -22,6 +22,381 @@ class FeatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = _CardConfig.getConfig(type);
+    final isLarge = size == CardSize.large;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
+
+    final cardHeight = isLarge
+        ? (isTablet ? 136.0 : 100.0)
+        : (isTablet ? 220.0 : 165.0);
+
+    final iconSize = isLarge
+        ? (isTablet ? 34.0 : 28.0)
+        : (isTablet ? 40.0 : 36.0);
+
+    final bgSize = isLarge
+        ? (isTablet ? 170.0 : 148.0)
+        : (isTablet ? 185.0 : 155.0);
+
+    return SizedBox(
+      width: double.infinity,
+      height: cardHeight,
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: config.backgroundColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Stack(
+              clipBehavior: Clip.hardEdge,
+              children: [
+                if (config.backgroundImage != null)
+                  Positioned(
+                    bottom: isLarge ? -20 : -14,
+                    right: isRtl ? null : (isLarge ? -4 : -2),
+                    left: isRtl ? (isLarge ? -4 : -2) : null,
+                    child: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()..scale(isRtl ? -1.0 : 1.0, 1.0),
+                      child: Opacity(
+                        opacity: 0.9,
+                        child: Image.asset(
+                          config.backgroundImage!,
+                          width: bgSize,
+                          height: bgSize,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: isRtl ? 0 : (isLarge ? (isTablet ? 22 : 19) : 11),
+                    right: isRtl ? (isLarge ? (isTablet ? 22 : 19) : 11) : 0,
+                    top: isLarge ? (isTablet ? 18 : 16) : (isTablet ? 20 : 18),
+                    bottom: 10,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        config.mainIcon,
+                        width: iconSize,
+                        height: iconSize,
+                        colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+                      ),
+                      SizedBox(height: isLarge ? (isTablet ? 18 : 8) : (isTablet ? 62 : 44)),
+                      Text(
+                        title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: (isLarge ? AppTypography.featureCardTitle : AppTypography.smallCardTitle).copyWith(
+                          fontSize: isTablet ? 26 : 18,
+                          height: 1.1,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: (isLarge ? AppTypography.featureCardSubtitle : AppTypography.smallCardSubtitle).copyWith(
+                          fontSize: isTablet ? 20 : (isLarge ? 14 : 13),
+                          height: 1.15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CardConfig {
+  final Color backgroundColor;
+  final String mainIcon;
+  final String? backgroundImage;
+
+  _CardConfig({
+    required this.backgroundColor,
+    required this.mainIcon,
+    this.backgroundImage,
+  });
+
+  static _CardConfig getConfig(CardType type) {
+    final baseConfig = _BaseCardConfigs.getBaseConfig(type);
+    return _CardConfig(
+      backgroundColor: baseConfig.backgroundColor,
+      mainIcon: baseConfig.mainIcon,
+      backgroundImage: baseConfig.backgroundImage,
+    );
+  }
+}
+
+class _BaseCardConfigs {
+  static final Map<CardType, _CardBaseConfig> _configs = {
+    CardType.identify: _CardBaseConfig(
+      backgroundColor: AppColors.identifyCard,
+      mainIcon: 'assets/icons/ic_identify.svg',
+      backgroundImage: 'assets/images/bg_identify.png',
+    ),
+    CardType.diagnose: _CardBaseConfig(
+      backgroundColor: AppColors.diagnoseCard,
+      mainIcon: 'assets/icons/ic_diagnose.svg',
+      backgroundImage: 'assets/images/bg_diagnose.png',
+    ),
+    CardType.water: _CardBaseConfig(
+      backgroundColor: AppColors.waterCalculatorCard,
+      mainIcon: 'assets/icons/ic_water_calc.svg',
+      backgroundImage: 'assets/images/bg_water_calc.png',
+    ),
+    CardType.light: _CardBaseConfig(
+      backgroundColor: AppColors.lightMeterCard,
+      mainIcon: 'assets/icons/ic_light_meter.svg',
+      backgroundImage: 'assets/images/bg_light_meter.png',
+    ),
+  };
+
+  static _CardBaseConfig getBaseConfig(CardType type) {
+    return _configs[type] ?? _configs[CardType.identify]!;
+  }
+}
+
+class _CardBaseConfig {
+  final Color backgroundColor;
+  final String mainIcon;
+  final String? backgroundImage;
+
+  _CardBaseConfig({
+    required this.backgroundColor,
+    required this.mainIcon,
+    this.backgroundImage,
+  });
+}
+
+
+
+// Before Refactoring 12/03/26 - 05:00pm
+/*import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_typography.dart';
+import '../../../utils/app_types.dart';
+
+class FeatureCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final CardSize size;
+  final CardType type;
+  final VoidCallback onTap;
+
+  const FeatureCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.size,
+    required this.type,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final config = _CardConfig.getConfig(type);
+    final isLarge = size == CardSize.large;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
+
+    final cardHeight = isLarge
+        ? (isTablet ? 120.0 : 100.0)
+        : (isTablet ? 190.0 : 165.0);
+
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        width: double.infinity,
+        height: cardHeight,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: config.backgroundColor,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Stack(
+            clipBehavior: Clip.hardEdge,
+            children: [
+              if (config.backgroundImage != null)
+                Positioned(
+                  bottom: isLarge ? -20 : -14,
+                  right: isRtl ? null : (isLarge ? -4 : -2),
+                  left: isRtl ? (isLarge ? -4 : -2) : null,
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()..scale(isRtl ? -1.0 : 1.0, 1.0),
+                    child: Opacity(
+                      opacity: 0.9,
+                      child: Image.asset(
+                        config.backgroundImage!,
+                        width: isLarge ? 148 : 155,
+                        height: isLarge ? 148 : 155,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: isRtl ? 0 : (isLarge ? 19.0 : 11.0),
+                  right: isRtl ? (isLarge ? 19.0 : 11.0) : 0,
+                  top: isLarge ? 16 : 18,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(
+                            config.mainIcon,
+                            width: isLarge ? 28 : 36,
+                            height: isLarge ? 28 : 36,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.white,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(height: isLarge ? 8 : (isTablet ? 52 : 44)),
+                          Text(
+                            title,
+                            style: (isLarge
+                                    ? AppTypography.featureCardTitle
+                                    : AppTypography.smallCardTitle)
+                                .copyWith(fontSize: 18),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            subtitle,
+                            style: (isLarge
+                                    ? AppTypography.featureCardSubtitle
+                                    : AppTypography.smallCardSubtitle)
+                                .copyWith(fontSize: isLarge ? 14 : 13),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CardConfig {
+  final Color backgroundColor;
+  final String mainIcon;
+  final String? backgroundImage;
+
+  _CardConfig({
+    required this.backgroundColor,
+    required this.mainIcon,
+    this.backgroundImage,
+  });
+
+  static _CardConfig getConfig(CardType type) {
+    final baseConfig = _BaseCardConfigs.getBaseConfig(type);
+    return _CardConfig(
+      backgroundColor: baseConfig.backgroundColor,
+      mainIcon: baseConfig.mainIcon,
+      backgroundImage: baseConfig.backgroundImage,
+    );
+  }
+}
+
+class _BaseCardConfigs {
+  static final Map<CardType, _CardBaseConfig> _configs = {
+    CardType.identify: _CardBaseConfig(
+      backgroundColor: AppColors.identifyCard,
+      mainIcon: 'assets/icons/ic_identify.svg',
+      backgroundImage: 'assets/images/bg_identify.png',
+    ),
+    CardType.diagnose: _CardBaseConfig(
+      backgroundColor: AppColors.diagnoseCard,
+      mainIcon: 'assets/icons/ic_diagnose.svg',
+      backgroundImage: 'assets/images/bg_diagnose.png',
+    ),
+    CardType.water: _CardBaseConfig(
+      backgroundColor: AppColors.waterCalculatorCard,
+      mainIcon: 'assets/icons/ic_water_calc.svg',
+      backgroundImage: 'assets/images/bg_water_calc.png',
+    ),
+    CardType.light: _CardBaseConfig(
+      backgroundColor: AppColors.lightMeterCard,
+      mainIcon: 'assets/icons/ic_light_meter.svg',
+      backgroundImage: 'assets/images/bg_light_meter.png',
+    ),
+  };
+
+  static _CardBaseConfig getBaseConfig(CardType type) {
+    return _configs[type] ?? _configs[CardType.identify]!;
+  }
+}
+
+class _CardBaseConfig {
+  final Color backgroundColor;
+  final String mainIcon;
+  final String? backgroundImage;
+
+  _CardBaseConfig({
+    required this.backgroundColor,
+    required this.mainIcon,
+    this.backgroundImage,
+  });
+}*/
+
+
+// Before Refactoring 12/03/26 - 02:30pm
+/*import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_typography.dart';
+import '../../../utils/app_types.dart';
+
+class FeatureCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final CardSize size;
+  final CardType type;
+  final VoidCallback onTap;
+
+  const FeatureCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.size,
+    required this.type,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     final config = _CardConfig.getConfig(type, size);
     final screenWidth = MediaQuery.of(context).size.width;
     final isLarge = size == CardSize.large;
@@ -186,7 +561,7 @@ class _CardBaseConfig {
     required this.mainIcon,
     this.backgroundImage,
   });
-}
+}*/
 
 
 /* // -------- Need to improve sizes ------

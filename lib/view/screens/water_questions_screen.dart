@@ -1,5 +1,447 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:plant_identifier_app/data/models/water_question_model.dart';
+import 'package:provider/provider.dart';
+import '../../../app/navigation/app_routes.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../view_models/water_calculation_view_model.dart';
+import '../../l10n/app_localizations.dart';
+
+class WaterQuestionsScreen extends StatefulWidget {
+  const WaterQuestionsScreen({super.key});
+
+  @override
+  State<WaterQuestionsScreen> createState() => _WaterQuestionsScreenState();
+}
+
+class _WaterQuestionsScreenState extends State<WaterQuestionsScreen> {
+  String? _selectedOption;
+  bool _didInitialize = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInitialize) return;
+    _didInitialize = true;
+    _initializeArguments();
+  }
+
+  void _initializeArguments() {
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final viewModel = context.read<WaterCalculationViewModel>();
+
+    if (args == null) {
+      _selectedOption = _getStoredAnswer(viewModel, viewModel.currentQuestion);
+      return;
+    }
+
+    final imageFile = args['imageFile'] as File?;
+    final currentQuestion = args['currentQuestion'] as int? ?? 1;
+    final location = args['location'] as String?;
+    final temperature = args['temperature'] as String?;
+    final wateringFrequency = args['wateringFrequency'] as String?;
+
+    if (imageFile != null) {
+      viewModel.setImageFile(imageFile);
+    }
+
+    viewModel.setCurrentQuestion(currentQuestion);
+
+    if (location != null && location.isNotEmpty) {
+      viewModel.setLocation(location);
+    }
+    if (temperature != null && temperature.isNotEmpty) {
+      viewModel.setTemperature(temperature);
+    }
+    if (wateringFrequency != null && wateringFrequency.isNotEmpty) {
+      viewModel.setWateringFrequency(wateringFrequency);
+    }
+
+    _selectedOption = _getStoredAnswer(viewModel, currentQuestion);
+  }
+
+  String? _getStoredAnswer(WaterCalculationViewModel viewModel, int question) {
+    switch (question) {
+      case 1:
+        return viewModel.location.isEmpty ? null : viewModel.location;
+      case 2:
+        return viewModel.temperature.isEmpty ? null : viewModel.temperature;
+      case 3:
+        return viewModel.wateringFrequency.isEmpty ? null : viewModel.wateringFrequency;
+      default:
+        return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<WaterCalculationViewModel>();
+    final currentQuestion = viewModel.currentQuestion;
+    final questionData = _getCurrentQuestion(context, currentQuestion);
+    final width = MediaQuery.sizeOf(context).width;
+    final isTablet = width >= 600;
+    final horizontalPadding = isTablet ? 24.0 : 16.0;
+    final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
+
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              isTablet ? 8 : 4,
+              horizontalPadding,
+              bottomInset > 0 ? bottomInset + 8 : 16,
+            ),
+            child: Column(
+              children: [
+                _buildProgressIndicator(viewModel.currentQuestion, isTablet),
+                const SizedBox(height: 18),
+                _buildPlantImage(viewModel, isTablet),
+                const SizedBox(height: 18),
+                _buildQuestion(questionData.question, isTablet),
+                const SizedBox(height: 18),
+                Expanded(
+                  child: ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: questionData.options.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    itemBuilder: (context, index) {
+                      final option = questionData.options[index];
+                      return _buildOptionCard(
+                        option: option,
+                        isSelected: _selectedOption == option,
+                        isTablet: isTablet,
+                        onTap: () {
+                          setState(() {
+                            _selectedOption = option;
+                          });
+                          _saveAnswer(option, viewModel);
+                        },
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildContinueButton(
+                  context,
+                  viewModel,
+                  isTablet,
+                  enabled: _selectedOption != null,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProgressIndicator(int currentQuestion, bool isTablet) {
+    final width = isTablet ? 280.0 : 220.0;
+    final progress = (currentQuestion - 1) / 2;
+
+    return SizedBox(
+      width: width,
+      height: 30,
+      child: Stack(
+        children: [
+          Positioned(
+            left: 15,
+            right: 15,
+            top: 14,
+            child: Container(
+              height: 2,
+              color: AppColors.lightGray,
+            ),
+          ),
+          Positioned(
+            left: 15,
+            top: 14,
+            child: Container(
+              height: 2,
+              width: (width - 30) * progress,
+              color: AppColors.primaryGreen,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(3, (index) {
+              final number = index + 1;
+              final active = number <= currentQuestion;
+
+              return Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: active ? AppColors.primaryGreen : AppColors.lightGray,
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '$number',
+                  style: TextStyle(
+                    color: active ? AppColors.white : AppColors.darkGray,
+                    fontWeight: FontWeight.w600,
+                    fontSize: isTablet ? 15 : 14,
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlantImage(
+    WaterCalculationViewModel viewModel,
+    bool isTablet,
+  ) {
+    final size = isTablet ? 112.0 : 96.0;
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: AppColors.lightGreenBg,
+        image: viewModel.imageFile != null
+            ? DecorationImage(
+                image: FileImage(viewModel.imageFile!),
+                fit: BoxFit.cover,
+              )
+            : null,
+      ),
+      child: viewModel.imageFile == null
+          ? Icon(
+              Icons.photo,
+              color: AppColors.primaryGreen,
+              size: isTablet ? 42 : 36,
+            )
+          : null,
+    );
+  }
+
+  Widget _buildQuestion(String question, bool isTablet) {
+    return Text(
+      question,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontFamily: 'DMSans',
+        fontWeight: FontWeight.w700,
+        fontSize: isTablet ? 22 : 16,
+        height: 1.3,
+        color: AppColors.black,
+      ),
+    );
+  }
+
+  Widget _buildOptionCard({
+    required String option,
+    required bool isSelected,
+    required bool isTablet,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isSelected
+                  ? AppColors.primaryGreen
+                  : AppColors.primaryGreen.withOpacity(0.5),
+              width: isSelected ? 2 : 0.7,
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  option,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w500,
+                    fontSize: isTablet ? 16 : 14,
+                    color: AppColors.black,
+                    height: 1.35,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              SvgPicture.asset(
+                isSelected
+                    ? 'assets/icons/ic_checked.svg'
+                    : 'assets/icons/ic_unchecked.svg',
+                width: 22,
+                height: 22,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContinueButton(
+    BuildContext context,
+    WaterCalculationViewModel viewModel,
+    bool isTablet, {
+    required bool enabled,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      height: isTablet ? 58 : 54,
+      child: ElevatedButton(
+        onPressed: enabled ? () => _navigateToNext(context, viewModel) : null,
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor:
+              enabled ? AppColors.primaryGreen : AppColors.mediumGray,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+          ),
+        ),
+        child: Text(
+          AppLocalizations.of(context).water_continue,
+          style: TextStyle(
+            fontFamily: 'DMSans',
+            fontWeight: FontWeight.w700,
+            fontSize: isTablet ? 18 : 16,
+            color: AppColors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _saveAnswer(String answer, WaterCalculationViewModel viewModel) {
+    switch (viewModel.currentQuestion) {
+      case 1:
+        viewModel.setLocation(answer);
+        break;
+      case 2:
+        viewModel.setTemperature(answer);
+        break;
+      case 3:
+        viewModel.setWateringFrequency(answer);
+        break;
+    }
+  }
+
+  void _navigateToNext(
+    BuildContext context,
+    WaterCalculationViewModel viewModel,
+  ) {
+    final nextQuestion = viewModel.currentQuestion + 1;
+
+    if (nextQuestion <= 3) {
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoutes.waterQuestions,
+        arguments: {
+          'imageFile': viewModel.imageFile,
+          'currentQuestion': nextQuestion,
+          'location': viewModel.location,
+          'temperature': viewModel.temperature,
+          'wateringFrequency': viewModel.wateringFrequency,
+        },
+      );
+      return;
+    }
+
+    Navigator.pushReplacementNamed(
+      context,
+      AppRoutes.processing,
+      arguments: {
+        'imageFile': viewModel.imageFile,
+        'mode': 'water',
+        'location': viewModel.location,
+        'temperature': viewModel.temperature,
+        'wateringFrequency': viewModel.wateringFrequency,
+      },
+    );
+  }
+
+  WaterQuestion _getCurrentQuestion(BuildContext context, int currentQuestion) {
+    final l10n = AppLocalizations.of(context);
+
+    switch (currentQuestion) {
+      case 1:
+        return WaterQuestion(
+          questionNumber: 1,
+          question: l10n.water_question_location,
+          options: [
+            l10n.water_location_indoor_window,
+            l10n.water_location_indoor_shaded,
+            l10n.water_location_outdoor_sun,
+            l10n.water_location_outdoor_shade,
+          ],
+        );
+      case 2:
+        return WaterQuestion(
+          questionNumber: 2,
+          question: l10n.water_question_temperature,
+          options: [
+            l10n.water_temperature_very_cold,
+            l10n.water_temperature_cold,
+            l10n.water_temperature_moderate,
+            l10n.water_temperature_warm,
+            l10n.water_temperature_hot,
+          ],
+        );
+      case 3:
+        return WaterQuestion(
+          questionNumber: 3,
+          question: l10n.water_question_frequency,
+          options: [
+            l10n.water_frequency_daily,
+            l10n.water_frequency_2_3_days,
+            l10n.water_frequency_weekly,
+            l10n.water_frequency_biweekly,
+            l10n.water_frequency_rarely,
+          ],
+        );
+      default:
+        return WaterQuestion(
+          questionNumber: 1,
+          question: l10n.water_question_location,
+          options: [
+            l10n.water_location_indoor_window,
+            l10n.water_location_indoor_shaded,
+            l10n.water_location_outdoor_sun,
+            l10n.water_location_outdoor_shade,
+          ],
+        );
+    }
+  }
+}
+
+
+
+// Still no Problem - Commenting out for Enhanced Responsiveness 13/03/26 - 07:58am
+/*import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:plant_identifier_app/data/models/water_question_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -631,7 +1073,8 @@ class _WaterQuestionsScreenState extends State<WaterQuestionsScreen> {
         );
     }
   }
-}
+}*/
+
 
 
 

@@ -1,4 +1,218 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../app/navigation/app_routes.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../view_models/home_view_model.dart';
+import '../../data/services/analytics_service.dart';
+import '../../l10n/app_localizations.dart';
+import '../widgets/common/app_bar.dart';
+import '../widgets/common/feature_card.dart';
+import 'light_meter_screen.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    AnalyticsService.logScreenView(screenName: 'Home');
+  }
+
+  void _handleFeatureTap(String featureId, BuildContext context) {
+    final viewModel = context.read<HomeViewModel>();
+    final validatedFeature = viewModel.validateFeatureAccess(featureId);
+
+    switch (validatedFeature) {
+      case 'identify':
+        Navigator.pushNamed(
+          context,
+          AppRoutes.scanner,
+          arguments: {'mode': 'identify'},
+        );
+        break;
+      case 'diagnose':
+        Navigator.pushNamed(
+          context,
+          AppRoutes.scanner,
+          arguments: {'mode': 'diagnose'},
+        );
+        break;
+      case 'water':
+        Navigator.pushNamed(
+          context,
+          AppRoutes.scanner,
+          arguments: {'mode': 'water'},
+        );
+        break;
+      case 'light':
+        _openLightMeter(context);
+        break;
+      default:
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.home_feature_not_available(featureId))),
+        );
+    }
+  }
+
+  void _openLightMeter(BuildContext context) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => const LightMeterScreen(),
+        transitionsBuilder: (_, animation, __, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 280),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final isTablet = width >= 600;
+    final horizontalPadding = isTablet ? 24.0 : 16.0;
+    final maxContentWidth = isTablet ? 980.0 : 560.0;
+
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxContentWidth),
+            child: Column(
+              children: [
+                HomeAppBar(
+                  onPremiumPressed: () {
+                    final viewModel = context.read<HomeViewModel>();
+                    viewModel.handlePremiumAccess();
+                    Navigator.pushNamed(context, AppRoutes.premium);
+                  },
+                ),
+                Expanded(
+                  child: Consumer<HomeViewModel>(
+                    builder: (context, viewModel, _) {
+                      return SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        padding: EdgeInsets.fromLTRB(
+                          horizontalPadding,
+                          isTablet ? 14 : 12,
+                          horizontalPadding,
+                          20,
+                        ),
+                        child: Column(
+                          children: [
+                            ..._buildLargeFeatures(context, viewModel, isTablet),
+                            SizedBox(height: isTablet ? 10 : 8),
+                            _buildSmallFeatures(context, viewModel, isTablet),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildLargeFeatures(
+    BuildContext context,
+    HomeViewModel viewModel,
+    bool isTablet,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return viewModel.largeFeatures.map((feature) {
+      String title;
+      String subtitle;
+
+      switch (feature.id) {
+        case 'identify':
+          title = l10n.identify;
+          subtitle = l10n.home_identify_subtitle;
+          break;
+        case 'diagnose':
+          title = l10n.diagnose;
+          subtitle = l10n.home_diagnose_subtitle;
+          break;
+        default:
+          title = feature.title;
+          subtitle = feature.subtitle;
+      }
+
+      return Padding(
+        padding: EdgeInsets.only(bottom: isTablet ? 14 : 12),
+        child: FeatureCard(
+          title: title,
+          subtitle: subtitle,
+          size: feature.size,
+          type: feature.type,
+          onTap: () => _handleFeatureTap(feature.id, context),
+        ),
+      );
+    }).toList();
+  }
+
+  Widget _buildSmallFeatures(
+    BuildContext context,
+    HomeViewModel viewModel,
+    bool isTablet,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+
+    final cards = viewModel.smallFeatures.map((feature) {
+      String title;
+      String subtitle;
+
+      switch (feature.id) {
+        case 'water':
+          title = l10n.water_calculator;
+          subtitle = l10n.home_water_subtitle;
+          break;
+        case 'light':
+          title = l10n.light_meter_title;
+          subtitle = l10n.home_light_subtitle;
+          break;
+        default:
+          title = feature.title;
+          subtitle = feature.subtitle;
+      }
+
+      return Expanded(
+        child: FeatureCard(
+          title: title,
+          subtitle: subtitle,
+          size: feature.size,
+          type: feature.type,
+          onTap: () => _handleFeatureTap(feature.id, context),
+        ),
+      );
+    }).toList();
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        cards.first,
+        SizedBox(width: isTablet ? 14 : 10),
+        cards.last,
+      ],
+    );
+  }
+}
+
+
+
+// Before Refact 12/03/26 - 04:42pm
+/*import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -289,4 +503,4 @@ ElevatedButton(
       ),
     );
   }
-}
+}*/

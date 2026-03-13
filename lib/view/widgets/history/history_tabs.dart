@@ -1,4 +1,121 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/app_typography.dart';
+import '../../../l10n/app_localizations.dart';
+
+class HistoryTabs extends StatelessWidget {
+  final bool showMyPlants;
+  final int myPlantsCount;
+  final int historyCount;
+  final Function(bool) onTabChanged;
+
+  const HistoryTabs({
+    super.key,
+    required this.showMyPlants,
+    required this.myPlantsCount,
+    required this.historyCount,
+    required this.onTabChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final height = 48.0;
+        final inset = 4.0;
+        final knobWidth = ((constraints.maxWidth - (inset * 3)) / 2).clamp(0.0, double.infinity);
+
+        return SizedBox(
+          height: height,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: const Color(0xFFDEEADD),
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: Stack(
+              children: [
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  left: showMyPlants ? inset : inset * 2 + knobWidth,
+                  top: inset,
+                  width: knobWidth,
+                  height: height - (inset * 2),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryGreen,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _TabButton(
+                        label: '${l10n.widget_history_tab_my_plants} ($myPlantsCount)',
+                        active: showMyPlants,
+                        onTap: () => onTabChanged(true),
+                      ),
+                    ),
+                    Expanded(
+                      child: _TabButton(
+                        label: '${l10n.widget_history_tab_history} ($historyCount)',
+                        active: !showMyPlants,
+                        onTap: () => onTabChanged(false),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _TabButton extends StatelessWidget {
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
+
+  const _TabButton({
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(100),
+      onTap: onTap,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: AppTypography.bodyMedium.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              color: active ? Colors.white : const Color(0xFF1F2937),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+// Before Refactoring 12/03/26 - 02:37pm
+/*import 'package:flutter/material.dart';
 import '../../../../utils/responsive_helper.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
@@ -286,4 +403,4 @@ class _HistoryTabsState extends State<HistoryTabs> with SingleTickerProviderStat
       ),
     );
   }
-}
+}*/

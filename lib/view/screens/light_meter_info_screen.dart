@@ -1,4 +1,212 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_typography.dart';
+import '../../l10n/app_localizations.dart';
+import '../../utils/constants.dart';
+
+class LightMeterInfoScreen extends StatelessWidget {
+  const LightMeterInfoScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
+
+    final steps = <_StepData>[
+      _StepData(
+        number: 1,
+        text: l10n.light_info_step1,
+        imagePath: AppConstants.lightMeterStep1,
+      ),
+      _StepData(
+        number: 2,
+        text: l10n.light_info_step2,
+        imagePath: AppConstants.lightMeterStep2,
+      ),
+      _StepData(
+        number: 3,
+        text: l10n.light_info_step3,
+        imagePath: AppConstants.lightMeterStep3,
+      ),
+    ];
+
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isTablet = constraints.maxWidth >= 600;
+            final horizontalPadding = isTablet ? 28.0 : 16.0;
+
+            return Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 960),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: isTablet ? 20 : 12),
+                      Text(
+                        l10n.light_info_title,
+                        textAlign: TextAlign.center,
+                        style: AppTypography.onboardingTitle.copyWith(
+                          fontSize: isTablet ? 38 : 28,
+                        ),
+                      ),
+                      SizedBox(height: isTablet ? 24 : 16),
+                      Expanded(
+                        child: ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: steps.length,
+                          separatorBuilder: (_, __) => SizedBox(height: isTablet ? 20 : 16),
+                          itemBuilder: (context, index) {
+                            final step = steps[index];
+                            return _InstructionItem(
+                              number: step.number,
+                              text: step.text,
+                              imagePath: step.imagePath,
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(height: isTablet ? 16 : 10),
+                      SizedBox(
+                        height: isTablet ? 60 : 54,
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryGreen,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                          child: Text(
+                            l10n.light_info_continue,
+                            style: AppTypography.buttonText.copyWith(
+                              fontSize: isTablet ? 20 : 17,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: math.max(10, bottomInset > 0 ? 8 : 0)),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _InstructionItem extends StatelessWidget {
+  final int number;
+  final String text;
+  final String imagePath;
+
+  const _InstructionItem({
+    required this.number,
+    required this.text,
+    required this.imagePath,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
+    final numberSize = isTablet ? 34.0 : 24.0;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: numberSize,
+              height: numberSize,
+              decoration: const BoxDecoration(
+                color: AppColors.primaryGreen,
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                '$number',
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppColors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: isTablet ? 18 : 12,
+                  height: 1.0,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                text,
+                style: AppTypography.bodyMedium.copyWith(
+                  fontSize: isTablet ? 16 : 18,
+                  fontWeight: FontWeight.w600,
+                  height: 1.3,
+                  color: AppColors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final target = constraints.maxWidth * 0.42;
+            final imageHeight = target.clamp(130.0, 280.0);
+
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                width: double.infinity,
+                height: imageHeight,
+                color: AppColors.lightGray,
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) {
+                    return Center(
+                      child: Text(
+                        AppLocalizations.of(context).light_info_image_error,
+                        style: AppTypography.bodyMedium.copyWith(color: AppColors.mediumGray),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _StepData {
+  final int number;
+  final String text;
+  final String imagePath;
+
+  const _StepData({
+    required this.number,
+    required this.text,
+    required this.imagePath,
+  });
+}
+
+
+// Before Refact 12/03/26 02:49pm 
+/*import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../utils/responsive_helper.dart';
 import '../../app/theme/app_colors.dart';
@@ -239,4 +447,4 @@ class _LightMeterInfoScreen extends State<LightMeterInfoScreen> {
       },
     );
   }
-}
+}*/

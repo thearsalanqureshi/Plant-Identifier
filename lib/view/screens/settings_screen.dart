@@ -1,4 +1,140 @@
 import 'package:flutter/material.dart';
+import 'package:plant_identifier_app/l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../data/services/analytics_service.dart';
+import '../../utils/constants.dart';
+import '../../view_models/settings_view_model.dart';
+import '../widgets/common/settings_card.dart';
+
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    AnalyticsService.logScreenView(screenName: 'Settings');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<SettingsViewModel>();
+    final l10n = AppLocalizations.of(context);
+    final width = MediaQuery.sizeOf(context).width;
+    final isTablet = width >= 600;
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFFCFCFD),
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: isTablet ? 980 : 560),
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      isTablet ? 24 : 16,
+                      isTablet ? 18 : 12,
+                      isTablet ? 24 : 16,
+                      isTablet ? 14 : 10,
+                    ),
+                    child: Center(
+                      child: Text(
+                        l10n.settings_title,
+                        style: TextStyle(
+                          fontFamily: 'DMSans',
+                          fontWeight: FontWeight.w700,
+                          fontSize: isTablet ? 36 : 20,
+                          color: const Color(0xFF1E1F24),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.fromLTRB(
+                    isTablet ? 24 : 16,
+                    0,
+                    isTablet ? 24 : 16,
+                    16,
+                  ),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate.fixed([
+                      SettingsCard(
+                        title: l10n.settings_app_language,
+                        iconPath: AppConstants.languageIcon,
+                        onTap: () => vm.navigateToLanguage(context),
+                      ),
+                      SettingsCard(
+                        title: l10n.settings_rate_us,
+                        iconPath: AppConstants.rateIcon,
+                        onTap: () => vm.showRatingBottomSheet(context),
+                      ),
+                      SettingsCard(
+                        title: l10n.settings_share_app,
+                        iconPath: 'assets/icons/ic_share.png',
+                        onTap: () => vm.shareApp(context),
+                      ),
+                      SettingsCard(
+                        title: l10n.settings_feedback,
+                        iconPath: AppConstants.feedbackIcon,
+                        onTap: _sendFeedback,
+                      ),
+                      SettingsCard(
+                        title: l10n.settings_privacy_policy,
+                        iconPath: AppConstants.privacyIcon,
+                        onTap: () => vm.navigateToPrivacyPolicy(context),
+                      ),
+                    ]),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _sendFeedback() async {
+  const email = 'storenorthapps@gmail.com';
+  const subject = 'Plant Identifier App Feedback';
+  const body = 'Dear Plant Identifier Team,\n\n';
+
+  final uri = Uri.parse(
+    'mailto:$email?subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}',
+  );
+
+  try {
+    final launched = await launchUrl(uri);
+    if (!launched && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not open email. Please email us at storenorthapps@gmail.com'),
+        ),
+      );
+    }
+  } catch (_) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Could not open email. Please email us at storenorthapps@gmail.com'),
+      ),
+    );
+  }
+}
+}
+
+
+// Before Refact 12/03/26 04:06pm
+/*import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:plant_identifier_app/l10n/app_localizations.dart';
@@ -114,7 +250,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
     });
   }
-}
+}*/
 
 
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import '../../../utils/responsive_helper.dart';
 import '../../../view_models/onboarding_view_model.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
@@ -22,9 +21,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-    debugPrint('💣 ${widget.runtimeType} INIT STATE CALLED');
     AnalyticsService.logScreenView(screenName: 'Onboarding');
-    debugPrint('📊 Analytics: Onboarding screen viewed');
   }
 
   @override
@@ -35,51 +32,43 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('💣 ${runtimeType} BUILD CALLED');
     final l10n = AppLocalizations.of(context);
-
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isSmallDevice = screenHeight < 700;
-    final isTablet = screenWidth > 600;
-
-
+    final media = MediaQuery.of(context);
+    final isTablet = media.size.shortestSide >= 600;
 
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Consumer<OnboardingViewModel>(
           builder: (context, viewModel, child) {
-            return Column(
-              children: [
-                Expanded(
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      viewModel.setCurrentPage(index);
-                    },
-                    children: [
-                      for (int i = 0; i < viewModel.onboardingPages.length; i++)
-                        _buildPageContent(
-                          context,
-                          viewModel.onboardingPages[i],
-                          l10n,
-                          screenHeight,
-                          screenWidth,
-                          isSmallDevice,
-                          isTablet,
-                        ),
-                    ],
-                  ),
-                ),
-                _buildBottomSection(
-                    context,
-                    viewModel,
-                    l10n,
-                    screenHeight,
-                    isSmallDevice
-                ),
-              ],
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: viewModel.setCurrentPage,
+                        itemCount: viewModel.onboardingPages.length,
+                        itemBuilder: (context, index) {
+                          return _buildPageContent(
+                            context,
+                            viewModel.onboardingPages[index],
+                            l10n,
+                            isTablet,
+                          );
+                        },
+                      ),
+                    ),
+                    _buildBottomSection(
+                      context,
+                      viewModel,
+                      l10n,
+                      constraints.maxWidth,
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),
@@ -88,61 +77,67 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildPageContent(
-      BuildContext context,
-      OnboardingModel page,
-      AppLocalizations l10n,
-      double screenHeight,
-      double screenWidth,
-      bool isSmallDevice,
-      bool isTablet,
-      ) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      child: Column(
-        children: [
-          SizedBox(height: screenHeight * (isSmallDevice ? 0.08 : 0.10)),
-          _buildImageSection(context, page, screenHeight, screenWidth, isTablet),
-          SizedBox(height: screenHeight * (isSmallDevice ? 0.05 : 0.13)),
-          // _buildTextContent(context, page, l10n, screenWidth, isSmallDevice, isTablet),
-          _buildTextContent(context, page, l10n, screenHeight, screenWidth, isSmallDevice, isTablet),
-          const Spacer(),
-        ],
-      ),
+    BuildContext context,
+    OnboardingModel page,
+    AppLocalizations l10n,
+    bool isTablet,
+  ) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxContentWidth = isTablet ? 680.0 : 420.0;
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxContentWidth),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    _buildImageSection(context, page, isTablet),
+                    const SizedBox(height: 24),
+                    _buildTextContent(context, page, l10n, isTablet),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
   Widget _buildImageSection(
-      BuildContext context,
-      OnboardingModel page,
-      double screenHeight,
-      double screenWidth,
-      bool isTablet,
-      ) {
-    double containerSize = isTablet
-        ? screenWidth * 0.50
-        : screenWidth * 0.80;
-
-    double imageSize = containerSize * 0.8;
+    BuildContext context,
+    OnboardingModel page,
+    bool isTablet,
+  ) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final containerSize = isTablet
+        ? (screenWidth * 0.34).clamp(220.0, 360.0)
+        : (screenWidth * 0.66).clamp(220.0, 320.0);
 
     return Container(
       width: containerSize,
       height: containerSize,
       decoration: BoxDecoration(
         color: AppColors.lightGreenBg,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
         child: Image.asset(
           page.imagePath,
-          width: imageSize,
-          height: imageSize,
+          width: containerSize * 0.8,
+          height: containerSize * 0.8,
           fit: BoxFit.contain,
           errorBuilder: (context, error, stackTrace) {
             return Icon(
               Icons.local_florist,
               color: AppColors.primaryGreen,
-              size: imageSize * 0.5,
+              size: containerSize * 0.4,
             );
           },
         ),
@@ -150,92 +145,79 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-Widget _buildTextContent(
-  BuildContext context,
-  OnboardingModel page,
-  AppLocalizations l10n,
-  double screenHeight,
-  double screenWidth,
-  bool isSmallDevice,
-  bool isTablet,
-) {
-  double horizontalPadding = isTablet
-      ? screenWidth * 0.19
-      : screenWidth * 0.13;
-
-  return Container(
-    width: double.infinity,
-    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Title - font-weight: 900 (Black), line-height: 100%
-        Text(
-          _getLocalizedString(l10n, page.titleKey),
-          textAlign: TextAlign.center,
-          style: AppTypography.onboardingTitle.copyWith(
-            fontSize: isTablet ? 32 : (isSmallDevice ? 20 : 22), // Changed to 22px
-            fontWeight: FontWeight.w900, // Added Black weight
-            height: 1.0, // Changed to 100% line-height
-          ),
-        ),
-        
-        SizedBox(height: screenHeight * 0.02),
-        
-        // Description - font-weight: 500 (Medium), line-height: 100%
-        Text(
-          _getLocalizedString(l10n, page.descriptionKey),
-          textAlign: TextAlign.center,
-          style: AppTypography.onboardingBody.copyWith(
-            fontSize: isTablet ? 18 : (isSmallDevice ? 14 : 16),
-            fontWeight: FontWeight.w500, // Medium weight (already correct)
-            height: 1.3, // Changed to 100% line-height
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-  Widget _buildBottomSection(
-      BuildContext context,
-      OnboardingViewModel viewModel,
-      AppLocalizations l10n,
-      double screenHeight,
-      bool isSmallDevice,
-      ) {
-    return Container(
-      padding: EdgeInsets.only(
-      //  bottom: screenHeight * (isSmallDevice ? 0.03 : 0.05),
-      bottom: 50
-      ),
+  Widget _buildTextContent(
+    BuildContext context,
+    OnboardingModel page,
+    AppLocalizations l10n,
+    bool isTablet,
+  ) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: isTablet ? 24 : 8),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
-          _buildPageIndicators(context, viewModel),
-          SizedBox(height: screenHeight * 0.05),
-          _buildActionButton(context, viewModel, l10n),
+          Text(
+            _getLocalizedString(l10n, page.titleKey),
+            textAlign: TextAlign.center,
+            style: AppTypography.onboardingTitle.copyWith(
+              fontSize: isTablet ? 34 : 28,
+              fontWeight: FontWeight.w900,
+              height: 1.05,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            _getLocalizedString(l10n, page.descriptionKey),
+            textAlign: TextAlign.center,
+            style: AppTypography.onboardingBody.copyWith(
+              fontSize: isTablet ? 22 : 17,
+              fontWeight: FontWeight.w500,
+              height: 1.35,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildPageIndicators(BuildContext context, OnboardingViewModel viewModel) {
-    return Center(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(
-          viewModel.totalPages,
-              (index) => Container(
-            width: index == viewModel.currentPageIndex ? 36 : 8,
-            height: 8,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: index == viewModel.currentPageIndex
-                  ? AppColors.activeDot
-                  : AppColors.inactiveDot,
-              borderRadius: BorderRadius.circular(100),
-            ),
+  Widget _buildBottomSection(
+    BuildContext context,
+    OnboardingViewModel viewModel,
+    AppLocalizations l10n,
+    double maxWidth,
+  ) {
+    final bottomInset = MediaQuery.of(context).viewPadding.bottom;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(16, 8, 16, 12 + bottomInset),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth > 720 ? 560 : maxWidth),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildPageIndicators(viewModel),
+            const SizedBox(height: 18),
+            _buildActionButton(context, viewModel, l10n),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPageIndicators(OnboardingViewModel viewModel) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(
+        viewModel.totalPages,
+        (index) => AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          width: index == viewModel.currentPageIndex ? 36 : 8,
+          height: 8,
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            color: index == viewModel.currentPageIndex
+                ? AppColors.activeDot
+                : AppColors.inactiveDot,
+            borderRadius: BorderRadius.circular(100),
           ),
         ),
       ),
@@ -243,18 +225,16 @@ Widget _buildTextContent(
   }
 
   Widget _buildActionButton(
-      BuildContext context,
-      OnboardingViewModel viewModel,
-      AppLocalizations l10n,
-      ) {
+    BuildContext context,
+    OnboardingViewModel viewModel,
+    AppLocalizations l10n,
+  ) {
     final currentPage = viewModel.onboardingPages[viewModel.currentPageIndex];
     final navigationService = Provider.of<NavigationService>(context, listen: false);
-    final screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      width: screenWidth * 0.9,
-      height: 60,
-      margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
       child: ElevatedButton(
         onPressed: () async {
           if (viewModel.isLastPage) {
@@ -275,9 +255,7 @@ Widget _buildTextContent(
         ),
         child: Text(
           _getLocalizedString(l10n, currentPage.buttonTextKey),
-          style: AppTypography.buttonText.copyWith(
-            fontSize: 18,
-          ),
+          style: AppTypography.buttonText.copyWith(fontSize: 18),
         ),
       ),
     );
@@ -306,3 +284,292 @@ Widget _buildTextContent(
     }
   }
 }
+
+// Before Refactoring 12/03/26 - 02:24pm 
+/*import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../view_models/onboarding_view_model.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_typography.dart';
+import '../../../data/models/onboarding_model.dart';
+import '../../../app/navigation/navigation_service.dart';
+import '../../data/services/analytics_service.dart';
+import '../../l10n/app_localizations.dart';
+
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  final PageController _pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    AnalyticsService.logScreenView(screenName: 'Onboarding');
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final media = MediaQuery.of(context);
+    final isTablet = media.size.shortestSide >= 600;
+
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: Consumer<OnboardingViewModel>(
+          builder: (context, viewModel, child) {
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: viewModel.setCurrentPage,
+                        itemCount: viewModel.onboardingPages.length,
+                        itemBuilder: (context, index) {
+                          return _buildPageContent(
+                            context,
+                            viewModel.onboardingPages[index],
+                            l10n,
+                            isTablet,
+                          );
+                        },
+                      ),
+                    ),
+                    _buildBottomSection(
+                      context,
+                      viewModel,
+                      l10n,
+                      constraints.maxWidth,
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPageContent(
+    BuildContext context,
+    OnboardingModel page,
+    AppLocalizations l10n,
+    bool isTablet,
+  ) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxContentWidth = isTablet ? 680.0 : 420.0;
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxContentWidth),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    _buildImageSection(context, page, isTablet),
+                    const SizedBox(height: 24),
+                    _buildTextContent(context, page, l10n, isTablet),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildImageSection(
+    BuildContext context,
+    OnboardingModel page,
+    bool isTablet,
+  ) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final containerSize = isTablet
+        ? (screenWidth * 0.34).clamp(220.0, 360.0)
+        : (screenWidth * 0.66).clamp(220.0, 320.0);
+
+    return Container(
+      width: containerSize,
+      height: containerSize,
+      decoration: BoxDecoration(
+        color: AppColors.lightGreenBg,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Center(
+        child: Image.asset(
+          page.imagePath,
+          width: containerSize * 0.8,
+          height: containerSize * 0.8,
+          fit: BoxFit.contain,
+          errorBuilder: (context, error, stackTrace) {
+            return Icon(
+              Icons.local_florist,
+              color: AppColors.primaryGreen,
+              size: containerSize * 0.4,
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextContent(
+    BuildContext context,
+    OnboardingModel page,
+    AppLocalizations l10n,
+    bool isTablet,
+  ) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: isTablet ? 24 : 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            _getLocalizedString(l10n, page.titleKey),
+            textAlign: TextAlign.center,
+            style: AppTypography.onboardingTitle.copyWith(
+              fontSize: isTablet ? 34 : 28,
+              fontWeight: FontWeight.w900,
+              height: 1.05,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            _getLocalizedString(l10n, page.descriptionKey),
+            textAlign: TextAlign.center,
+            style: AppTypography.onboardingBody.copyWith(
+              fontSize: isTablet ? 22 : 17,
+              fontWeight: FontWeight.w500,
+              height: 1.35,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomSection(
+    BuildContext context,
+    OnboardingViewModel viewModel,
+    AppLocalizations l10n,
+    double maxWidth,
+  ) {
+    final bottomInset = MediaQuery.of(context).viewPadding.bottom;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(16, 8, 16, 12 + bottomInset),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth > 720 ? 560 : maxWidth),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildPageIndicators(context, viewModel),
+            const SizedBox(height: 18),
+            _buildActionButton(context, viewModel, l10n),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPageIndicators(BuildContext context, OnboardingViewModel viewModel) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(
+        viewModel.totalPages,
+        (index) => AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          width: index == viewModel.currentPageIndex ? 36 : 8,
+          height: 8,
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            color: index == viewModel.currentPageIndex
+                ? AppColors.activeDot
+                : AppColors.inactiveDot,
+            borderRadius: BorderRadius.circular(100),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton(
+    BuildContext context,
+    OnboardingViewModel viewModel,
+    AppLocalizations l10n,
+  ) {
+    final currentPage = viewModel.onboardingPages[viewModel.currentPageIndex];
+    final navigationService = Provider.of<NavigationService>(context, listen: false);
+
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+        onPressed: () async {
+          if (viewModel.isLastPage) {
+            await viewModel.completeOnboarding();
+            navigationService.pushReplacementNamed('/language', arguments: {'showBackButton': false});
+          } else {
+            _pageController.nextPage(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryGreen,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+          ),
+        ),
+        child: Text(
+          _getLocalizedString(l10n, currentPage.buttonTextKey),
+          style: AppTypography.buttonText.copyWith(fontSize: 18),
+        ),
+      ),
+    );
+  }
+
+  String _getLocalizedString(AppLocalizations l10n, String key) {
+    switch (key) {
+      case 'onboarding_title_identify':
+        return l10n.onboarding_title_identify;
+      case 'onboarding_body_identify':
+        return l10n.onboarding_body_identify;
+      case 'onboarding_title_diagnose':
+        return l10n.onboarding_title_diagnose;
+      case 'onboarding_body_diagnose':
+        return l10n.onboarding_body_diagnose;
+      case 'onboarding_title_care':
+        return l10n.onboarding_title_care;
+      case 'onboarding_body_care':
+        return l10n.onboarding_body_care;
+      case 'onboarding_next':
+        return l10n.onboarding_next;
+      case 'onboarding_lets_go':
+        return l10n.onboarding_lets_go;
+      default:
+        return key;
+    }
+  }
+}*/

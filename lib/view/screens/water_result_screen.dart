@@ -1,6 +1,538 @@
 import 'package:flutter/material.dart';
 import 'package:plant_identifier_app/data/models/water_calculation_model.dart';
 import 'package:provider/provider.dart';
+import '../../../app/navigation/app_routes.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../view_models/water_calculation_view_model.dart';
+import '../../data/services/translation_service.dart';
+import '../../l10n/app_localizations.dart';
+
+class WaterResultScreen extends StatefulWidget {
+  const WaterResultScreen({super.key});
+
+  @override
+  State<WaterResultScreen> createState() => _WaterResultScreenState();
+}
+
+class _WaterResultScreenState extends State<WaterResultScreen> {
+  Map<String, String>? _translatedTexts;
+  bool _isTranslating = false;
+  bool _didInitialize = false;
+  String? _lastTranslationKey;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInitialize) return;
+    _didInitialize = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeScreen());
+  }
+
+  void _initializeScreen() {
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final viewModel = context.read<WaterCalculationViewModel>();
+
+    if (args == null || args['scanData'] == null) {
+      return;
+    }
+
+    viewModel.loadFromHistory(
+      args['scanData'] as Map<String, dynamic>,
+      args['imagePath'] as String?,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
+
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 860),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                isTablet ? 24 : 16,
+                isTablet ? 16 : 12,
+                isTablet ? 24 : 16,
+                16,
+              ),
+              child: Consumer<WaterCalculationViewModel>(
+                builder: (context, viewModel, _) {
+                  if (viewModel.isLoading) {
+                    return _buildLoadingState(context, isTablet);
+                  }
+
+                  if (viewModel.error.isNotEmpty) {
+                    return _buildErrorState(context, viewModel.error, isTablet);
+                  }
+
+                  final calculation = viewModel.waterCalculation;
+                  if (calculation == null) {
+                    return _buildErrorState(
+                      context,
+                      AppLocalizations.of(context).water_no_data,
+                      isTablet,
+                    );
+                  }
+
+                  _scheduleTranslationIfNeeded(calculation);
+
+                  return _buildSuccessState(context, calculation, isTablet);
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _scheduleTranslationIfNeeded(WaterCalculation calculation) {
+    final locale = Localizations.localeOf(context).languageCode;
+    final translationKey = [
+      locale,
+      calculation.explanation,
+      calculation.frequency,
+      calculation.bestTime,
+      ...calculation.tips,
+    ].join('|');
+
+    if (locale == 'en') {
+      _translatedTexts = null;
+      _lastTranslationKey = translationKey;
+      return;
+    }
+
+    if (_isTranslating || _lastTranslationKey == translationKey) {
+      return;
+    }
+
+    _lastTranslationKey = translationKey;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _translateAllText(calculation);
+      }
+    });
+  }
+
+  Widget _buildLoadingState(BuildContext context, bool isTablet) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const CircularProgressIndicator(color: AppColors.primaryGreen),
+          const SizedBox(height: 16),
+          Text(
+            AppLocalizations.of(context).water_calculating,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'DMSans',
+              fontSize: isTablet ? 18 : 16,
+              color: AppColors.darkGray,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(BuildContext context, String error, bool isTablet) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 560),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.error_outline,
+                color: AppColors.mediumGray,
+                size: isTablet ? 56 : 48,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                AppLocalizations.of(context).water_error_title,
+                style: TextStyle(
+                  fontFamily: 'DMSans',
+                  fontSize: isTablet ? 20 : 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.black,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                error,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'DMSans',
+                  fontSize: isTablet ? 16 : 14,
+                  color: AppColors.darkGray,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.home,
+                  (route) => route.isFirst,
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryGreen,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context).water_back_home,
+                  style: const TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSuccessState(
+    BuildContext context,
+    WaterCalculation calculation,
+    bool isTablet,
+  ) {
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 620),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildResultCard(context, calculation, isTablet),
+                        const SizedBox(height: 20),
+                        _buildAdditionalInfo(context, calculation, isTablet),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildThankYouButton(context, isTablet),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildResultCard(
+    BuildContext context,
+    WaterCalculation calculation,
+    bool isTablet,
+  ) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: isTablet ? 108 : 88,
+          height: isTablet ? 108 : 88,
+          decoration: BoxDecoration(
+            color: AppColors.primaryGreen.withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Icon(
+              Icons.water_drop,
+              color: AppColors.primaryGreen,
+              size: isTablet ? 64 : 52,
+            ),
+          ),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          calculation.waterAmount,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'DMSans',
+            fontWeight: FontWeight.w700,
+            fontSize: isTablet ? 36 : 28,
+            color: AppColors.primaryGreen,
+          ),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          AppLocalizations.of(context).water_plant_water_need,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'DMSans',
+            fontWeight: FontWeight.w600,
+            fontSize: isTablet ? 22 : 18,
+            color: AppColors.darkGray,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          _translatedTexts?['explanation'] ?? calculation.explanation,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'DMSans',
+            fontSize: isTablet ? 16 : 14,
+            color: AppColors.darkGray,
+            height: 1.45,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAdditionalInfo(
+    BuildContext context,
+    WaterCalculation calculation,
+    bool isTablet,
+  ) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.lightGreenBg.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle(
+            context,
+            AppLocalizations.of(context).water_schedule,
+            Icons.schedule,
+            isTablet,
+          ),
+          const SizedBox(height: 12),
+          _buildInfoRow(
+            AppLocalizations.of(context).water_frequency,
+            _translatedTexts?['frequency'] ?? calculation.frequency,
+            Icons.calendar_today,
+            isTablet,
+          ),
+          _buildInfoRow(
+            AppLocalizations.of(context).water_best_time,
+            _translatedTexts?['bestTime'] ?? calculation.bestTime,
+            Icons.access_time,
+            isTablet,
+          ),
+          const SizedBox(height: 14),
+          _buildSectionTitle(
+            context,
+            AppLocalizations.of(context).water_care_tips,
+            Icons.lightbulb_outline,
+            isTablet,
+          ),
+          const SizedBox(height: 12),
+          ...calculation.tips.asMap().entries.map((entry) {
+            final translatedTip = _translatedTexts?['tip_${entry.key}'] ?? entry.value;
+            return _buildTipItem(translatedTip, isTablet);
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(
+    BuildContext context,
+    String title,
+    IconData icon,
+    bool isTablet,
+  ) {
+    return Row(
+      children: [
+        Icon(icon, color: AppColors.primaryGreen, size: 18),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontFamily: 'DMSans',
+              fontWeight: FontWeight.w600,
+              fontSize: isTablet ? 16 : 14,
+              color: AppColors.black,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoRow(
+    String label,
+    String value,
+    IconData icon,
+    bool isTablet,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 16, color: AppColors.primaryGreen),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w500,
+                    fontSize: isTablet ? 15 : 14,
+                    color: AppColors.darkGray,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w400,
+                    fontSize: isTablet ? 15 : 14,
+                    color: AppColors.black,
+                    height: 1.35,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTipItem(String tip, bool isTablet) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(
+            Icons.check_circle,
+            size: 16,
+            color: AppColors.primaryGreen,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              tip,
+              style: TextStyle(
+                fontFamily: 'DMSans',
+                fontWeight: FontWeight.w400,
+                fontSize: isTablet ? 15 : 13,
+                color: AppColors.darkGray,
+                height: 1.35,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThankYouButton(BuildContext context, bool isTablet) {
+    return SizedBox(
+      width: double.infinity,
+      height: isTablet ? 58 : 54,
+      child: ElevatedButton(
+        onPressed: () => Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.home,
+          (route) => route.isFirst,
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryGreen,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+          ),
+        ),
+        child: Text(
+          AppLocalizations.of(context).water_thank_you,
+          style: TextStyle(
+            fontFamily: 'DMSans',
+            fontWeight: FontWeight.w700,
+            fontSize: isTablet ? 18 : 16,
+            color: AppColors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _translateAllText(WaterCalculation calculation) async {
+    if (_isTranslating) return;
+
+    setState(() => _isTranslating = true);
+
+    try {
+      final locale = Localizations.localeOf(context).languageCode;
+      if (locale == 'en') {
+        if (mounted) {
+          setState(() {
+            _translatedTexts = null;
+            _isTranslating = false;
+          });
+        }
+        return;
+      }
+
+      final textsToTranslate = <String, String>{
+        'explanation': calculation.explanation,
+        'frequency': calculation.frequency,
+        'bestTime': calculation.bestTime,
+      };
+
+      for (int i = 0; i < calculation.tips.length; i++) {
+        textsToTranslate['tip_$i'] = calculation.tips[i];
+      }
+
+      final results = <String, String>{};
+      await Future.wait(
+        textsToTranslate.entries.map((entry) async {
+          final translated =
+              await TranslationService.translateText(entry.value, locale);
+          results[entry.key] = translated;
+        }),
+      );
+
+      if (!mounted) return;
+      setState(() {
+        _translatedTexts = results;
+        _isTranslating = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _isTranslating = false);
+    }
+  }
+}
+
+
+
+// Still no Problem - Commenting out for Enhanced Responsiveness 13/03/26 - 08:08am
+/*import 'package:flutter/material.dart';
+import 'package:plant_identifier_app/data/models/water_calculation_model.dart';
+import 'package:provider/provider.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/navigation/app_routes.dart';
 import '../../../view_models/water_calculation_view_model.dart';
@@ -535,7 +1067,7 @@ class _WaterResultScreen extends State<WaterResultScreen> {
       setState(() => _isTranslating = false);
     }
   }
-}
+}*/
 
 
 /*import 'package:flutter/material.dart';

@@ -1,5 +1,248 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../../app/navigation/app_routes.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../utils/constants.dart';
+import '../../l10n/app_localizations.dart';
+
+class ScannerPreviewScreen extends StatefulWidget {
+  const ScannerPreviewScreen({super.key});
+
+  @override
+  State<ScannerPreviewScreen> createState() => _ScannerPreviewScreenState();
+}
+
+class _ScannerPreviewScreenState extends State<ScannerPreviewScreen> {
+  final ImagePicker _imagePicker = ImagePicker();
+
+  File? _imageFile;
+  String _mode = 'identify';
+  bool _argsInitialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_argsInitialized) return;
+    _argsInitialized = true;
+
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is Map<String, dynamic>) {
+      _imageFile = args['imageFile'] as File?;
+      _mode = (args['mode'] ?? 'identify') as String;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
+    final horizontalPadding = isTablet ? 28.0 : 16.0;
+    final topSpacing = isTablet ? 10.0 : 6.0;
+    final controlsGap = isTablet ? 18.0 : 14.0;
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF1E1F24),
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 980),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(horizontalPadding, topSpacing, horizontalPadding, 10),
+              child: Column(
+                children: [
+                  _buildTopControls(),
+                  SizedBox(height: controlsGap),
+                  Expanded(child: _buildImagePreview(isTablet)),
+                  SizedBox(height: controlsGap),
+                  _buildBottomControls(isTablet),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTopControls() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildCircleIconButton(
+          icon: Icons.close,
+          onTap: () => Navigator.of(context).pop(),
+        ),
+        const SizedBox(width: 44, height: 44),
+      ],
+    );
+  }
+
+  Widget _buildImagePreview(bool isTablet) {
+    final radius = isTablet ? 16.0 : 12.0;
+
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppColors.black,
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(radius),
+        child: _imageFile != null
+            ? Image.file(
+                _imageFile!,
+                fit: BoxFit.cover,
+              )
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.photo, color: AppColors.white.withOpacity(0.5), size: isTablet ? 56 : 48),
+                    const SizedBox(height: 12),
+                    Text(
+                      AppLocalizations.of(context).preview_no_image,
+                      style: TextStyle(
+                        color: AppColors.white.withOpacity(0.75),
+                        fontSize: isTablet ? 18 : 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildBottomControls(bool isTablet) {
+    final labelStyle = TextStyle(
+      color: AppColors.white,
+      fontSize: isTablet ? 13 : 12,
+      fontWeight: FontWeight.w500,
+    );
+
+    return Row(
+      children: [
+        Expanded(
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: InkWell(
+              onTap: _pickDifferentImage,
+              borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      AppConstants.galleryIcon,
+                      width: isTablet ? 26 : 24,
+                      height: isTablet ? 28 : 26,
+                      colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      AppLocalizations.of(context).preview_gallery,
+                      style: labelStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        _buildConfirmButton(isTablet),
+        const Expanded(child: SizedBox()),
+      ],
+    );
+  }
+
+  Widget _buildConfirmButton(bool isTablet) {
+    final size = isTablet ? 64.0 : 58.0;
+    return InkWell(
+      onTap: _confirmImage,
+      borderRadius: BorderRadius.circular(size / 2),
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: AppColors.primaryGreen,
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.white, width: 2),
+        ),
+        child: const Center(
+          child: Icon(Icons.check, color: AppColors.white, size: 28),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCircleIconButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(22),
+      child: SizedBox(
+        width: 44,
+        height: 44,
+        child: Icon(icon, color: AppColors.white, size: 24),
+      ),
+    );
+  }
+
+  Future<void> _pickDifferentImage() async {
+    try {
+      final image = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 85,
+      );
+
+      if (image != null && mounted) {
+        setState(() {
+          _imageFile = File(image.path);
+        });
+      }
+    } catch (e) {
+      _showError('Gallery error: $e');
+    }
+  }
+
+  void _confirmImage() {
+    if (_imageFile == null) {
+      _showError(AppLocalizations.of(context).preview_select_image_error);
+      return;
+    }
+
+    if (_mode == 'water') {
+      Navigator.pushNamed(
+        context,
+        AppRoutes.waterQuestions,
+        arguments: {'imageFile': _imageFile, 'mode': _mode},
+      );
+      return;
+    }
+
+    Navigator.pushNamed(
+      context,
+      AppRoutes.processing,
+      arguments: {'imageFile': _imageFile, 'mode': _mode},
+    );
+  }
+
+  void _showError(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), duration: const Duration(seconds: 3)),
+    );
+  }
+}
+
+
+// Before Refact 12/03/26 02:51pm 
+/*import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../utils/responsive_helper.dart';
@@ -410,5 +653,4 @@ void _showError(String message) {
     ),
   );
 }
-  
-}
+}*/

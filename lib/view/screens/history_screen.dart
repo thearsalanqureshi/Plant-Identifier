@@ -1,4 +1,444 @@
-import 'dart:math';
+import 'dart:math' as math;
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../../../app/navigation/app_routes.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../view_models/history_view_model.dart';
+import '../../data/models/history_model.dart';
+import '../../data/services/analytics_service.dart';
+import '../../l10n/app_localizations.dart';
+import '../widgets/history/history_card.dart';
+import '../widgets/history/history_tabs.dart';
+
+class HistoryScreen extends StatefulWidget {
+  const HistoryScreen({super.key});
+
+  @override
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen> {
+  bool _hasLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    AnalyticsService.logScreenView(screenName: 'History');
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadHistory());
+  }
+
+  void _loadHistory() {
+    if (_hasLoaded || !mounted) return;
+    context.read<HistoryViewModel>().loadHistory();
+    _hasLoaded = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final isTablet = width >= 600;
+    final horizontalPadding = isTablet ? 24.0 : 16.0;
+    final maxContentWidth = isTablet ? 980.0 : 560.0;
+
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxContentWidth),
+            child: Column(
+              children: [
+                SizedBox(height: isTablet ? 18 : 12),
+                Text(
+                  AppLocalizations.of(context).history_title,
+                  style: TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w700,
+                    fontSize: isTablet ? 32 : 20,
+                    height: 1.1,
+                    color: const Color(0xFF1B3B1C),
+                  ),
+                ),
+                SizedBox(height: isTablet ? 16 : 12),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Consumer<HistoryViewModel>(
+                    builder: (context, vm, _) {
+                      return HistoryTabs(
+                        showMyPlants: vm.showMyPlants,
+                        myPlantsCount: vm.myPlantsCount,
+                        historyCount: vm.historyCount,
+                        onTabChanged: vm.toggleView,
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: _buildContent(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    return Consumer<HistoryViewModel>(
+      builder: (context, vm, _) {
+        if (vm.isLoading) {
+          return const Center(
+            child: CircularProgressIndicator(color: AppColors.primaryGreen),
+          );
+        }
+
+        if (vm.allHistory.isEmpty) {
+          return _buildEmptyState(vm.showMyPlants);
+        }
+
+        final scans = vm.showMyPlants ? vm.myPlants : vm.allHistory;
+        if (scans.isEmpty) {
+          return _buildEmptyState(vm.showMyPlants);
+        }
+
+        return RefreshIndicator(
+          color: AppColors.primaryGreen,
+          onRefresh: () async => vm.loadHistory(),
+          child: ListView.separated(
+            physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+            padding: const EdgeInsets.only(top: 6, bottom: 16),
+            itemCount: scans.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 0),
+            itemBuilder: (context, index) {
+              final scan = scans[index];
+              return HistoryCard(
+                scan: scan,
+                onTap: () => _handleCardTap(scan),
+                onMorePressed: () => _showActionSheet(context, scan, vm),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildEmptyState(bool showMyPlants) {
+    final title = showMyPlants
+        ? AppLocalizations.of(context).history_empty_my_plants
+        : AppLocalizations.of(context).history_empty_history;
+
+    final description = showMyPlants
+        ? AppLocalizations.of(context).history_empty_my_plants_desc
+        : AppLocalizations.of(context).history_empty_history_desc;
+
+    final width = MediaQuery.sizeOf(context).width;
+    final imageSize = width >= 600 ? 280.0 : math.min(width * 0.5, 180.0);
+
+    return Center(
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              'assets/images/empty_history.svg',
+              width: imageSize,
+              height: imageSize,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'DMSans',
+                fontWeight: FontWeight.w700,
+                fontSize: width >= 600 ? 32 : 18,
+                color: AppColors.black,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              description,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'DMSans',
+                fontWeight: FontWeight.w400,
+                fontSize: width >= 600 ? 24 : 14,
+                color: AppColors.darkGray,
+                height: 1.35,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _handleCardTap(ScanHistory scan) {
+    switch (scan.type) {
+      case 'identify':
+        Navigator.pushNamed(
+          context,
+          AppRoutes.plantIdentificationResult,
+          arguments: {
+            'scanData': scan.resultData,
+            'imagePath': scan.imagePath,
+            'fromHistory': true,
+            'scanId': scan.id,
+          },
+        );
+        break;
+      case 'diagnose':
+        Navigator.pushNamed(
+          context,
+          AppRoutes.plantDiagnosisResult,
+          arguments: {
+            'scanData': scan.resultData,
+            'imagePath': scan.imagePath,
+          },
+        );
+        break;
+      case 'water':
+        Navigator.pushNamed(
+          context,
+          AppRoutes.waterResult,
+          arguments: {'scanData': scan.resultData},
+        );
+        break;
+      case 'light':
+        _showLightMeterResult(context, scan);
+        break;
+    }
+  }
+
+  void _showLightMeterResult(BuildContext context, ScanHistory scan) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context).history_light_dialog_title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('${AppLocalizations.of(context).history_light_level} ${scan.resultData?['luxValue']?.round() ?? 0} ${AppLocalizations.of(context).history_lux_unit}'),
+            Text('${AppLocalizations.of(context).history_status} ${scan.resultData?['lightStatus'] ?? 'Unknown'}'),
+            Text('${AppLocalizations.of(context).history_optimal_range} ${scan.resultData?['optimalRange'] ?? '1000-10000 LUX'}'),
+            Text('${AppLocalizations.of(context).history_time} ${_formatTimestamp(scan.timestamp)}'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations.of(context).history_close),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatTimestamp(DateTime timestamp) {
+    final now = DateTime.now();
+    final difference = now.difference(timestamp);
+
+    if (difference.inMinutes < 1) return 'Just now';
+    if (difference.inMinutes < 60) return '${difference.inMinutes} min ago';
+    if (difference.inHours < 24) return '${difference.inHours} hours ago';
+    if (difference.inDays < 7) return '${difference.inDays} days ago';
+    return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
+  }
+
+  void _showActionSheet(BuildContext context, ScanHistory scan, HistoryViewModel vm) {
+    final width = MediaQuery.sizeOf(context).width;
+    final isTablet = width >= 600;
+
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      backgroundColor: AppColors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+      ),
+      builder: (sheetContext) {
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: isTablet ? 680 : double.infinity),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildActionOption(
+                    context: sheetContext,
+                    icon: scan.isSaved ? Icons.bookmark_remove : Icons.bookmark_add,
+                    title: scan.isSaved
+                        ? AppLocalizations.of(context).history_remove_from_my_plants
+                        : AppLocalizations.of(context).history_save_to_my_plants,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      vm.toggleSaveStatus(scan.id);
+                    },
+                  ),
+                  const Divider(height: 1),
+                  _buildActionOption(
+                    context: sheetContext,
+                    icon: Icons.delete_outline,
+                    title: AppLocalizations.of(context).history_delete_button,
+                    isDelete: true,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _showDeleteConfirmation(context, scan, vm);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildActionOption({
+    required BuildContext context,
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+    bool isDelete = false,
+  }) {
+    final color = isDelete ? Colors.red : AppColors.black;
+
+    return InkWell(
+      onTap: onTap,
+      child: SizedBox(
+        height: 56,
+        child: Row(
+          children: [
+            Icon(icon, color: color, size: 24),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Text(
+                title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: 'DMSans',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: color,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(BuildContext context, ScanHistory scan, HistoryViewModel vm) {
+    final width = MediaQuery.sizeOf(context).width;
+    final isTablet = width >= 600;
+
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+      ),
+      builder: (sheetContext) {
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: isTablet ? 680 : double.infinity),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 22, 20, 18),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    AppLocalizations.of(context).history_delete_title,
+                    style: const TextStyle(
+                      fontFamily: 'DMSans',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20,
+                      color: Color(0xFF111827),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    AppLocalizations.of(context).history_delete_confirmation,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: 'DMSans',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      height: 1.4,
+                      color: Color(0xFF6B7280),
+                    ),
+                  ),
+                  const SizedBox(height: 22),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 52,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(sheetContext);
+                              vm.deleteScan(scan.id);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF589C68),
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                            child: Text(AppLocalizations.of(context).history_delete_button),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: SizedBox(
+                          height: 52,
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(sheetContext),
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Color(0xFFD1D5DB)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                            child: Text(AppLocalizations.of(context).history_cancel_button),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+
+
+// Before Refact 12/03/26 04:00pm
+/*import 'dart:math';
 // import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 // import 'package:hive/hive.dart';
@@ -85,7 +525,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
-        bottom: false,
         child: Column(
           children: [
             _buildScreenTitle(),
@@ -127,7 +566,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
             constraints: BoxConstraints(
-              maxWidth: min(constraints.maxWidth, 400),
+              maxWidth: min(constraints.maxWidth, 560),
             ),
             child: Consumer<HistoryViewModel>(
               builder: (context, viewModel, child) {
@@ -591,7 +1030,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Future getApplicationDocumentsDirectory() async {}
-}
+}*/
+
+
 
 
 /* ------- Correct but unresonsive  ---------
@@ -687,7 +1128,6 @@ Widget build(BuildContext context) {
   return Scaffold(
     backgroundColor: AppColors.white,
     body: SafeArea(
-      bottom: false,
       child: Column(
         children: [
           
@@ -769,7 +1209,7 @@ Widget _buildScreenTitle() {
         ),
         child: Container(
           constraints: BoxConstraints(
-            maxWidth: min(constraints.maxWidth, 400), 
+            maxWidth: min(constraints.maxWidth, 560), 
           ),
           child: Consumer<HistoryViewModel>(
             builder: (context, viewModel, child) {
