@@ -11,7 +11,7 @@ import '../models/water_calculation_model.dart';
 import 'analytics_service.dart';
 
 class GeminiService {
-  static const String apiKey = "AIzaSyDBclzBXD5TkzWB4Dcnud2O4yGOHNRMkTw";
+  static const String apiKey = "MY_API_KEY";
   static const String model = 'gemini-2.5-flash'; 
   static const Duration timeout = Duration(seconds: 30);
 
