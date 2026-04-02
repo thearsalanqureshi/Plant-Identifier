@@ -1,0 +1,1373 @@
+{
+  "@@locale": "fr",
+  
+  "app_name": "Identification de Plantes",
+  "@app_name": {
+    "description": "Nom de l'application affiché dans l'écran de démarrage et la barre d'application"
+  },
+  
+  "splash_title": "Identification de Plantes",
+  "@splash_title": {
+    "description": "Texte du titre sur l'écran de démarrage"
+  },
+  
+  "onboarding1Title": "Identifiez votre plante",
+  "@onboarding1Title": {
+    "description": "Titre de l'écran d'intégration 1 (clé alternative)"
+  },
+  
+  "onboarding1Body": "Scannez les plantes avec l'IA pour obtenir une identification instantanée et des informations détaillées sur toutes les espèces de plantes.",
+  "@onboarding1Body": {
+    "description": "Texte du corps de l'écran d'intégration 1 (clé alternative)"
+  },
+  
+  "onboarding2Title": "Diagnostiquez votre plante",
+  "@onboarding2Title": {
+    "description": "Titre de l'écran d'intégration 2 (clé alternative)"
+  },
+  
+  "onboarding2Body": "Détectez les maladies des plantes et obtenez des conseils d'entretien experts pour garder vos amis verts en bonne santé et prospères.",
+  "@onboarding2Body": {
+    "description": "Texte du corps de l'écran d'intégration 2 (clé alternative)"
+  },
+  
+  "onboarding3Title": "Entretien Simplifié",
+  "@onboarding3Title": {
+    "description": "Titre de l'écran d'intégration 3 (clé alternative)"
+  },
+  
+  "onboarding3Body": "Enregistrez l'historique des plantes, obtenez des conseils personnalisés et définissez des rappels pour ne jamais oublier un jour d'arrosage.",
+  "@onboarding3Body": {
+    "description": "Texte du corps de l'écran d'intégration 3 (clé alternative)"
+  },
+  
+  "next": "Suivant",
+  "@next": {
+    "description": "Bouton Suivant dans l'intégration (clé alternative)"
+  },
+  
+  "letsGo": "C'est Parti",
+  "@letsGo": {
+    "description": "Bouton C'est Parti sur le dernier écran d'intégration (clé alternative)"
+  },
+
+  "onboarding_identifying": "Identification de la Plante",
+  "@onboarding_identifying": {
+    "description": "Titre pour l'identification des plantes pendant l'intégration"
+  },
+  
+  "onboarding_diagnosing": "Diagnostic de la Plante",
+  "@onboarding_diagnosing": {
+    "description": "Titre pour le diagnostic des plantes pendant l'intégration"
+  },
+  
+  "onboarding_calculating_water": "Calcul des Besoins en Eau",
+  "@onboarding_calculating_water": {
+    "description": "Titre pour le calcul de l'eau pendant l'intégration"
+  },
+  
+  "onboarding_processing": "Traitement en Cours",
+  "@onboarding_processing": {
+    "description": "Titre de traitement par défaut pendant l'intégration"
+  },
+  
+  "onboarding_subtitle_identify": "Identification intelligente, rapide et précise",
+  "@onboarding_subtitle_identify": {
+    "description": "Sous-titre pour le mode identification"
+  },
+  
+  "onboarding_subtitle_diagnose": "Détection des maladies et problèmes possibles",
+  "@onboarding_subtitle_diagnose": {
+    "description": "Sous-titre pour le mode diagnostic"
+  },
+  
+  "onboarding_subtitle_water": "Analyse de la plante et de l'environnement...",
+  "@onboarding_subtitle_water": {
+    "description": "Sous-titre pour le mode calcul de l'eau"
+  },
+  
+  "onboarding_subtitle_default": "Veuillez patienter...",
+  "@onboarding_subtitle_default": {
+    "description": "Sous-titre de chargement par défaut"
+  },
+  
+  "onboarding_title_identify": "Identifiez votre plante",
+  "@onboarding_title_identify": {
+    "description": "Titre de l'écran d'intégration 1"
+  },
+  
+  "onboarding_body_identify": "Scannez les plantes avec l'IA pour obtenir une identification instantanée et des informations détaillées sur toutes les espèces de plantes.",
+  "@onboarding_body_identify": {
+    "description": "Texte du corps de l'écran d'intégration 1"
+  },
+  
+  "onboarding_title_diagnose": "Diagnostiquez votre plante",
+  "@onboarding_title_diagnose": {
+    "description": "Titre de l'écran d'intégration 2"
+  },
+  
+  "onboarding_body_diagnose": "Détectez les maladies des plantes et obtenez des conseils d'entretien experts pour garder vos amis verts en bonne santé et prospères.",
+  "@onboarding_body_diagnose": {
+    "description": "Texte du corps de l'écran d'intégration 2"
+  },
+  
+  "onboarding_title_care": "Entretien Simplifié",
+  "@onboarding_title_care": {
+    "description": "Titre de l'écran d'intégration 3"
+  },
+  
+  "onboarding_body_care": "Enregistrez l'historique des plantes, obtenez des conseils personnalisés et définissez des rappels pour ne jamais oublier un jour d'arrosage.",
+  "@onboarding_body_care": {
+    "description": "Texte du corps de l'écran d'intégration 3"
+  },
+  
+  "onboarding_next": "Suivant",
+  "@onboarding_next": {
+    "description": "Bouton Suivant dans l'intégration"
+  },
+  
+  "onboarding_lets_go": "C'est Parti",
+  "@onboarding_lets_go": {
+    "description": "Bouton C'est Parti sur le dernier écran d'intégration"
+  },
+  
+  "home_title": "Identification de Plantes",
+  "@home_title": {
+    "description": "Titre de la barre d'application de l'écran d'accueil"
+  },
+  
+  "appBarTitle": "Green Scan",
+  "@appBarTitle": {
+    "description": "Titre de la barre d'application pour l'écran principal"
+  },
+  
+  "home_identify_subtitle": "Reconnaissez n'importe quelle plante",
+  "@home_identify_subtitle": {
+    "description": "Sous-titre pour la carte de fonctionnalité d'identification sur l'écran d'accueil"
+  },
+  
+  "home_diagnose_subtitle": "Vérifiez la santé de votre plante",
+  "@home_diagnose_subtitle": {
+    "description": "Sous-titre pour la carte de fonctionnalité de diagnostic sur l'écran d'accueil"
+  },
+  
+  "home_water_subtitle": "Optimisez l'arrosage de votre plante",
+  "@home_water_subtitle": {
+    "description": "Sous-titre pour la carte de fonctionnalité du calculateur d'eau sur l'écran d'accueil"
+  },
+  
+  "home_light_subtitle": "Mesurez l'éclairage optimal",
+  "@home_light_subtitle": {
+    "description": "Sous-titre pour la carte de fonctionnalité du luxmètre sur l'écran d'accueil"
+  },
+  
+  "home_feature_not_available": "Fonctionnalité {featureId} non disponible",
+  "@home_feature_not_available": {
+    "description": "Message d'erreur lorsqu'une fonctionnalité est indisponible",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "ID de la fonctionnalité indisponible"
+      }
+    }
+  },
+  
+  "selectLanguage": "Choisir la langue",
+  "@selectLanguage": {
+    "description": "Titre de l'écran de sélection de la langue"
+  },
+  
+  "languageEnglish": "Anglais",
+  "languageSpanish": "Espagnol",
+  "languageFrench": "Français",
+
+  
+  "english": "Anglais",
+  "@english": {
+    "description": "Nom de la langue anglaise"
+  },
+  
+  "urdu": "Ourdou",
+  "@urdu": {
+    "description": "Nom de la langue ourdoue"
+  },
+  
+  "german": "Allemand",
+  "@german": {
+    "description": "Nom de la langue allemande"
+  },
+  
+  "french": "Français",
+  "@french": {
+    "description": "Nom de la langue française"
+  },
+  
+  "arabic": "Arabe",
+  "@arabic": {
+    "description": "Nom de la langue arabe"
+  },
+  
+  "spanish": "Espagnol",
+  "@spanish": {
+    "description": "Nom de la langue espagnole"
+  },
+  
+  "japanese": "Japonais",
+  "@japanese": {
+    "description": "Nom de la langue japonaise"
+  },
+  
+  "korean": "Coréen",
+  "@korean": {
+    "description": "Nom de la langue coréenne"
+  },
+  
+  "identify": "Identifier",
+  "@identify": {
+    "description": "Étiquette du bouton ou de l'onglet pour la fonctionnalité d'identification"
+  },
+  
+  "diagnose": "Diagnostiquer",
+  "@diagnose": {
+    "description": "Étiquette du bouton ou de l'onglet pour la fonctionnalité de diagnostic"
+  },
+  
+  "scanner_mode_identify": "Identifier la plante",
+  "@scanner_mode_identify": {
+    "description": "Indicateur de mode scanner pour l'identification des plantes"
+  },
+  
+  "scanner_identify_plant": "Identifier la plante",
+  "@scanner_identify_plant": {
+    "description": "Bouton/étiquette d'identification de plante sur l'écran du scanner"
+  },
+  
+  "scanner_mode_diagnose": "Diagnostiquer la plante",
+  "@scanner_mode_diagnose": {
+    "description": "Indicateur de mode scanner pour le diagnostic des plantes"
+  },
+  
+  "scanner_diagnose_plant": "Diagnostiquer la plante",
+  "@scanner_diagnose_plant": {
+    "description": "Bouton/étiquette de diagnostic de plante sur l'écran du scanner"
+  },
+  
+  "scanner_mode_water": "Calcul d'eau",
+  "@scanner_mode_water": {
+    "description": "Indicateur de mode scanner pour le calcul de l'eau"
+  },
+  
+  "scanner_water_calculation": "Calcul d'eau",
+  "@scanner_water_calculation": {
+    "description": "Bouton/étiquette de calcul d'eau sur l'écran du scanner"
+  },
+  
+  "scanner_mode_default": "Mode Scan",
+  "@scanner_mode_default": {
+    "description": "Texte du mode scanner par défaut"
+  },
+  
+  "scanner_scan_mode": "Mode Scan",
+  "@scanner_scan_mode": {
+    "description": "Indicateur de mode sur l'écran du scanner"
+  },
+  
+  "scanner_capture_error": "Échec de la capture d'image",
+  "@scanner_capture_error": {
+    "description": "Message d'erreur en cas d'échec de la capture d'image"
+  },
+  
+  "scanner_gallery_error": "Échec de la sélection de l'image",
+  "@scanner_gallery_error": {
+    "description": "Message d'erreur en cas d'échec de la sélection d'image depuis la galerie"
+  },
+  
+  "scanner_take_photo": "Prendre une photo",
+  "@scanner_take_photo": {
+    "description": "Bouton pour prendre une photo dans le scanner"
+  },
+  
+  "scanner_retake": "Reprendre",
+  "@scanner_retake": {
+    "description": "Bouton pour reprendre une photo"
+  },
+  
+  "scanner_use_photo": "Utiliser la photo",
+  "@scanner_use_photo": {
+    "description": "Bouton pour utiliser la photo prise"
+  },
+  
+  "preview_gallery": "Galerie",
+  "@preview_gallery": {
+    "description": "Texte du bouton Galerie dans l'écran de prévisualisation"
+  },
+  
+  "preview_no_image": "Aucune image",
+  "@preview_no_image": {
+    "description": "Texte de remplacement quand aucune image n'est sélectionnée"
+  },
+  
+  "preview_select_image_error": "Veuillez d'abord sélectionner une image",
+  "@preview_select_image_error": {
+    "description": "Message d'erreur en essayant de continuer sans sélectionner d'image"
+  },
+  
+  "processing_title_identify": "Identification de la Plante",
+  "@processing_title_identify": {
+    "description": "Titre de l'écran de traitement pour l'identification"
+  },
+  
+  "processing_identifying": "Identification de la Plante",
+  "@processing_identifying": {
+    "description": "Texte d'identification sur l'écran de traitement"
+  },
+  
+  "processing_title_diagnose": "Diagnostic de la Plante",
+  "@processing_title_diagnose": {
+    "description": "Titre de l'écran de traitement pour le diagnostic"
+  },
+  
+  "processing_diagnosing": "Diagnostic de la Plante",
+  "@processing_diagnosing": {
+    "description": "Texte de diagnostic sur l'écran de traitement"
+  },
+  
+  "processing_title_water": "Calcul des Besoins en Eau",
+  "@processing_title_water": {
+    "description": "Titre de l'écran de traitement pour le calcul de l'eau"
+  },
+  
+  "processing_calculating_water": "Calcul des Besoins en Eau",
+  "@processing_calculating_water": {
+    "description": "Texte de calcul de l'eau sur l'écran de traitement"
+  },
+  
+  "processing_title_default": "Traitement en Cours",
+  "@processing_title_default": {
+    "description": "Titre par défaut de l'écran de traitement"
+  },
+  
+  "processing_processing": "Traitement en Cours",
+  "@processing_processing": {
+    "description": "Texte par défaut de l'écran de traitement"
+  },
+  
+  "processing_subtitle_identify": "Identification intelligente, rapide et précise",
+  "@processing_subtitle_identify": {
+    "description": "Sous-titre de traitement pour l'identification"
+  },
+  
+  "processing_smart_fast_accurate": "Identification intelligente, rapide et précise",
+  "@processing_smart_fast_accurate": {
+    "description": "Sous-titre de traitement pour l'identification"
+  },
+  
+  "processing_subtitle_diagnose": "Détection des maladies et problèmes possibles",
+  "@processing_subtitle_diagnose": {
+    "description": "Sous-titre de traitement pour le diagnostic"
+  },
+  
+  "processing_spotting_diseases": "Détection des maladies et problèmes possibles",
+  "@processing_spotting_diseases": {
+    "description": "Sous-titre de traitement pour le diagnostic"
+  },
+  
+  "processing_subtitle_water": "Analyse de la plante et de l'environnement...",
+  "@processing_subtitle_water": {
+    "description": "Sous-titre de traitement pour le calcul de l'eau"
+  },
+  
+  "processing_analyzing": "Analyse de la plante et de l'environnement...",
+  "@processing_analyzing": {
+    "description": "Sous-titre de traitement pour le calcul de l'eau"
+  },
+  
+  "processing_subtitle_default": "Veuillez patienter...",
+  "@processing_subtitle_default": {
+    "description": "Sous-titre de traitement par défaut"
+  },
+  
+  "processing_please_wait": "Veuillez patienter...",
+  "@processing_please_wait": {
+    "description": "Sous-titre de traitement par défaut"
+  },
+  
+  "result_plant_identified": "Plante Identifiée",
+  "@result_plant_identified": {
+    "description": "Titre de l'écran de résultat d'identification de plante"
+  },
+  
+  "result_about_plant": "À propos de la plante",
+  "@result_about_plant": {
+    "description": "Titre de section pour la description de la plante"
+  },
+  
+  "result_climate_requirements": "Exigences Climatiques",
+  "@result_climate_requirements": {
+    "description": "Titre de section pour les informations climatiques"
+  },
+  
+  "result_temperature": "Température",
+  "@result_temperature": {
+    "description": "Étiquette pour les besoins en température"
+  },
+  
+  "result_light": "Lumière",
+  "@result_light": {
+    "description": "Étiquette pour les besoins en lumière"
+  },
+  
+  "result_soil": "Sol",
+  "@result_soil": {
+    "description": "Étiquette pour les besoins en sol"
+  },
+  
+  "result_humidity": "Humidité",
+  "@result_humidity": {
+    "description": "Étiquette pour les besoins en humidité"
+  },
+  
+  "result_care_schedule": "Programme d'Entretien",
+  "@result_care_schedule": {
+    "description": "Titre de section pour les informations d'entretien"
+  },
+  
+  "result_watering": "Arrosage",
+  "@result_watering": {
+    "description": "Étiquette pour le programme d'arrosage"
+  },
+  
+  "result_fertilizing": "Fertilisation",
+  "@result_fertilizing": {
+    "description": "Étiquette pour le programme de fertilisation"
+  },
+  
+  "result_safety_warning": "Avertissement de Sécurité",
+  "@result_safety_warning": {
+    "description": "Titre de section pour les informations de toxicité/sécurité"
+  },
+  
+  "result_saved_success": "Enregistrée dans Mes Plantes !",
+  "@result_saved_success": {
+    "description": "Message de succès lors de l'enregistrement de la plante"
+  },
+  
+  "result_removed_success": "Retirée de Mes Plantes",
+  "@result_removed_success": {
+    "description": "Message de succès lors du retrait de la plante"
+  },
+  
+  "result_save_button": "Enregistrer dans Mes Plantes",
+  "@result_save_button": {
+    "description": "Texte du bouton pour enregistrer la plante (état inactif)"
+  },
+  
+  "result_saved_button": "Enregistrée dans Mes Plantes",
+  "@result_saved_button": {
+    "description": "Texte du bouton quand la plante est déjà enregistrée (état actif)"
+  },
+  
+  "result_identify_another": "Identifier une autre plante",
+  "@result_identify_another": {
+    "description": "Bouton pour commencer une nouvelle identification de plante"
+  },
+  
+  "result_error": "Erreur",
+  "@result_error": {
+    "description": "Titre d'erreur pour le résultat d'identification"
+  },
+  
+  "result_no_data": "Aucune donnée de plante disponible",
+  "@result_no_data": {
+    "description": "Message d'erreur quand les données de la plante sont manquantes"
+  },
+  
+  "result_try_again": "Réessayer",
+  "@result_try_again": {
+    "description": "Bouton pour réessayer l'identification"
+  },
+  
+  "diagnosis_title": "Résultat du Diagnostic",
+  "@diagnosis_title": {
+    "description": "Titre de l'écran de résultat du diagnostic de plante"
+  },
+  
+  "diagnosis_result": "Résultat du Diagnostic",
+  "@diagnosis_result": {
+    "description": "Titre de l'écran de résultat du diagnostic"
+  },
+  
+  "diagnosis_severity_assessment": "Évaluation de la Sévérité",
+  "@diagnosis_severity_assessment": {
+    "description": "Titre de section pour les informations de sévérité"
+  },
+  
+  "diagnosis_severity_level": "Niveau de Sévérité",
+  "@diagnosis_severity_level": {
+    "description": "Étiquette pour l'indicateur de niveau de sévérité"
+  },
+  
+  "diagnosis_immediate_actions": "Actions Immédiates (24-48 prochaines heures)",
+  "@diagnosis_immediate_actions": {
+    "description": "Titre de section pour les actions d'entretien immédiates"
+  },
+  
+  "diagnosis_treatment_plan": "Plan de Traitement",
+  "@diagnosis_treatment_plan": {
+    "description": "Titre de section pour les informations de traitement"
+  },
+  
+  "diagnosis_daily_monitoring": "Surveillance Quotidienne",
+  "@diagnosis_daily_monitoring": {
+    "description": "Titre de section pour la liste de contrôle de surveillance"
+  },
+  
+  "diagnosis_expected_recovery": "Récupération Attendue",
+  "@diagnosis_expected_recovery": {
+    "description": "Titre de section pour le calendrier de récupération"
+  },
+  
+  "diagnosis_diagnose_another": "Diagnostiquer une autre plante",
+  "@diagnosis_diagnose_another": {
+    "description": "Bouton pour commencer un nouveau diagnostic"
+  },
+  
+  "diagnosis_back_home": "Retour à l'Accueil",
+  "@diagnosis_back_home": {
+    "description": "Bouton pour retourner à l'écran d'accueil"
+  },
+  
+  "diagnosis_error_title": "Erreur de Diagnostic",
+  "@diagnosis_error_title": {
+    "description": "Titre de la boîte de dialogue d'erreur"
+  },
+  
+  "diagnosis_error": "Erreur de Diagnostic",
+  "@diagnosis_error": {
+    "description": "Titre d'erreur pour le résultat du diagnostic"
+  },
+  
+  "diagnosis_error_no_data": "Aucune donnée de diagnostic disponible",
+  "@diagnosis_error_no_data": {
+    "description": "Message d'erreur quand les données de diagnostic sont manquantes"
+  },
+  
+  "diagnosis_no_data": "Aucune donnée de diagnostic disponible",
+  "@diagnosis_no_data": {
+    "description": "Message d'erreur quand les données de diagnostic sont manquantes"
+  },
+  
+  "diagnosis_try_again": "Réessayer",
+  "@diagnosis_try_again": {
+    "description": "Bouton pour réessayer le diagnostic"
+  },
+  
+  "premium_title": "Passer à Premium",
+  "@premium_title": {
+    "description": "Titre de l'écran d'abonnement Premium"
+  },
+  
+  "premium_upgrade": "Passer à Premium",
+  "@premium_upgrade": {
+    "description": "Bouton/texte pour le passage à Premium"
+  },
+  
+  "premium_subtitle": "Vivez l'Expérience Complète — Simple et Ininterrompue",
+  "@premium_subtitle": {
+    "description": "Texte du sous-titre pour l'écran Premium"
+  },
+  
+  "premium_experience": "Vivez l'Expérience Complète — Simple et Ininterrompue",
+  "@premium_experience": {
+    "description": "Description de l'expérience Premium"
+  },
+  
+  "premium_features_header": "Fonctionnalités",
+  "@premium_features_header": {
+    "description": "En-tête pour le tableau de comparaison des fonctionnalités"
+  },
+  
+  "premium_features": "Fonctionnalités",
+  "@premium_features": {
+    "description": "Titre de la section des fonctionnalités"
+  },
+  
+  "premium_pro_header": "PRO",
+  "@premium_pro_header": {
+    "description": "En-tête de colonne pour le niveau PRO"
+  },
+  
+  "premium_pro": "PRO",
+  "@premium_pro": {
+    "description": "Étiquette du niveau PRO"
+  },
+  
+  "premium_basic_header": "Basique",
+  "@premium_basic_header": {
+    "description": "En-tête de colonne pour le niveau Basique"
+  },
+  
+  "premium_basic": "Basique",
+  "@premium_basic": {
+    "description": "Étiquette du niveau Basique"
+  },
+  
+  "premium_price": "750 PKR/Semaine Après l'Essai Gratuit de 3 Jours",
+  "@premium_price": {
+    "description": "Texte du prix pour l'abonnement Premium"
+  },
+  
+  "premium_start_now": "Commencer Maintenant",
+  "@premium_start_now": {
+    "description": "Bouton pour démarrer l'abonnement Premium"
+  },
+  
+  "premium_footer": "L'abonnement se renouvelle automatiquement. Annulez à tout moment.",
+  "@premium_footer": {
+    "description": "Texte de clause de non-responsabilité en bas de page"
+  },
+  
+  "light_meter_title": "Luxmètre",
+  "@light_meter_title": {
+    "description": "Titre de l'écran du luxmètre"
+  },
+  
+  "light_meter_instruction": "Positionnez votre téléphone à l'endroit où vous prévoyez de placer la plante.",
+  "@light_meter_instruction": {
+    "description": "Texte d'instruction pour l'utilisation du luxmètre"
+  },
+  
+  "light_meter_optimal": "Optimal",
+  "@light_meter_optimal": {
+    "description": "Étiquette pour la carte de plage de lumière optimale"
+  },
+  
+  "light_meter_measuring": "Mesure en cours",
+  "@light_meter_measuring": {
+    "description": "Texte d'état pendant la mesure"
+  },
+  
+  "light_meter_optimal_range": "1000-10000 LUX",
+  "@light_meter_optimal_range": {
+    "description": "Valeur de la plage de lumière optimale"
+  },
+  
+  "light_meter_initializing": "Initialisation de la caméra...",
+  "@light_meter_initializing": {
+    "description": "Texte de chargement pendant l'initialisation de la caméra"
+  },
+  
+  "light_meter_starting": "Démarrage de la caméra...",
+  "@light_meter_starting": {
+    "description": "Texte de remplacement quand la caméra démarre"
+  },
+  
+  "light_meter_measure": "Mesurer",
+  "@light_meter_measure": {
+    "description": "Bouton pour effectuer une mesure de lumière"
+  },
+  
+  "light_meter_reset": "Réinitialiser",
+  "@light_meter_reset": {
+    "description": "Bouton pour réinitialiser la mesure"
+  },
+  
+  "light_meter_error_title": "Échec de l'Initialisation",
+  "@light_meter_error_title": {
+    "description": "Titre de la boîte de dialogue d'erreur"
+  },
+  
+  "light_meter_retry": "Réessayer",
+  "@light_meter_retry": {
+    "description": "Bouton pour réessayer l'initialisation de la caméra"
+  },
+  
+  "light_info_title": "Comment utiliser le Luxmètre ?",
+  "@light_info_title": {
+    "description": "Titre de l'écran d'information du luxmètre"
+  },
+  
+  "light_info_how_to_use": "Comment utiliser le Luxmètre ?",
+  "@light_info_how_to_use": {
+    "description": "Titre de l'écran d'information du luxmètre"
+  },
+  
+  "light_info_step1": "Orientez votre caméra frontale vers la source de lumière.",
+  "@light_info_step1": {
+    "description": "Première étape d'instruction"
+  },
+  
+  "light_info_step2": "Déplacez le téléphone autour de la plante pour mesurer la lumière sous tous les angles.",
+  "@light_info_step2": {
+    "description": "Deuxième étape d'instruction"
+  },
+  
+  "light_info_step3": "Vérifiez les niveaux de lumière à midi pour les résultats les plus précis.",
+  "@light_info_step3": {
+    "description": "Troisième étape d'instruction"
+  },
+  
+  "light_info_continue": "Continuer",
+  "@light_info_continue": {
+    "description": "Bouton pour fermer l'écran d'information"
+  },
+  
+  "light_info_image_error": "Image non disponible",
+  "@light_info_image_error": {
+    "description": "Texte d'erreur quand l'image d'instruction ne peut pas être chargée"
+  },
+  
+  "privacy_policy_title": "Politique de Confidentialité",
+  "@privacy_policy_title": {
+    "description": "Titre de l'écran de politique de confidentialité"
+  },
+  
+  "settings_title": "Paramètres",
+  "@settings_title": {
+    "description": "Titre de l'écran des paramètres"
+  },
+  
+  "settings_app_language": "Langue de l'application",
+  "@settings_app_language": {
+    "description": "Option de paramètres pour la sélection de la langue"
+  },
+  
+  "settings_rate_us": "Évaluez-nous",
+  "@settings_rate_us": {
+    "description": "Option de paramètres pour évaluer l'application"
+  },
+  
+  "settings_share_app": "Partager l'application",
+  "@settings_share_app": {
+    "description": "Option de paramètres pour partager l'application"
+  },
+  
+  "settings_feedback": "Commentaires",
+  "@settings_feedback": {
+    "description": "Option de paramètres pour envoyer des commentaires"
+  },
+  
+  "settings_privacy_policy": "Politique de Confidentialité",
+  "@settings_privacy_policy": {
+    "description": "Option de paramètres pour voir la politique de confidentialité"
+  },
+  
+  "settings_feature_unavailable": "Fonctionnalité {featureId} non disponible",
+  "@settings_feature_unavailable": {
+    "description": "Message d'erreur lorsqu'une fonctionnalité est indisponible",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "ID de la fonctionnalité indisponible"
+      }
+    }
+  },
+  
+  "settings_could_not_open_email": "Impossible d'ouvrir l'email. Veuillez nous envoyer un email à {email}",
+  "@settings_could_not_open_email": {
+    "description": "Message d'erreur quand l'email ne peut pas être ouvert",
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "description": "Adresse email de contact"
+      }
+    }
+  },
+  
+  "debug_token_copied": "Jeton copié dans le presse-papiers",
+  "@debug_token_copied": {
+    "description": "Message affiché lorsque le jeton FCM est copié"
+  },
+  
+  "debug_get_token": "Obtenir le jeton FCM",
+  "@debug_get_token": {
+    "description": "Texte du bouton pour obtenir le jeton FCM (débogage)"
+  },
+  
+  "settings_token_copied": "Jeton copié dans le presse-papiers",
+  "@settings_token_copied": {
+    "description": "Message affiché lorsque le jeton FCM est copié"
+  },
+  
+  "settings_get_fcm_token": "Obtenir le jeton FCM",
+  "@settings_get_fcm_token": {
+    "description": "Texte du bouton pour obtenir le jeton FCM (débogage)"
+  },
+  
+  "settings_test_crash": "Test de plantage",
+  "@settings_test_crash": {
+    "description": "Texte du bouton pour tester le plantage (débogage)"
+  },
+  
+  "water_calculator": "Calculateur d'eau",
+  "@water_calculator": {
+    "description": "Titre de la fonctionnalité du calculateur d'eau"
+  },
+  
+  "water_continue": "Continuer",
+  "@water_continue": {
+    "description": "Bouton pour passer à la question suivante"
+  },
+  
+  "water_question_location": "Où comptez-vous placer la plante ?",
+  "@water_question_location": {
+    "description": "Question sur l'emplacement de la plante"
+  },
+  
+  "water_location_q1": "Où comptez-vous placer la plante ?",
+  "@water_location_q1": {
+    "description": "Première question du calculateur d'eau"
+  },
+  
+  "water_question_temperature": "Quelle est la température actuelle ?",
+  "@water_question_temperature": {
+    "description": "Question sur la température actuelle"
+  },
+  
+  "water_location_q2": "Quelle est la température actuelle ?",
+  "@water_location_q2": {
+    "description": "Deuxième question du calculateur d'eau"
+  },
+  
+  "water_question_frequency": "À quelle fréquence arrosez-vous ?",
+  "@water_question_frequency": {
+    "description": "Question sur la fréquence d'arrosage"
+  },
+  
+  "water_location_q3": "À quelle fréquence arrosez-vous ?",
+  "@water_location_q3": {
+    "description": "Troisième question du calculateur d'eau"
+  },
+  
+  "water_location_indoor_window": "Intérieur, près d'une fenêtre",
+  "@water_location_indoor_window": {
+    "description": "Option pour un emplacement intérieur près d'une fenêtre"
+  },
+  
+  "water_location_indoor_shaded": "Intérieur, dans un coin ombragé",
+  "@water_location_indoor_shaded": {
+    "description": "Option pour un emplacement intérieur ombragé"
+  },
+  
+  "water_location_outdoor_sun": "Extérieur, plein soleil",
+  "@water_location_outdoor_sun": {
+    "description": "Option pour un emplacement extérieur en plein soleil"
+  },
+  
+  "water_location_outdoor_shade": "Extérieur, ombre partielle",
+  "@water_location_outdoor_shade": {
+    "description": "Option pour un emplacement extérieur à l'ombre partielle"
+  },
+  
+  "water_temperature_very_cold": "Très froid (Moins de 5°C)",
+  "@water_temperature_very_cold": {
+    "description": "Option de température très froide"
+  },
+  
+  "water_temperature_cold": "Froid (Moins de 15°C)",
+  "@water_temperature_cold": {
+    "description": "Option de température froide"
+  },
+  
+  "water_temperature_moderate": "Modéré (15°C - 25°C)",
+  "@water_temperature_moderate": {
+    "description": "Option de température modérée"
+  },
+  
+  "water_temperature_warm": "Chaud (25°C - 30°C)",
+  "@water_temperature_warm": {
+    "description": "Option de température chaude"
+  },
+  
+  "water_temperature_hot": "Très chaud (Au-dessus de 30°C)",
+  "@water_temperature_hot": {
+    "description": "Option de température très chaude"
+  },
+  
+  "water_frequency_daily": "Tous les jours",
+  "@water_frequency_daily": {
+    "description": "Fréquence d'arrosage quotidienne"
+  },
+  
+  "water_frequency_2_3_days": "Tous les 2-3 jours",
+  "@water_frequency_2_3_days": {
+    "description": "Fréquence d'arrosage tous les 2-3 jours"
+  },
+  
+  "water_frequency_weekly": "Une fois par semaine",
+  "@water_frequency_weekly": {
+    "description": "Fréquence d'arrosage hebdomadaire"
+  },
+  
+  "water_frequency_biweekly": "Toutes les deux semaines",
+  "@water_frequency_biweekly": {
+    "description": "Fréquence d'arrosage toutes les deux semaines"
+  },
+  
+  "water_frequency_rarely": "Rarement / Quand le sol est sec",
+  "@water_frequency_rarely": {
+    "description": "Fréquence d'arrosage rare ou quand le sol est sec"
+  },
+  
+  "water_result_title": "Besoins en Eau de la Plante",
+  "@water_result_title": {
+    "description": "Titre de l'écran de résultat du calculateur d'eau"
+  },
+  
+  "water_plant_water_need": "Besoins en Eau de la Plante",
+  "@water_plant_water_need": {
+    "description": "Titre de l'écran de résultat du calculateur d'eau"
+  },
+  
+  "water_result_schedule": "Programme d'Arrosage",
+  "@water_result_schedule": {
+    "description": "Titre de section pour le programme d'arrosage"
+  },
+  
+  "water_schedule": "Programme d'Arrosage",
+  "@water_schedule": {
+    "description": "Titre de la section du programme d'arrosage"
+  },
+  
+  "water_result_frequency_label": "Fréquence :",
+  "@water_result_frequency_label": {
+    "description": "Étiquette pour la fréquence d'arrosage"
+  },
+  
+  "water_frequency": "Fréquence :",
+  "@water_frequency": {
+    "description": "Étiquette de fréquence"
+  },
+  
+  "water_result_best_time_label": "Meilleur moment :",
+  "@water_result_best_time_label": {
+    "description": "Étiquette pour le meilleur moment d'arrosage"
+  },
+  
+  "water_best_time": "Meilleur moment :",
+  "@water_best_time": {
+    "description": "Étiquette du meilleur moment"
+  },
+  
+  "water_result_tips": "Conseils d'Entretien",
+  "@water_result_tips": {
+    "description": "Titre de section pour les conseils d'entretien"
+  },
+  
+  "water_care_tips": "Conseils d'Entretien",
+  "@water_care_tips": {
+    "description": "Titre de la section des conseils d'entretien"
+  },
+  
+  "water_result_thank_you": "Merci",
+  "@water_result_thank_you": {
+    "description": "Bouton pour retourner à l'accueil"
+  },
+  
+  "water_thank_you": "Merci",
+  "@water_thank_you": {
+    "description": "Message de remerciement"
+  },
+  
+  "water_result_guide": "Utilisez ce guide pour que votre plante reste heureuse et bien arrosée",
+  "@water_result_guide": {
+    "description": "Texte guide sur l'écran de résultat d'eau"
+  },
+  
+  "water_result_amount": "76 ML",
+  "@water_result_amount": {
+    "description": "Recommandation de quantité d'eau"
+  },
+  
+  "water_result_loading": "Calcul des besoins en eau...",
+  "@water_result_loading": {
+    "description": "Texte de chargement pendant le calcul de l'eau"
+  },
+  
+  "water_calculating": "Calcul des besoins en eau...",
+  "@water_calculating": {
+    "description": "Texte de chargement pendant le calcul de l'eau"
+  },
+  
+  "water_result_error_title": "Erreur de Calcul",
+  "@water_result_error_title": {
+    "description": "Titre de la boîte de dialogue d'erreur"
+  },
+  
+  "water_error_title": "Erreur de Calcul",
+  "@water_error_title": {
+    "description": "Titre d'erreur pour le calcul de l'eau"
+  },
+  
+  "water_result_error_no_data": "Aucune donnée de calcul d'eau disponible",
+  "@water_result_error_no_data": {
+    "description": "Message d'erreur quand les données de calcul d'eau sont manquantes"
+  },
+  
+  "water_no_data": "Aucune donnée de calcul d'eau disponible",
+  "@water_no_data": {
+    "description": "Message d'erreur quand les données d'eau sont manquantes"
+  },
+  
+  "water_result_back_home": "Retour à l'Accueil",
+  "@water_result_back_home": {
+    "description": "Bouton pour retourner à l'accueil depuis l'état d'erreur"
+  },
+  
+  "water_back_home": "Retour à l'Accueil",
+  "@water_back_home": {
+    "description": "Bouton pour retourner à l'accueil"
+  },
+  
+  "history_title": "Historique des Scans",
+  "@history_title": {
+    "description": "Titre de l'écran d'historique"
+  },
+  
+  "history_empty_my_plants": "Aucune Plante Enregistrée",
+  "@history_empty_my_plants": {
+    "description": "Titre de l'état vide pour l'onglet Mes Plantes"
+  },
+  
+  "history_empty_history": "Rien à afficher",
+  "@history_empty_history": {
+    "description": "Titre de l'état vide pour l'onglet Historique"
+  },
+  
+  "history_empty_my_plants_desc": "Enregistrez des plantes depuis l'historique des scans pour les voir ici",
+  "@history_empty_my_plants_desc": {
+    "description": "Description de l'état vide pour l'onglet Mes Plantes"
+  },
+  
+  "history_empty_history_desc": "Tous vos scans apparaîtront ici",
+  "@history_empty_history_desc": {
+    "description": "Description de l'état vide pour l'onglet Historique"
+  },
+  
+  "history_light_dialog_title": "Résultat de Mesure de Lumière",
+  "@history_light_dialog_title": {
+    "description": "Titre de la boîte de dialogue pour l'élément d'historique de mesure de lumière"
+  },
+  
+  "history_light_level": "Niveau de Lumière :",
+  "@history_light_level": {
+    "description": "Étiquette pour la valeur du niveau de lumière"
+  },
+  
+  "history_lux_unit": "LUX",
+  "@history_lux_unit": {
+    "description": "Unité pour la mesure de la lumière"
+  },
+  
+  "history_status": "Statut :",
+  "@history_status": {
+    "description": "Étiquette pour le statut de la lumière"
+  },
+  
+  "history_status_unknown": "Inconnu",
+  "@history_status_unknown": {
+    "description": "Texte de statut inconnu"
+  },
+  
+  "history_optimal_range": "Plage Optimale :",
+  "@history_optimal_range": {
+    "description": "Étiquette pour la plage de lumière optimale"
+  },
+  
+  "history_time": "Heure :",
+  "@history_time": {
+    "description": "Étiquette pour l'horodatage"
+  },
+  
+  "history_close": "Fermer",
+  "@history_close": {
+    "description": "Bouton pour fermer la boîte de dialogue"
+  },
+  
+  "history_timestamp_just_now": "À l'instant",
+  "@history_timestamp_just_now": {
+    "description": "Horodatage pour les scans très récents"
+  },
+  
+  "history_timestamp_min_ago": "min",
+  "@history_timestamp_min_ago": {
+    "description": "Suffixe pour il y a quelques minutes"
+  },
+  
+  "history_timestamp_hours_ago": "h",
+  "@history_timestamp_hours_ago": {
+    "description": "Suffixe pour il y a quelques heures"
+  },
+  
+  "history_timestamp_days_ago": "j",
+  "@history_timestamp_days_ago": {
+    "description": "Suffixe pour il y a quelques jours"
+  },
+  
+  "history_delete_title": "Supprimer ?",
+  "@history_delete_title": {
+    "description": "Titre de la boîte de dialogue de confirmation de suppression"
+  },
+  
+  "history_delete_confirmation": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+  "@history_delete_confirmation": {
+    "description": "Message de confirmation pour l'action de suppression"
+  },
+  
+  "history_delete_button": "Supprimer",
+  "@history_delete_button": {
+    "description": "Bouton pour confirmer la suppression"
+  },
+  
+  "history_cancel_button": "Annuler",
+  "@history_cancel_button": {
+    "description": "Bouton pour annuler la suppression"
+  },
+  
+  "history_remove_from_my_plants": "Retirer de Mes Plantes",
+  "@history_remove_from_my_plants": {
+    "description": "Option de feuille d'action pour retirer des plantes enregistrées"
+  },
+  
+  "history_save_to_my_plants": "Enregistrer dans Mes Plantes",
+  "@history_save_to_my_plants": {
+    "description": "Option de feuille d'action pour enregistrer dans les plantes"
+  },
+  
+  "history_share": "Partager",
+  "@history_share": {
+    "description": "Option de partage dans la feuille d'action"
+  },
+  
+  "bottom_nav_home": "Accueil",
+  "@bottom_nav_home": {
+    "description": "Étiquette de l'onglet Accueil dans la navigation inférieure"
+  },
+  
+  "bottom_nav_history": "Historique",
+  "@bottom_nav_history": {
+    "description": "Étiquette de l'onglet Historique dans la navigation inférieure"
+  },
+  
+  "bottom_nav_settings": "Paramètres",
+  "@bottom_nav_settings": {
+    "description": "Étiquette de l'onglet Paramètres dans la navigation inférieure"
+  },
+  
+  "language_updated": "Langue mise à jour : {language}",
+  "@language_updated": {
+    "description": "Message lors du changement de langue",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "description": "Nom de la langue sélectionnée"
+      }
+    }
+  },
+  
+  "language_english": "Anglais",
+  "@language_english": {
+    "description": "Nom de la langue anglaise"
+  },
+  
+  "language_urdu": "Ourdou",
+  "@language_urdu": {
+    "description": "Nom de la langue ourdoue"
+  },
+  
+  "language_german": "Allemand",
+  "@language_german": {
+    "description": "Nom de la langue allemande"
+  },
+  
+  "language_french": "Français",
+  "@language_french": {
+    "description": "Nom de la langue française"
+  },
+  
+  "language_arabic": "Arabe",
+  "@language_arabic": {
+    "description": "Nom de la langue arabe"
+  },
+  
+  "language_spanish": "Espagnol",
+  "@language_spanish": {
+    "description": "Nom de la langue espagnole"
+  },
+  
+  "language_japanese": "Japonais",
+  "@language_japanese": {
+    "description": "Nom de la langue japonaise"
+  },
+  
+  "language_korean": "Coréen",
+  "@language_korean": {
+    "description": "Nom de la langue coréenne"
+  },
+  
+  "widget_language_app_bar_title": "Choisir la langue",
+  "@widget_language_app_bar_title": {
+    "description": "Titre de la barre d'application de l'écran de sélection de la langue"
+  },
+  
+  "widget_severity_level": "Niveau de Sévérité",
+  "@widget_severity_level": {
+    "description": "Étiquette pour l'indicateur de niveau de sévérité"
+  },
+  
+  "widget_severity_assessment": "Évaluation de la Sévérité",
+  "@widget_severity_assessment": {
+    "description": "Titre de section pour l'évaluation de la sévérité"
+  },
+  
+  "widget_no_plant_detected": "Aucune plante détectée dans l'image",
+  "@widget_no_plant_detected": {
+    "description": "Message quand aucune plante n'est trouvée dans l'image"
+  },
+  
+  "widget_treatment_badge": "Traitement",
+  "@widget_treatment_badge": {
+    "description": "Étiquette de badge pour les éléments de traitement"
+  },
+  
+  "widget_bullet_separator": "•",
+  "@widget_bullet_separator": {
+    "description": "Caractère de séparation par points"
+  },
+  
+  "widget_severity_mild": "LÉGER",
+  "@widget_severity_mild": {
+    "description": "Texte du badge de niveau de sévérité - léger"
+  },
+  
+  "widget_severity_moderate": "MODÉRÉ",
+  "@widget_severity_moderate": {
+    "description": "Texte du badge de niveau de sévérité - modéré"
+  },
+  
+  "widget_severity_severe": "SÉVÈRE",
+  "@widget_severity_severe": {
+    "description": "Texte du badge de niveau de sévérité - sévère"
+  },
+  
+  "widget_severity_critical": "CRITIQUE",
+  "@widget_severity_critical": {
+    "description": "Texte du badge de niveau de sévérité - critique"
+  },
+  
+  "widget_severity_healthy": "SAIN",
+  "@widget_severity_healthy": {
+    "description": "Texte du badge de niveau de sévérité - sain"
+  },
+  
+  "widget_premium_banner_text": "Découvrez les Fonctionnalités Premium\nGratuitement",
+  "@widget_premium_banner_text": {
+    "description": "Texte de la bannière Premium avec saut de ligne"
+  },
+  
+  "widget_premium_banner_button": "Passer à Pro",
+  "@widget_premium_banner_button": {
+    "description": "Texte du bouton sur la bannière Premium"
+  },
+  
+  "widget_premium_card_text": "Découvrez les Fonctionnalités Premium\nGratuitement",
+  "@widget_premium_card_text": {
+    "description": "Texte de la carte Premium avec saut de ligne"
+  },
+  
+  "widget_premium_card_button": "Passer à Pro",
+  "@widget_premium_card_button": {
+    "description": "Texte du bouton sur la carte Premium"
+  },
+  
+  "widget_pro_button": "PRO",
+  "@widget_pro_button": {
+    "description": "Texte sur le bouton Pro/Premium"
+  },
+  
+  "widget_rating_title": "Évaluez votre Expérience avec\nNotre Application",
+  "@widget_rating_title": {
+    "description": "Titre de la feuille inférieure d'évaluation avec saut de ligne"
+  },
+  
+  "widget_rating_description": "Veuillez évaluer votre expérience et aidez-nous à\nnous améliorer. Merci",
+  "@widget_rating_description": {
+    "description": "Texte de description pour la feuille d'évaluation avec saut de ligne"
+  },
+  
+  "widget_rating_submit": "Soumettre",
+  "@widget_rating_submit": {
+    "description": "Bouton pour soumettre l'évaluation"
+  },
+  
+  "widget_rating_thank_you": "Merci pour votre note de {rating} étoile(s) !",
+  "@widget_rating_thank_you": {
+    "description": "Message de remerciement avec un espace réservé pour la valeur de la note",
+    "placeholders": {
+      "rating": {
+        "type": "int",
+        "description": "Nombre d'étoiles sélectionné par l'utilisateur"
+      }
+    }
+  },
+  
+  "widget_history_badge_identified": "IDENTIFIÉE",
+  "@widget_history_badge_identified": {
+    "description": "Texte du badge pour le type de scan d'identification"
+  },
+  
+  "widget_history_badge_diagnosed": "DIAGNOSTIQUÉE",
+  "@widget_history_badge_diagnosed": {
+    "description": "Texte du badge pour le type de scan de diagnostic"
+  },
+  
+  "widget_history_badge_calculated": "CALCULÉ",
+  "@widget_history_badge_calculated": {
+    "description": "Texte du badge pour le type de scan de calcul d'eau"
+  },
+  
+  "widget_history_badge_measured": "MESURÉ",
+  "@widget_history_badge_measured": {
+    "description": "Texte du badge pour le type de scan de luxmètre"
+  },
+  
+  "widget_history_timestamp_just_now": "À l'instant",
+  "@widget_history_timestamp_just_now": {
+    "description": "Texte d'horodatage pour les scans très récents"
+  },
+  
+  "widget_history_timestamp_min_ago": "min",
+  "@widget_history_timestamp_min_ago": {
+    "description": "Suffixe pour il y a quelques minutes"
+  },
+  
+  "widget_history_timestamp_hours_ago": "h",
+  "@widget_history_timestamp_hours_ago": {
+    "description": "Suffixe pour il y a quelques heures"
+  },
+  
+  "widget_history_timestamp_days_ago": "j",
+  "@widget_history_timestamp_days_ago": {
+    "description": "Suffixe pour il y a quelques jours"
+  },
+  
+  "widget_history_tab_my_plants": "Mes Plantes",
+  "@widget_history_tab_my_plants": {
+    "description": "Étiquette de l'onglet pour la section Mes Plantes"
+  },
+  
+  "widget_history_tab_history": "Historique",
+  "@widget_history_tab_history": {
+    "description": "Étiquette de l'onglet pour la section Historique"
+  },
+  
+  "widget_history_tab_open_paren": "(",
+  "@widget_history_tab_open_paren": {
+    "description": "Parenthèse ouvrante pour l'affichage du nombre"
+  },
+  
+  "widget_history_tab_close_paren": ")",
+  "@widget_history_tab_close_paren": {
+    "description": "Parenthèse fermante pour l'affichage du nombre"
+  }
+}

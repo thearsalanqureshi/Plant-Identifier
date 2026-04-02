@@ -1,0 +1,1410 @@
+{
+  "@@locale": "ur",
+  "@@context": {
+    "description": "Urdu translations for Plant Identifier app"
+  },
+
+  "languageEnglish": "انگریزی",
+  "languageSpanish": "ہسپانوی",
+  "languageFrench": "فرانسیسی",
+  
+  "app_name": "پلانٹ شناخت کنندہ",
+  "@app_name": {
+    "description": "ایپ کا نام جو سپلیش اسکرین اور ایپ بار میں دکھایا جاتا ہے"
+  },
+  
+  "splash_title": "پلانٹ شناخت کنندہ",
+  "@splash_title": {
+    "description": "سپلیش اسکرین پر عنوان کا متن"
+  },
+  
+  "splash_loading": "لوڈ ہو رہا ہے...",
+  "@splash_loading": {
+    "description": "سپلیش اسکرین پر لوڈنگ کا متن"
+  },
+  
+  "onboarding1Title": "اپنے پودے کی شناخت کریں",
+  "@onboarding1Title": {
+    "description": "آن بورڈنگ اسکرین 1 کا عنوان (متبادل کلید)"
+  },
+  
+  "onboarding1Body": "کسی بھی پودے کی فوری شناخت اور تفصیلی معلومات حاصل کرنے کے لیے AI سے پودوں کو اسکین کریں۔",
+  "@onboarding1Body": {
+    "description": "آن بورڈنگ اسکرین 1 کا باڈی ٹیکسٹ (متبادل کلید)"
+  },
+  
+  "onboarding2Title": "اپنے پودے کی تشخیص کریں",
+  "@onboarding2Title": {
+    "description": "آن بورڈنگ اسکرین 2 کا عنوان (متبادل کلید)"
+  },
+  
+  "onboarding2Body": "پودوں کی بیماریوں کا پتہ لگائیں اور ماہرانہ دیکھ بھال کے مشورے حاصل کریں تاکہ آپ کے سبز دوست صحت مند اور پھلتے پھولتے رہیں۔",
+  "@onboarding2Body": {
+    "description": "آن بورڈنگ اسکرین 2 کا باڈی ٹیکسٹ (متبادل کلید)"
+  },
+  
+  "onboarding3Title": "پودوں کی دیکھ بھال آسان بنائی گئی",
+  "@onboarding3Title": {
+    "description": "آن بورڈنگ اسکرین 3 کا عنوان (متبادل کلید)"
+  },
+  
+  "onboarding3Body": "پودوں کی تاریخ محفوظ کریں، ذاتی نوعیت کے مشورے حاصل کریں، اور پانی دینے کا دن کبھی نہ بھولنے کے لیے یاد دہانیاں سیٹ کریں۔",
+  "@onboarding3Body": {
+    "description": "آن بورڈنگ اسکرین 3 کا باڈی ٹیکسٹ (متبادل کلید)"
+  },
+  
+  "next": "اگلا",
+  "@next": {
+    "description": "آن بورڈنگ پر اگلا بٹن (متبادل کلید)"
+  },
+  
+  "letsGo": "چلیں شروع کریں",
+  "@letsGo": {
+    "description": "آخری آن بورڈنگ اسکرین پر چلیں شروع کریں بٹن (متبادل کلید)"
+  },
+
+  "onboarding_identifying": "پودے کی شناخت ہو رہی ہے",
+  "@onboarding_identifying": {
+    "description": "آن بورڈنگ کے دوران پودے کی شناخت کے لیے عنوان"
+  },
+  
+  "onboarding_diagnosing": "پودے کی تشخیص ہو رہی ہے",
+  "@onboarding_diagnosing": {
+    "description": "آن بورڈنگ کے دوران پودے کی تشخیص کے لیے عنوان"
+  },
+  
+  "onboarding_calculating_water": "پانی کی ضرورت کا حساب ہو رہا ہے",
+  "@onboarding_calculating_water": {
+    "description": "آن بورڈنگ کے دوران پانی کے حساب کتاب کے لیے عنوان"
+  },
+  
+  "onboarding_processing": "عمل جاری ہے",
+  "@onboarding_processing": {
+    "description": "آن بورڈنگ کے دوران عام پروسیسنگ کا عنوان"
+  },
+  
+  "onboarding_subtitle_identify": "ہوشیار، تیز، اور درست پودوں کی شناخت",
+  "@onboarding_subtitle_identify": {
+    "description": "شناخت موڈ کے لیے ذیلی عنوان"
+  },
+  
+  "onboarding_subtitle_diagnose": "ممکنہ بیماریوں اور مسائل کا پتہ لگایا جا رہا ہے",
+  "@onboarding_subtitle_diagnose": {
+    "description": "تشخیص موڈ کے لیے ذیلی عنوان"
+  },
+  
+  "onboarding_subtitle_water": "پودے اور ماحول کا تجزیہ ہو رہا ہے...",
+  "@onboarding_subtitle_water": {
+    "description": "پانی کے حساب کتاب موڈ کے لیے ذیلی عنوان"
+  },
+  
+  "onboarding_subtitle_default": "براہ کرم انتظار کریں...",
+  "@onboarding_subtitle_default": {
+    "description": "عام لوڈنگ کا ذیلی عنوان"
+  },
+  
+  "onboarding_title_identify": "اپنے پودے کی شناخت کریں",
+  "@onboarding_title_identify": {
+    "description": "آن بورڈنگ اسکرین 1 کا عنوان"
+  },
+  
+  "onboarding_body_identify": "کسی بھی پودے کی فوری شناخت اور تفصیلی معلومات حاصل کرنے کے لیے AI سے پودوں کو اسکین کریں۔",
+  "@onboarding_body_identify": {
+    "description": "آن بورڈنگ اسکرین 1 کا باڈی ٹیکسٹ"
+  },
+  
+  "onboarding_title_diagnose": "اپنے پودے کی تشخیص کریں",
+  "@onboarding_title_diagnose": {
+    "description": "آن بورڈنگ اسکرین 2 کا عنوان"
+  },
+  
+  "onboarding_body_diagnose": "پودوں کی بیماریوں کا پتہ لگائیں اور ماہرانہ دیکھ بھال کے مشورے حاصل کریں تاکہ آپ کے سبز دوست صحت مند اور پھلتے پھولتے رہیں۔",
+  "@onboarding_body_diagnose": {
+    "description": "آن بورڈنگ اسکرین 2 کا باڈی ٹیکسٹ"
+  },
+  
+  "onboarding_title_care": "پودوں کی دیکھ بھال آسان بنائی گئی",
+  "@onboarding_title_care": {
+    "description": "آن بورڈنگ اسکرین 3 کا عنوان"
+  },
+  
+  "onboarding_body_care": "پودوں کی تاریخ محفوظ کریں، ذاتی نوعیت کے مشورے حاصل کریں، اور پانی دینے کا دن کبھی نہ بھولنے کے لیے یاد دہانیاں سیٹ کریں۔",
+  "@onboarding_body_care": {
+    "description": "آن بورڈنگ اسکرین 3 کا باڈی ٹیکسٹ"
+  },
+  
+  "onboarding_next": "اگلا",
+  "@onboarding_next": {
+    "description": "آن بورڈنگ پر اگلا بٹن"
+  },
+  
+  "onboarding_lets_go": "چلیں شروع کریں",
+  "@onboarding_lets_go": {
+    "description": "آخری آن بورڈنگ اسکرین پر چلیں شروع کریں بٹن"
+  },
+  
+  "home_title": "پلانٹ شناخت کنندہ",
+  "@home_title": {
+    "description": "ہوم اسکرین ایپ بار کا عنوان"
+  },
+  
+  "appBarTitle": "گرین اسکین",
+  "@appBarTitle": {
+    "description": "مین اسکرین کے لیے ایپ بار کا عنوان"
+  },
+  
+  "home_identify_subtitle": "کسی بھی پودے کو پہچانیں",
+  "@home_identify_subtitle": {
+    "description": "ہوم اسکرین پر شناخت فیچر کارڈ کے لیے ذیلی عنوان"
+  },
+  
+  "home_diagnose_subtitle": "اپنے پودے کی صحت چیک کریں",
+  "@home_diagnose_subtitle": {
+    "description": "ہوم اسکرین پر تشخیص فیچر کارڈ کے لیے ذیلی عنوان"
+  },
+  
+  "home_water_subtitle": "اپنے پودے کے لیے پانی کو بہتر بنائیں",
+  "@home_water_subtitle": {
+    "description": "ہوم اسکرین پر واٹر کیلکولیٹر فیچر کارڈ کے لیے ذیلی عنوان"
+  },
+  
+  "home_light_subtitle": "بہترین روشنی کی پیمائش کریں",
+  "@home_light_subtitle": {
+    "description": "ہوم اسکرین پر لائٹ میٹر فیچر کارڈ کے لیے ذیلی عنوان"
+  },
+  
+  "home_feature_not_available": "فیچر {featureId} دستیاب نہیں ہے",
+  "@home_feature_not_available": {
+    "description": "جب فیچر دستیاب نہ ہو تو خرابی کا پیغام",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "غیر دستیاب فیچر کی ID"
+      }
+    }
+  },
+  
+  "selectLanguage": "زبان منتخب کریں",
+  "@selectLanguage": {
+    "description": "زبان کے انتخاب کی اسکرین کے لیے عنوان"
+  },
+  
+  "english": "انگریزی",
+  "@english": {
+    "description": "انگریزی زبان کا نام"
+  },
+  
+  "urdu": "اردو",
+  "@urdu": {
+    "description": "اردو زبان کا نام"
+  },
+  
+  "german": "جرمن",
+  "@german": {
+    "description": "جرمن زبان کا نام"
+  },
+  
+  "french": "فرانسیسی",
+  "@french": {
+    "description": "فرانسیسی زبان کا نام"
+  },
+  
+  "arabic": "عربی",
+  "@arabic": {
+    "description": "عربی زبان کا نام"
+  },
+  
+  "spanish": "ہسپانوی",
+  "@spanish": {
+    "description": "ہسپانوی زبان کا نام"
+  },
+  
+  "japanese": "جاپانی",
+  "@japanese": {
+    "description": "جاپانی زبان کا نام"
+  },
+  
+  "korean": "کورین",
+  "@korean": {
+    "description": "کورین زبان کا نام"
+  },
+  
+  "identify": "شناخت کریں",
+  "@identify": {
+    "description": "شناخت فیچر کے لیے بٹن یا ٹیب کا لیبل"
+  },
+  
+  "diagnose": "تشخیص کریں",
+  "@diagnose": {
+    "description": "تشخیص فیچر کے لیے بٹن یا ٹیب کا لیبل"
+  },
+  
+  "scanner_mode_identify": "پودے کی شناخت کریں",
+  "@scanner_mode_identify": {
+    "description": "پودے کی شناخت کے لیے اسکینر موڈ اشارہ"
+  },
+  
+  "scanner_identify_plant": "پودے کی شناخت کریں",
+  "@scanner_identify_plant": {
+    "description": "اسکینر اسکرین شناخت پودا بٹن/لیبل"
+  },
+  
+  "scanner_mode_diagnose": "پودے کی تشخیص کریں",
+  "@scanner_mode_diagnose": {
+    "description": "پودے کی تشخیص کے لیے اسکینر موڈ اشارہ"
+  },
+  
+  "scanner_diagnose_plant": "پودے کی تشخیص کریں",
+  "@scanner_diagnose_plant": {
+    "description": "اسکینر اسکرین تشخیص پودا بٹن/لیبل"
+  },
+  
+  "scanner_mode_water": "پانی کا حساب کتاب",
+  "@scanner_mode_water": {
+    "description": "پانی کے حساب کتاب کے لیے اسکینر موڈ اشارہ"
+  },
+  
+  "scanner_water_calculation": "پانی کا حساب کتاب",
+  "@scanner_water_calculation": {
+    "description": "اسکینر اسکرین پانی کے حساب کتاب کا بٹن/لیبل"
+  },
+  
+  "scanner_mode_default": "اسکین موڈ",
+  "@scanner_mode_default": {
+    "description": "پہلے سے طے شدہ اسکینر موڈ کا متن"
+  },
+  
+  "scanner_scan_mode": "اسکین موڈ",
+  "@scanner_scan_mode": {
+    "description": "اسکینر اسکرین موڈ اشارہ"
+  },
+  
+  "scanner_capture_error": "تصویر لینے میں ناکامی",
+  "@scanner_capture_error": {
+    "description": "جب تصویر لینے میں ناکامی ہو تو خرابی کا پیغام"
+  },
+  
+  "scanner_gallery_error": "تصویر منتخب کرنے میں ناکامی",
+  "@scanner_gallery_error": {
+    "description": "جب گیلری سے تصویر منتخب کرنے میں ناکامی ہو تو خرابی کا پیغام"
+  },
+  
+  "scanner_take_photo": "تصویر لیں",
+  "@scanner_take_photo": {
+    "description": "اسکینر میں تصویر لینے کا بٹن"
+  },
+  
+  "scanner_retake": "دوبارہ لیں",
+  "@scanner_retake": {
+    "description": "تصویر دوبارہ لینے کا بٹن"
+  },
+  
+  "scanner_use_photo": "تصویر استعمال کریں",
+  "@scanner_use_photo": {
+    "description": "لی گئی تصویر استعمال کرنے کا بٹن"
+  },
+  
+  "scan_plant": "پودا اسکین کریں",
+  "@scan_plant": {
+    "description": "پودے کے اسکین موڈ کے لیے لیبل"
+  },
+  
+  "scan_disease": "بیماری اسکین کریں",
+  "@scan_disease": {
+    "description": "بیماری کے اسکین موڈ کے لیے لیبل"
+  },
+  
+  "preview_gallery": "گیلری",
+  "@preview_gallery": {
+    "description": "پریویو اسکرین میں گیلری کا بٹن"
+  },
+  
+  "preview_no_image": "کوئی تصویر نہیں",
+  "@preview_no_image": {
+    "description": "جب کوئی تصویر منتخب نہ ہو تو پلیس ہولڈر کا متن"
+  },
+  
+  "preview_select_image_error": "براہ کرم پہلے تصویر منتخب کریں",
+  "@preview_select_image_error": {
+    "description": "جب تصویر منتخب کیے بغیر آگے بڑھنے کی کوشش کریں تو خرابی کا پیغام"
+  },
+  
+  "processing_identify_title": "پودے کی شناخت ہو رہی ہے",
+  "@processing_identify_title": {
+    "description": "عنوان جب پودے کی شناخت چل رہی ہو"
+  },
+
+  "processing_diagnose_title": "پودے کی تشخیص ہو رہی ہے",
+  "@processing_diagnose_title": {
+    "description": "عنوان جب پودے کی تشخیص چل رہی ہو"
+  },
+
+  "processing_water_title": "پانی کی ضرورت کا حساب ہو رہا ہے",
+  "@processing_water_title": {
+    "description": "عنوان جب پانی کا حساب کتاب چل رہا ہو"
+  },
+
+  "processing_generic_title": "عمل جاری ہے",
+  "@processing_generic_title": {
+    "description": "پروسسنگ کے دوران فال بیک عنوان"
+  },
+
+  "processing_title_identify": "پودے کی شناخت ہو رہی ہے",
+  "@processing_title_identify": {
+    "description": "شناخت کے لیے پروسیسنگ اسکرین کا عنوان"
+  },
+  
+  "processing_identifying": "پودے کی شناخت ہو رہی ہے",
+  "@processing_identifying": {
+    "description": "پروسسنگ اسکرین شناخت کا متن"
+  },
+  
+  "processing_title_diagnose": "پودے کی تشخیص ہو رہی ہے",
+  "@processing_title_diagnose": {
+    "description": "تشخیص کے لیے پروسیسنگ اسکرین کا عنوان"
+  },
+  
+  "processing_diagnosing": "پودے کی تشخیص ہو رہی ہے",
+  "@processing_diagnosing": {
+    "description": "پروسسنگ اسکرین تشخیص کا متن"
+  },
+  
+  "processing_title_water": "پانی کی ضرورت کا حساب ہو رہا ہے",
+  "@processing_title_water": {
+    "description": "پانی کے حساب کتاب کے لیے پروسیسنگ اسکرین کا عنوان"
+  },
+  
+  "processing_calculating_water": "پانی کی ضرورت کا حساب ہو رہا ہے",
+  "@processing_calculating_water": {
+    "description": "پروسسنگ اسکرین پانی کے حساب کتاب کا متن"
+  },
+  
+  "processing_title_default": "عمل جاری ہے",
+  "@processing_title_default": {
+    "description": "پہلے سے طے شدہ پروسیسنگ اسکرین کا عنوان"
+  },
+  
+  "processing_processing": "عمل جاری ہے",
+  "@processing_processing": {
+    "description": "پروسسنگ اسکرین کا پہلے سے طے شدہ متن"
+  },
+  
+  "processing_subtitle_identify": "ہوشیار، تیز، اور درست پودوں کی شناخت",
+  "@processing_subtitle_identify": {
+    "description": "شناخت کے لیے پروسیسنگ کا ذیلی عنوان"
+  },
+  
+  "processing_smart_fast_accurate": "ہوشیار، تیز، اور درست پودوں کی شناخت",
+  "@processing_smart_fast_accurate": {
+    "description": "شناخت کے لیے پروسیسنگ کا ذیلی عنوان"
+  },
+  
+  "processing_subtitle_diagnose": "ممکنہ بیماریوں اور مسائل کا پتہ لگایا جا رہا ہے",
+  "@processing_subtitle_diagnose": {
+    "description": "تشخیص کے لیے پروسیسنگ کا ذیلی عنوان"
+  },
+  
+  "processing_spotting_diseases": "ممکنہ بیماریوں اور مسائل کا پتہ لگایا جا رہا ہے",
+  "@processing_spotting_diseases": {
+    "description": "تشخیص کے لیے پروسیسنگ کا ذیلی عنوان"
+  },
+  
+  "processing_subtitle_water": "پودے اور ماحول کا تجزیہ ہو رہا ہے...",
+  "@processing_subtitle_water": {
+    "description": "پانی کے حساب کتاب کے لیے پروسیسنگ کا ذیلی عنوان"
+  },
+  
+  "processing_analyzing": "پودے اور ماحول کا تجزیہ ہو رہا ہے...",
+  "@processing_analyzing": {
+    "description": "پانی کے حساب کتاب کے لیے پروسیسنگ کا ذیلی عنوان"
+  },
+  
+  "processing_subtitle_default": "براہ کرم انتظار کریں...",
+  "@processing_subtitle_default": {
+    "description": "پہلے سے طے شدہ پروسیسنگ کا ذیلی عنوان"
+  },
+  
+  "processing_please_wait": "براہ کرم انتظار کریں...",
+  "@processing_please_wait": {
+    "description": "پہلے سے طے شدہ پروسیسنگ کا ذیلی عنوان"
+  },
+  
+  "result_plant_identified": "پودے کی شناخت ہوگئی",
+  "@result_plant_identified": {
+    "description": "پودے کی شناخت کے نتیجے کی اسکرین کے لیے عنوان"
+  },
+  
+  "result_about_plant": "پودے کے بارے میں",
+  "@result_about_plant": {
+    "description": "پودے کی تفصیل کے لیے سیکشن کا عنوان"
+  },
+  
+  "result_climate_requirements": "موسمی ضروریات",
+  "@result_climate_requirements": {
+    "description": "موسمی معلومات کے لیے سیکشن کا عنوان"
+  },
+  
+  "result_temperature": "درجہ حرارت",
+  "@result_temperature": {
+    "description": "درجہ حرارت کی ضرورت کے لیے لیبل"
+  },
+  
+  "result_light": "روشنی",
+  "@result_light": {
+    "description": "روشنی کی ضرورت کے لیے لیبل"
+  },
+  
+  "result_soil": "مٹی",
+  "@result_soil": {
+    "description": "مٹی کی ضرورت کے لیے لیبل"
+  },
+  
+  "result_humidity": "نمی",
+  "@result_humidity": {
+    "description": "نمی کی ضرورت کے لیے لیبل"
+  },
+  
+  "result_care_schedule": "دیکھ بھال کا شیڈول",
+  "@result_care_schedule": {
+    "description": "دیکھ بھال کی معلومات کے لیے سیکشن کا عنوان"
+  },
+  
+  "result_watering": "پانی دینا",
+  "@result_watering": {
+    "description": "پانی دینے کے شیڈول کے لیے لیبل"
+  },
+  
+  "result_fertilizing": "کھاد ڈالنا",
+  "@result_fertilizing": {
+    "description": "کھاد ڈالنے کے شیڈول کے لیے لیبل"
+  },
+  
+  "result_safety_warning": "حفاظتی انتباہ",
+  "@result_safety_warning": {
+    "description": "زہریلاپن/حفاظتی معلومات کے لیے سیکشن کا عنوان"
+  },
+  
+  "result_saved_success": "میرے پودوں میں محفوظ ہوگیا!",
+  "@result_saved_success": {
+    "description": "کامیابی کا پیغام جب پودا محفوظ ہوجائے"
+  },
+  
+  "result_removed_success": "میرے پودوں سے ہٹا دیا گیا",
+  "@result_removed_success": {
+    "description": "کامیابی کا پیغام جب پودا ہٹا دیا جائے"
+  },
+  
+  "result_save_button": "میرے پودوں میں محفوظ کریں",
+  "@result_save_button": {
+    "description": "بٹن کا متن پودا محفوظ کرنے کے لیے (غیر فعال حالت)"
+  },
+  
+  "result_saved_button": "میرے پودوں میں محفوظ ہوگیا",
+  "@result_saved_button": {
+    "description": "بٹن کا متن جب پودا پہلے سے محفوظ ہو (فعال حالت)"
+  },
+  
+  "result_identify_another": "دوسرا پودا شناخت کریں",
+  "@result_identify_another": {
+    "description": "نئی پودے کی شناخت شروع کرنے کا بٹن"
+  },
+  
+  "result_error": "خرابی",
+  "@result_error": {
+    "description": "شناخت کے نتیجے کے لیے خرابی کا عنوان"
+  },
+  
+  "result_no_data": "پودے کا ڈیٹا دستیاب نہیں ہے",
+  "@result_no_data": {
+    "description": "خرابی کا پیغام جب پودے کا ڈیٹا غائب ہو"
+  },
+  
+  "result_try_again": "دوبارہ کوشش کریں",
+  "@result_try_again": {
+    "description": "شناخت دوبارہ کرنے کا بٹن"
+  },
+  
+  "diagnosis_title": "تشخیص کا نتیجہ",
+  "@diagnosis_title": {
+    "description": "پودے کی تشخیص کے نتیجے کی اسکرین کے لیے عنوان"
+  },
+  
+  "diagnosis_result": "تشخیص کا نتیجہ",
+  "@diagnosis_result": {
+    "description": "تشخیص کے نتیجے کی اسکرین کے لیے عنوان"
+  },
+  
+  "diagnosis_severity_assessment": "شدت کا اندازہ",
+  "@diagnosis_severity_assessment": {
+    "description": "شدت کی معلومات کے لیے سیکشن کا عنوان"
+  },
+  
+  "diagnosis_severity_level": "شدت کی سطح",
+  "@diagnosis_severity_level": {
+    "description": "شدت کی سطح کے اشارے کے لیے لیبل"
+  },
+  
+  "diagnosis_immediate_actions": "فوری اقدامات (اگلے 24-48 گھنٹے)",
+  "@diagnosis_immediate_actions": {
+    "description": "فوری دیکھ بھال کے اقدامات کے لیے سیکشن کا عنوان"
+  },
+  
+  "diagnosis_treatment_plan": "علاج کا منصوبہ",
+  "@diagnosis_treatment_plan": {
+    "description": "علاج کی معلومات کے لیے سیکشن کا عنوان"
+  },
+  
+  "diagnosis_daily_monitoring": "روزانہ نگرانی",
+  "@diagnosis_daily_monitoring": {
+    "description": "نگرانی کی چیک لسٹ کے لیے سیکشن کا عنوان"
+  },
+  
+  "diagnosis_expected_recovery": "متوقع بحالی",
+  "@diagnosis_expected_recovery": {
+    "description": "بحالی کے ٹائم لائن کے لیے سیکشن کا عنوان"
+  },
+  
+  "diagnosis_diagnose_another": "دوسرا پودا تشخیص کریں",
+  "@diagnosis_diagnose_another": {
+    "description": "نئی تشخیص شروع کرنے کا بٹن"
+  },
+  
+  "diagnosis_back_home": "ہوم پر واپس جائیں",
+  "@diagnosis_back_home": {
+    "description": "ہوم اسکرین پر واپس جانے کا بٹن"
+  },
+  
+  "diagnosis_error_title": "تشخیص کی خرابی",
+  "@diagnosis_error_title": {
+    "description": "خرابی ڈائیلاگ کا عنوان"
+  },
+  
+  "diagnosis_error": "تشخیص کی خرابی",
+  "@diagnosis_error": {
+    "description": "تشخیص کے نتیجے کے لیے خرابی کا عنوان"
+  },
+  
+  "diagnosis_error_no_data": "تشخیص کا ڈیٹا دستیاب نہیں ہے",
+  "@diagnosis_error_no_data": {
+    "description": "خرابی کا پیغام جب تشخیص کا ڈیٹا غائب ہو"
+  },
+  
+  "diagnosis_no_data": "تشخیص کا ڈیٹا دستیاب نہیں ہے",
+  "@diagnosis_no_data": {
+    "description": "خرابی کا پیغام جب تشخیص کا ڈیٹا غائب ہو"
+  },
+  
+  "diagnosis_try_again": "دوبارہ کوشش کریں",
+  "@diagnosis_try_again": {
+    "description": "تشخیص دوبارہ کرنے کا بٹن"
+  },
+  
+  "premium_title": "پریمیم میں اپ گریڈ کریں",
+  "@premium_title": {
+    "description": "پریمیم سبسکرپشن اسکرین کے لیے عنوان"
+  },
+  
+  "premium_upgrade": "پریمیم میں اپ گریڈ کریں",
+  "@premium_upgrade": {
+    "description": "پریمیم اپ گریڈ کے لیے بٹن/متن"
+  },
+  
+  "premium_subtitle": "سب کچھ تجربہ کریں — آسان اور بلا تعطل",
+  "@premium_subtitle": {
+    "description": "پریمیم اسکرین کے لیے ذیلی عنوان کا متن"
+  },
+  
+  "premium_experience": "سب کچھ تجربہ کریں — آسان اور بلا تعطل",
+  "@premium_experience": {
+    "description": "پریمیم تجربے کی تفصیل"
+  },
+  
+  "premium_features_header": "خصوصیات",
+  "@premium_features_header": {
+    "description": "خصوصیات کے موازنہ کی میز کے لیے ہیڈر"
+  },
+  
+  "premium_features": "خصوصیات",
+  "@premium_features": {
+    "description": "خصوصیات کے سیکشن کا عنوان"
+  },
+  
+  "premium_pro_header": "PRO",
+  "@premium_pro_header": {
+    "description": "PRO ٹیر کے لیے کالم ہیڈر"
+  },
+  
+  "premium_pro": "PRO",
+  "@premium_pro": {
+    "description": "PRO ٹیر کا لیبل"
+  },
+  
+  "premium_basic_header": "بنیادی",
+  "@premium_basic_header": {
+    "description": "بنیادی ٹیر کے لیے کالم ہیڈر"
+  },
+  
+  "premium_basic": "بنیادی",
+  "@premium_basic": {
+    "description": "بنیادی ٹیر کا لیبل"
+  },
+  
+  "premium_price": "روپے 750.00/ہفتہ مفت 3 دن کے ٹرائل کے بعد",
+  "@premium_price": {
+    "description": "پریمیم سبسکرپشن کے لیے قیمت کا متن"
+  },
+  
+  "premium_start_now": "ابھی شروع کریں",
+  "@premium_start_now": {
+    "description": "پریمیم سبسکرپشن شروع کرنے کا بٹن"
+  },
+  
+  "premium_footer": "سبسکرپشن خود بخود تجدید ہوگی۔ کسی بھی وقت منسوخ کریں۔",
+  "@premium_footer": {
+    "description": "فوٹر ڈس کلیمر کا متن"
+  },
+  
+  "light_meter_title": "لائٹ میٹر",
+  "@light_meter_title": {
+    "description": "لائٹ میٹر اسکرین کے لیے عنوان"
+  },
+  
+  "light_meter_instruction": "پودے کی مطلوبہ جگہ پر اپنا فون رکھیں۔",
+  "@light_meter_instruction": {
+    "description": "لائٹ میٹر استعمال کرنے کے لیے ہدایات کا متن"
+  },
+  
+  "light_meter_optimal": "بہترین",
+  "@light_meter_optimal": {
+    "description": "بہترین روشنی کی حد کارڈ کے لیے لیبل"
+  },
+  
+  "light_meter_measuring": "پیمائش ہو رہی ہے",
+  "@light_meter_measuring": {
+    "description": "پیمائش کے دوران اسٹیٹس کا متن"
+  },
+  
+  "light_meter_optimal_range": "1000-10000 LUX",
+  "@light_meter_optimal_range": {
+    "description": "بہترین روشنی کی حد کی قیمت"
+  },
+  
+  "light_meter_initializing": "کیمرہ شروع ہو رہا ہے...",
+  "@light_meter_initializing": {
+    "description": "کیمرہ شروع ہونے کے دوران لوڈنگ کا متن"
+  },
+  
+  "light_meter_starting": "کیمرہ شروع ہو رہا ہے...",
+  "@light_meter_starting": {
+    "description": "جب کیمرہ شروع ہو رہا ہو تو پلیس ہولڈر کا متن"
+  },
+  
+  "light_meter_measure": "پیمائش کریں",
+  "@light_meter_measure": {
+    "description": "روشنی کی پیمائش لینے کا بٹن"
+  },
+  
+  "light_meter_reset": "ری سیٹ کریں",
+  "@light_meter_reset": {
+    "description": "پیمائش ری سیٹ کرنے کا بٹن"
+  },
+  
+  "light_meter_error_title": "شروع کرنے میں ناکامی",
+  "@light_meter_error_title": {
+    "description": "خرابی ڈائیلاگ کا عنوان"
+  },
+  
+  "light_meter_retry": "دوبارہ کوشش کریں",
+  "@light_meter_retry": {
+    "description": "کیمرہ شروع کرنے کی دوبارہ کوشش کرنے کا بٹن"
+  },
+  
+  "light_info_title": "لائٹ میٹر کیسے استعمال کریں؟",
+  "@light_info_title": {
+    "description": "لائٹ میٹر معلوماتی اسکرین کے لیے عنوان"
+  },
+  
+  "light_info_how_to_use": "لائٹ میٹر کیسے استعمال کریں؟",
+  "@light_info_how_to_use": {
+    "description": "لائٹ میٹر معلوماتی اسکرین کے لیے عنوان"
+  },
+  
+  "light_info_step1": "اپنے فرنٹ کیمرہ کو روشنی کے منبع کی طرف رکھیں۔",
+  "@light_info_step1": {
+    "description": "پہلا ہدایتی مرحلہ"
+  },
+  
+  "light_info_step2": "تمام زاویوں سے روشنی کی پیمائش کے لیے پودے کے ارد گرد فون گھمائیں",
+  "@light_info_step2": {
+    "description": "دوسرا ہدایتی مرحلہ"
+  },
+  
+  "light_info_step3": "سب سے درست نتائج کے لیے دوپہر کے وقت روشنی کی سطح چیک کریں",
+  "@light_info_step3": {
+    "description": "تیسرا ہدایتی مرحلہ"
+  },
+  
+  "light_info_continue": "جاری رکھیں",
+  "@light_info_continue": {
+    "description": "معلوماتی اسکرین بند کرنے کا بٹن"
+  },
+  
+  "light_info_image_error": "تصویر دستیاب نہیں ہے",
+  "@light_info_image_error": {
+    "description": "خرابی کا متن جب ہدایتی تصویر لوڈ نہ ہو"
+  },
+  
+  "privacy_policy_title": "رازداری کی پالیسی",
+  "@privacy_policy_title": {
+    "description": "رازداری کی پالیسی اسکرین کے لیے عنوان"
+  },
+  
+  "settings_title": "ترتیبات",
+  "@settings_title": {
+    "description": "ترتیبات اسکرین کے لیے عنوان"
+  },
+  
+  "settings_app_language": "ایپ کی زبان",
+  "@settings_app_language": {
+    "description": "زبان کے انتخاب کے لیے ترتیبات کا آپشن"
+  },
+  
+  "settings_rate_us": "ہمیں ریٹ کریں",
+  "@settings_rate_us": {
+    "description": "ایپ کو ریٹ کرنے کے لیے ترتیبات کا آپشن"
+  },
+  
+  "settings_share_app": "ایپ شیئر کریں",
+  "@settings_share_app": {
+    "description": "ایپ شیئر کرنے کے لیے ترتیبات کا آپشن"
+  },
+  
+  "settings_feedback": "فیڈبیک",
+  "@settings_feedback": {
+    "description": "فیڈبیک بھیجنے کے لیے ترتیبات کا آپشن"
+  },
+  
+  "settings_privacy_policy": "رازداری کی پالیسی",
+  "@settings_privacy_policy": {
+    "description": "رازداری کی پالیسی دیکھنے کے لیے ترتیبات کا آپشن"
+  },
+  
+  "settings_feature_unavailable": "فیچر {featureId} دستیاب نہیں ہے",
+  "@settings_feature_unavailable": {
+    "description": "جب فیچر دستیاب نہ ہو تو خرابی کا پیغام",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "غیر دستیاب فیچر کی ID"
+      }
+    }
+  },
+  
+  "settings_could_not_open_email": "ای میل نہیں کھولا جا سکا۔ براہ کرم ہمیں {email} پر ای میل کریں",
+  "@settings_could_not_open_email": {
+    "description": "خرابی کا پیغام جب ای میل نہ کھل سکے",
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "description": "رابطہ کرنے کا ای میل پتہ"
+      }
+    }
+  },
+  
+  "debug_token_copied": "ٹوکن کلپ بورڈ پر کاپی ہوگیا",
+  "@debug_token_copied": {
+    "description": "پیغام جب FCM ٹوکن کاپی ہوجائے"
+  },
+  
+  "debug_get_token": "FCM ٹوکن حاصل کریں",
+  "@debug_get_token": {
+    "description": "FCM ٹوکن حاصل کرنے کے لیے بٹن کا متن (ڈیبگ)"
+  },
+  
+  "settings_token_copied": "ٹوکن کلپ بورڈ پر کاپی ہوگیا",
+  "@settings_token_copied": {
+    "description": "پیغام جب FCM ٹوکن کاپی ہوجائے"
+  },
+  
+  "settings_get_fcm_token": "FCM ٹوکن حاصل کریں",
+  "@settings_get_fcm_token": {
+    "description": "FCM ٹوکن حاصل کرنے کے لیے بٹن کا متن (ڈیبگ)"
+  },
+  
+  "settings_test_crash": "ٹیسٹ کریش",
+  "@settings_test_crash": {
+    "description": "ٹیسٹ کریش کرنے کے لیے بٹن کا متن (ڈیبگ)"
+  },
+  
+  "water_calculator": "واٹر کیلکولیٹر",
+  "@water_calculator": {
+    "description": "واٹر کیلکولیٹر فیچر کے لیے عنوان"
+  },
+  
+  "water_continue": "جاری رکھیں",
+  "@water_continue": {
+    "description": "اگلے سوال پر جانے کا بٹن"
+  },
+  
+  "water_question_location": "آپ پودا کہاں رکھنے کا ارادہ رکھتے ہیں؟",
+  "@water_question_location": {
+    "description": "پودے کی جگہ کے بارے میں سوال"
+  },
+  
+  "water_location_q1": "آپ پودا کہاں رکھنے کا ارادہ رکھتے ہیں؟",
+  "@water_location_q1": {
+    "description": "پانی کے حساب کتاب کا پہلا سوال"
+  },
+  
+  "water_question_temperature": "موجودہ درجہ حرارت کیا ہے؟",
+  "@water_question_temperature": {
+    "description": "موجودہ درجہ حرارت کے بارے میں سوال"
+  },
+  
+  "water_location_q2": "موجودہ درجہ حرارت کیا ہے؟",
+  "@water_location_q2": {
+    "description": "پانی کے حساب کتاب کا دوسرا سوال"
+  },
+  
+  "water_question_frequency": "آپ کتنی بار پانی دیتے ہیں؟",
+  "@water_question_frequency": {
+    "description": "پانی دینے کی تعدد کے بارے میں سوال"
+  },
+  
+  "water_location_q3": "آپ کتنی بار پانی دیتے ہیں؟",
+  "@water_location_q3": {
+    "description": "پانی کے حساب کتاب کا تیسرا سوال"
+  },
+  
+  "water_location_indoor_window": "انڈور، کھڑکی کے قریب",
+  "@water_location_indoor_window": {
+    "description": "انڈور جگہ کا آپشن کھڑکی کے قریب"
+  },
+  
+  "water_location_indoor_shaded": "انڈور، سایہ دار کونے میں",
+  "@water_location_indoor_shaded": {
+    "description": "انڈور سایہ دار جگہ کا آپشن"
+  },
+  
+  "water_location_outdoor_sun": "آؤٹ ڈور، دھوپ میں",
+  "@water_location_outdoor_sun": {
+    "description": "آؤٹ ڈور دھوپ والی جگہ کا آپشن"
+  },
+  
+  "water_location_outdoor_shade": "آؤٹ ڈور، جزوی سایہ",
+  "@water_location_outdoor_shade": {
+    "description": "آؤٹ ڈور جزوی سایہ والی جگہ کا آپشن"
+  },
+  
+  "water_temperature_very_cold": "بہت ٹھنڈا (5°C سے نیچے)",
+  "@water_temperature_very_cold": {
+    "description": "بہت ٹھنڈے درجہ حرارت کا آپشن"
+  },
+  
+  "water_temperature_cold": "ٹھنڈا (15°C سے نیچے)",
+  "@water_temperature_cold": {
+    "description": "ٹھنڈے درجہ حرارت کا آپشن"
+  },
+  
+  "water_temperature_moderate": "معتدل (15°C - 25°C)",
+  "@water_temperature_moderate": {
+    "description": "معتدل درجہ حرارت کا آپشن"
+  },
+  
+  "water_temperature_warm": "گرم (25°C - 30°C)",
+  "@water_temperature_warm": {
+    "description": "گرم درجہ حرارت کا آپشن"
+  },
+  
+  "water_temperature_hot": "بہت گرم (30°C سے اوپر)",
+  "@water_temperature_hot": {
+    "description": "بہت گرم درجہ حرارت کا آپشن"
+  },
+  
+  "water_frequency_daily": "روزانہ",
+  "@water_frequency_daily": {
+    "description": "روزانہ پانی دینے کی تعدد"
+  },
+  
+  "water_frequency_2_3_days": "ہر 2-3 دن بعد",
+  "@water_frequency_2_3_days": {
+    "description": "ہر 2-3 دن بعد پانی دینے کی تعدد"
+  },
+  
+  "water_frequency_weekly": "ہفتے میں ایک بار",
+  "@water_frequency_weekly": {
+    "description": "ہفتہ وار پانی دینے کی تعدد"
+  },
+  
+  "water_frequency_biweekly": "دو ہفتے میں ایک بار",
+  "@water_frequency_biweekly": {
+    "description": "دو ہفتے میں ایک بار پانی دینے کی تعدد"
+  },
+  
+  "water_frequency_rarely": "کبھی کبھار / جب خشک ہو",
+  "@water_frequency_rarely": {
+    "description": "کبھی کبھار یا جب مٹی خشک ہو تو پانی دینے کی تعدد"
+  },
+  
+  "water_result_title": "پودے کے پانی کی ضرورت",
+  "@water_result_title": {
+    "description": "پانی کے حساب کتاب کے نتیجے کی اسکرین کے لیے عنوان"
+  },
+  
+  "water_plant_water_need": "پودے کے پانی کی ضرورت",
+  "@water_plant_water_need": {
+    "description": "پانی کے حساب کتاب کے نتیجے کی اسکرین کے لیے عنوان"
+  },
+  
+  "water_result_schedule": "پانی دینے کا شیڈول",
+  "@water_result_schedule": {
+    "description": "پانی دینے کے شیڈول کے لیے سیکشن کا عنوان"
+  },
+  
+  "water_schedule": "پانی دینے کا شیڈول",
+  "@water_schedule": {
+    "description": "پانی دینے کے شیڈول سیکشن کا عنوان"
+  },
+  
+  "water_result_frequency_label": "تعدد:",
+  "@water_result_frequency_label": {
+    "description": "پانی دینے کی تعدد کے لیے لیبل"
+  },
+  
+  "water_frequency": "تعدد:",
+  "@water_frequency": {
+    "description": "تعدد کا لیبل"
+  },
+  
+  "water_result_best_time_label": "بہترین وقت:",
+  "@water_result_best_time_label": {
+    "description": "پانی دینے کے بہترین وقت کے لیے لیبل"
+  },
+  
+  "water_best_time": "بہترین وقت:",
+  "@water_best_time": {
+    "description": "بہترین وقت کا لیبل"
+  },
+  
+  "water_result_tips": "دیکھ بھال کے مشورے",
+  "@water_result_tips": {
+    "description": "دیکھ بھال کے مشوروں کے لیے سیکشن کا عنوان"
+  },
+  
+  "water_care_tips": "دیکھ بھال کے مشورے",
+  "@water_care_tips": {
+    "description": "دیکھ بھال کے مشوروں کے سیکشن کا عنوان"
+  },
+  
+  "water_result_thank_you": "شکریہ",
+  "@water_result_thank_you": {
+    "description": "ہوم پر واپس جانے کا بٹن"
+  },
+  
+  "water_thank_you": "شکریہ",
+  "@water_thank_you": {
+    "description": "شکریہ کا پیغام"
+  },
+  
+  "water_result_guide": "اس گائیڈ کو استعمال کریں تاکہ آپ کا پودا خوش اور اچھی طرح پانی پاتا رہے",
+  "@water_result_guide": {
+    "description": "واٹر ریزلٹ اسکرین پر گائیڈ کا متن"
+  },
+  
+  "water_result_amount": "76 ML",
+  "@water_result_amount": {
+    "description": "پانی کی مقدار کی سفارش"
+  },
+  
+  "water_result_loading": "پانی کی ضرورت کا حساب ہو رہا ہے...",
+  "@water_result_loading": {
+    "description": "پانی کے حساب کتاب کے دوران لوڈنگ کا متن"
+  },
+  
+  "water_calculating": "پانی کی ضرورت کا حساب ہو رہا ہے...",
+  "@water_calculating": {
+    "description": "پانی کے حساب کتاب کے دوران لوڈنگ کا متن"
+  },
+  
+  "water_result_error_title": "حساب کتاب کی خرابی",
+  "@water_result_error_title": {
+    "description": "خرابی ڈائیلاگ کا عنوان"
+  },
+  
+  "water_error_title": "حساب کتاب کی خرابی",
+  "@water_error_title": {
+    "description": "پانی کے حساب کتاب کے لیے خرابی کا عنوان"
+  },
+  
+  "water_result_error_no_data": "پانی کے حساب کتاب کا ڈیٹا دستیاب نہیں ہے",
+  "@water_result_error_no_data": {
+    "description": "خرابی کا پیغام جب پانی کے حساب کتاب کا ڈیٹا غائب ہو"
+  },
+  
+  "water_no_data": "پانی کے حساب کتاب کا ڈیٹا دستیاب نہیں ہے",
+  "@water_no_data": {
+    "description": "خرابی کا پیغام جب پانی کا ڈیٹا غائب ہو"
+  },
+  
+  "water_result_back_home": "ہوم پر واپس جائیں",
+  "@water_result_back_home": {
+    "description": "خرابی کی حالت سے ہوم پر واپس جانے کا بٹن"
+  },
+  
+  "water_back_home": "ہوم پر واپس جائیں",
+  "@water_back_home": {
+    "description": "ہوم پر واپس جانے کا بٹن"
+  },
+  
+  "history_title": "اسکین ہسٹری",
+  "@history_title": {
+    "description": "ہسٹری اسکرین کے لیے عنوان"
+  },
+  
+  "history_empty_my_plants": "کوئی محفوظ شدہ پودے نہیں",
+  "@history_empty_my_plants": {
+    "description": "میرے پودے ٹیب کے لیے خالی حالت کا عنوان"
+  },
+  
+  "history_empty_history": "دکھانے کے لیے کچھ نہیں",
+  "@history_empty_history": {
+    "description": "ہسٹری ٹیب کے لیے خالی حالت کا عنوان"
+  },
+  
+  "history_empty_my_plants_desc": "انہیں یہاں دیکھنے کے لیے اسکین ہسٹری سے پودے محفوظ کریں",
+  "@history_empty_my_plants_desc": {
+    "description": "میرے پودے ٹیب کے لیے خالی حالت کی تفصیل"
+  },
+  
+  "history_empty_history_desc": "آپ کے تمام اسکین یہاں ظاہر ہوں گے",
+  "@history_empty_history_desc": {
+    "description": "ہسٹری ٹیب کے لیے خالی حالت کی تفصیل"
+  },
+  
+  "history_light_dialog_title": "روشنی کی پیمائش کا نتیجہ",
+  "@history_light_dialog_title": {
+    "description": "لائٹ میٹر ہسٹری آئٹم کے لیے ڈائیلاگ کا عنوان"
+  },
+  
+  "history_light_level": "روشنی کی سطح:",
+  "@history_light_level": {
+    "description": "روشنی کی سطح کی قیمت کے لیے لیبل"
+  },
+  
+  "history_lux_unit": "LUX",
+  "@history_lux_unit": {
+    "description": "روشنی کی پیمائش کی اکائی"
+  },
+  
+  "history_status": "حالت:",
+  "@history_status": {
+    "description": "روشنی کی حالت کے لیے لیبل"
+  },
+  
+  "history_status_unknown": "نامعلوم",
+  "@history_status_unknown": {
+    "description": "نامعلوم حالت کا متن"
+  },
+  
+  "history_optimal_range": "بہترین حد:",
+  "@history_optimal_range": {
+    "description": "روشنی کی بہترین حد کے لیے لیبل"
+  },
+  
+  "history_time": "وقت:",
+  "@history_time": {
+    "description": "ٹائم اسٹیمپ کے لیے لیبل"
+  },
+  
+  "history_close": "بند کریں",
+  "@history_close": {
+    "description": "ڈائیلاگ بند کرنے کا بٹن"
+  },
+  
+  "history_timestamp_just_now": "ابھی",
+  "@history_timestamp_just_now": {
+    "description": "حال ہی کے اسکینوں کے لیے ٹائم اسٹیمپ"
+  },
+  
+  "history_timestamp_min_ago": "منٹ پہلے",
+  "@history_timestamp_min_ago": {
+    "description": "منٹ پہلے کے لیے لاحقہ"
+  },
+  
+  "history_timestamp_hours_ago": "گھنٹے پہلے",
+  "@history_timestamp_hours_ago": {
+    "description": "گھنٹے پہلے کے لیے لاحقہ"
+  },
+  
+  "history_timestamp_days_ago": "دن پہلے",
+  "@history_timestamp_days_ago": {
+    "description": "دن پہلے کے لیے لاحقہ"
+  },
+  
+  "history_delete_title": "حذف کریں؟",
+  "@history_delete_title": {
+    "description": "حذف کرنے کی تصدیق کے ڈائیلاگ کے لیے عنوان"
+  },
+  
+  "history_delete_confirmation": "کیا آپ واقعی اسے حذف کرنا چاہتے ہیں؟",
+  "@history_delete_confirmation": {
+    "description": "حذف کرنے کے عمل کے لیے تصدیقی پیغام"
+  },
+  
+  "history_delete_button": "حذف کریں",
+  "@history_delete_button": {
+    "description": "حذف کرنے کی تصدیق کا بٹن"
+  },
+  
+  "history_cancel_button": "منسوخ کریں",
+  "@history_cancel_button": {
+    "description": "حذف کرنے کی منسوخی کا بٹن"
+  },
+  
+  "history_remove_from_my_plants": "میرے پودوں سے ہٹائیں",
+  "@history_remove_from_my_plants": {
+    "description": "محفوظ کردہ پودوں سے ہٹانے کے لیے ایکشن شیٹ کا آپشن"
+  },
+  
+  "history_save_to_my_plants": "میرے پودوں میں محفوظ کریں",
+  "@history_save_to_my_plants": {
+    "description": "پودوں میں محفوظ کرنے کے لیے ایکشن شیٹ کا آپشن"
+  },
+  
+  "history_share": "شیئر کریں",
+  "@history_share": {
+    "description": "ایکشن شیٹ میں شیئر کا آپشن"
+  },
+  
+  "bottom_nav_home": "ہوم",
+  "@bottom_nav_home": {
+    "description": "نیچے نیویگیشن میں ہوم ٹیب کا لیبل"
+  },
+  
+  "bottom_nav_history": "ہسٹری",
+  "@bottom_nav_history": {
+    "description": "نیچے نیویگیشن میں ہسٹری ٹیب کا لیبل"
+  },
+  
+  "bottom_nav_settings": "ترتیبات",
+  "@bottom_nav_settings": {
+    "description": "نیچے نیویگیشن میں ترتیبات ٹیب کا لیبل"
+  },
+  
+  "language_updated": "زبان {language} میں اپ ڈیٹ ہوگئی",
+  "@language_updated": {
+    "description": "پیغام جب زبان تبدیل ہو",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "description": "منتخب کردہ زبان کا نام"
+      }
+    }
+  },
+  
+  "language_english": "انگریزی",
+  "@language_english": {
+    "description": "انگریزی زبان کا نام"
+  },
+  
+  "language_urdu": "اردو",
+  "@language_urdu": {
+    "description": "اردو زبان کا نام"
+  },
+  
+  "language_german": "جرمن",
+  "@language_german": {
+    "description": "جرمن زبان کا نام"
+  },
+  
+  "language_french": "فرانسیسی",
+  "@language_french": {
+    "description": "فرانسیسی زبان کا نام"
+  },
+  
+  "language_arabic": "عربی",
+  "@language_arabic": {
+    "description": "عربی زبان کا نام"
+  },
+  
+  "language_spanish": "ہسپانوی",
+  "@language_spanish": {
+    "description": "ہسپانوی زبان کا نام"
+  },
+  
+  "language_japanese": "جاپانی",
+  "@language_japanese": {
+    "description": "جاپانی زبان کا نام"
+  },
+  
+  "language_korean": "کورین",
+  "@language_korean": {
+    "description": "کورین زبان کا نام"
+  },
+  
+  "widget_language_app_bar_title": "زبان منتخب کریں",
+  "@widget_language_app_bar_title": {
+    "description": "زبان کے انتخاب کی اسکرین ایپ بار کے لیے عنوان"
+  },
+  
+  "widget_severity_level": "شدت کی سطح",
+  "@widget_severity_level": {
+    "description": "شدت کی سطح کے اشارے کے لیے لیبل"
+  },
+  
+  "widget_severity_assessment": "شدت کا اندازہ",
+  "@widget_severity_assessment": {
+    "description": "شدت کے اندازے کے لیے سیکشن کا عنوان"
+  },
+  
+  "widget_no_plant_detected": "تصویر میں کوئی پودا نہیں ملا",
+  "@widget_no_plant_detected": {
+    "description": "پیغام جب تصویر میں کوئی پودا نہ ملے"
+  },
+  
+  "widget_treatment_badge": "علاج",
+  "@widget_treatment_badge": {
+    "description": "علاج کی اشیاء کے لیے بیج کا لیبل"
+  },
+  
+  "widget_bullet_separator": "•",
+  "@widget_bullet_separator": {
+    "description": "بلٹ پوائنٹ الگ کرنے والا کردار"
+  },
+  
+  "widget_severity_mild": "ہلکا",
+  "@widget_severity_mild": {
+    "description": "شدت کی سطح کا بیج متن - ہلکا"
+  },
+  
+  "widget_severity_moderate": "معتدل",
+  "@widget_severity_moderate": {
+    "description": "شدت کی سطح کا بیج متن - معتدل"
+  },
+  
+  "widget_severity_severe": "شدید",
+  "@widget_severity_severe": {
+    "description": "شدت کی سطح کا بیج متن - شدید"
+  },
+  
+  "widget_severity_critical": "انتہائی",
+  "@widget_severity_critical": {
+    "description": "شدت کی سطح کا بیج متن - انتہائی"
+  },
+  
+  "widget_severity_healthy": "صحت مند",
+  "@widget_severity_healthy": {
+    "description": "شدت کی سطح کا بیج متن - صحت مند"
+  },
+  
+  "widget_premium_banner_text": "پریمیم فیچرز دریافت کریں\nمفت میں",
+  "@widget_premium_banner_text": {
+    "description": "پریمیم بینر کا متن لائن بریک کے ساتھ"
+  },
+  
+  "widget_premium_banner_button": "پرو میں اپ گریڈ کریں",
+  "@widget_premium_banner_button": {
+    "description": "پریمیم بینر پر بٹن کا متن"
+  },
+  
+  "widget_premium_card_text": "پریمیم فیچرز دریافت کریں\nمفت میں",
+  "@widget_premium_card_text": {
+    "description": "پریمیم کارڈ کا متن لائن بریک کے ساتھ"
+  },
+  
+  "widget_premium_card_button": "پرو میں اپ گریڈ کریں",
+  "@widget_premium_card_button": {
+    "description": "پریمیم کارڈ پر بٹن کا متن"
+  },
+  
+  "widget_pro_button": "PRO",
+  "@widget_pro_button": {
+    "description": "پرو/پریمیم بٹن پر متن"
+  },
+  
+  "widget_rating_title": "ہماری ایپ کے ساتھ اپنے\nتجربے کی درجہ بندی کریں",
+  "@widget_rating_title": {
+    "description": "ریٹنگ باٹم شیٹ کے لیے عنوان لائن بریک کے ساتھ"
+  },
+  
+  "widget_rating_description": "براہ کرم اپنے تجربے کی درجہ بندی کریں اور ہمیں\nبہتر بنانے میں مدد کریں۔ شکریہ",
+  "@widget_rating_description": {
+    "description": "ریٹنگ شیٹ کے لیے تفصیل کا متن لائن بریک کے ساتھ"
+  },
+  
+  "widget_rating_submit": "جمع کریں",
+  "@widget_rating_submit": {
+    "description": "درجہ بندی جمع کرانے کا بٹن"
+  },
+  
+  "widget_rating_thank_you": "آپ کے {rating} ستاروں کی درجہ بندی کے لیے شکریہ!",
+  "@widget_rating_thank_you": {
+    "description": "شکریہ کا پیغام درجہ بندی کی قیمت کے لیے پلیس ہولڈر کے ساتھ",
+    "placeholders": {
+      "rating": {
+        "type": "int",
+        "description": "صارف کے منتخب کردہ ستاروں کی تعداد"
+      }
+    }
+  },
+  
+  "widget_history_badge_identified": "شناخت شدہ",
+  "@widget_history_badge_identified": {
+    "description": "شناخت اسکین کی قسم کے لیے بیج کا متن"
+  },
+  
+  "widget_history_badge_diagnosed": "تشخیص شدہ",
+  "@widget_history_badge_diagnosed": {
+    "description": "تشخیص اسکین کی قسم کے لیے بیج کا متن"
+  },
+  
+  "widget_history_badge_calculated": "حساب شدہ",
+  "@widget_history_badge_calculated": {
+    "description": "پانی کے حساب کتاب اسکین کی قسم کے لیے بیج کا متن"
+  },
+  
+  "widget_history_badge_measured": "پیمائش شدہ",
+  "@widget_history_badge_measured": {
+    "description": "لائٹ میٹر اسکین کی قسم کے لیے بیج کا متن"
+  },
+  
+  "widget_history_timestamp_just_now": "ابھی",
+  "@widget_history_timestamp_just_now": {
+    "description": "حال ہی کے اسکینوں کے لیے ٹائم اسٹیمپ کا متن"
+  },
+  
+  "widget_history_timestamp_min_ago": "منٹ پہلے",
+  "@widget_history_timestamp_min_ago": {
+    "description": "منٹ پہلے کے لیے لاحقہ"
+  },
+  
+  "widget_history_timestamp_hours_ago": "گھنٹے پہلے",
+  "@widget_history_timestamp_hours_ago": {
+    "description": "گھنٹے پہلے کے لیے لاحقہ"
+  },
+  
+  "widget_history_timestamp_days_ago": "دن پہلے",
+  "@widget_history_timestamp_days_ago": {
+    "description": "دن پہلے کے لیے لاحقہ"
+  },
+  
+  "widget_history_tab_my_plants": "میرے پودے",
+  "@widget_history_tab_my_plants": {
+    "description": "میرے پودے سیکشن کے لیے ٹیب کا لیبل"
+  },
+  
+  "widget_history_tab_history": "ہسٹری",
+  "@widget_history_tab_history": {
+    "description": "ہسٹری سیکشن کے لیے ٹیب کا لیبل"
+  },
+  
+  "widget_history_tab_open_paren": "(",
+  "@widget_history_tab_open_paren": {
+    "description": "شمار ظاہر کرنے کے لیے کھلی قوس"
+  },
+  
+  "widget_history_tab_close_paren": ")",
+  "@widget_history_tab_close_paren": {
+    "description": "شمار ظاہر کرنے کے لیے بند قوس"
+  }
+}

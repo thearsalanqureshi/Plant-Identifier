@@ -1,0 +1,1373 @@
+{
+  "@@locale": "ar",
+
+  "app_name": "محدد النباتات",
+  "@app_name": {
+    "description": "Application name displayed in splash screen and app bar"
+  },
+
+  "splash_title": "محدد النباتات",
+  "@splash_title": {
+    "description": "Title text on splash screen"
+  },
+
+  "onboarding1Title": "تعرّف على نباتك",
+  "@onboarding1Title": {
+    "description": "Onboarding screen 1 title (alternative key)"
+  },
+
+  "onboarding1Body": "امسح النباتات بالذكاء الاصطناعي للتعرف الفوري عليها والحصول على معلومات تفصيلية عن أي نوع من النباتات.",
+  "@onboarding1Body": {
+    "description": "Onboarding screen 1 body text (alternative key)"
+  },
+
+  "onboarding2Title": "شخّص نباتك",
+  "@onboarding2Title": {
+    "description": "Onboarding screen 2 title (alternative key)"
+  },
+
+  "onboarding2Body": "اكتشف أمراض النباتات واحصل على نصائح رعاية متخصصة لإبقاء أصدقائك الخضر بصحة جيدة ومزدهرة.",
+  "@onboarding2Body": {
+    "description": "Onboarding screen 2 body text (alternative key)"
+  },
+
+  "onboarding3Title": "رعاية النباتات أصبحت سهلة",
+  "@onboarding3Title": {
+    "description": "Onboarding screen 3 title (alternative key)"
+  },
+
+  "onboarding3Body": "احفظ سجل نباتاتك، واحصل على نصائح مخصصة، واضبط تذكيرات حتى لا تفوتك أي جلسة سقي.",
+  "@onboarding3Body": {
+    "description": "Onboarding screen 3 body text (alternative key)"
+  },
+
+  "next": "التالي",
+  "@next": {
+    "description": "Next button on onboarding (alternative key)"
+  },
+
+  "letsGo": "هيا نبدأ",
+  "@letsGo": {
+    "description": "Let's Go button on final onboarding screen (alternative key)"
+  },
+
+  "onboarding_identifying": "جارٍ التعرف على النبات",
+  "@onboarding_identifying": {
+    "description": "Title for plant identification during onboarding"
+  },
+
+  "onboarding_diagnosing": "جارٍ تشخيص النبات",
+  "@onboarding_diagnosing": {
+    "description": "Title for plant diagnosis during onboarding"
+  },
+
+  "onboarding_calculating_water": "جارٍ حساب احتياجات الري",
+  "@onboarding_calculating_water": {
+    "description": "Title for water calculation during onboarding"
+  },
+
+  "onboarding_processing": "جارٍ المعالجة",
+  "@onboarding_processing": {
+    "description": "Default processing title during onboarding"
+  },
+
+  "onboarding_subtitle_identify": "تعرف ذكي وسريع ودقيق على النباتات",
+  "@onboarding_subtitle_identify": {
+    "description": "Subtitle for identification mode"
+  },
+
+  "onboarding_subtitle_diagnose": "نكشف الأمراض والمشكلات المحتملة",
+  "@onboarding_subtitle_diagnose": {
+    "description": "Subtitle for diagnosis mode"
+  },
+
+  "onboarding_subtitle_water": "جارٍ تحليل النبات والبيئة المحيطة...",
+  "@onboarding_subtitle_water": {
+    "description": "Subtitle for water calculation mode"
+  },
+
+  "onboarding_subtitle_default": "يرجى الانتظار...",
+  "@onboarding_subtitle_default": {
+    "description": "Default loading subtitle"
+  },
+
+  "onboarding_title_identify": "تعرّف على نباتك",
+  "@onboarding_title_identify": {
+    "description": "Onboarding screen 1 title"
+  },
+
+  "onboarding_body_identify": "امسح النباتات بالذكاء الاصطناعي للتعرف الفوري عليها والحصول على معلومات تفصيلية عن أي نوع من النباتات.",
+  "@onboarding_body_identify": {
+    "description": "Onboarding screen 1 body text"
+  },
+
+  "onboarding_title_diagnose": "شخّص نباتك",
+  "@onboarding_title_diagnose": {
+    "description": "Onboarding screen 2 title"
+  },
+
+  "onboarding_body_diagnose": "اكتشف أمراض النباتات واحصل على نصائح رعاية متخصصة لإبقاء أصدقائك الخضر بصحة جيدة ومزدهرة.",
+  "@onboarding_body_diagnose": {
+    "description": "Onboarding screen 2 body text"
+  },
+
+  "onboarding_title_care": "رعاية النباتات أصبحت سهلة",
+  "@onboarding_title_care": {
+    "description": "Onboarding screen 3 title"
+  },
+
+  "onboarding_body_care": "احفظ سجل نباتاتك، واحصل على نصائح مخصصة، واضبط تذكيرات حتى لا تفوتك أي جلسة سقي.",
+  "@onboarding_body_care": {
+    "description": "Onboarding screen 3 body text"
+  },
+
+  "onboarding_next": "التالي",
+  "@onboarding_next": {
+    "description": "Next button on onboarding"
+  },
+
+  "onboarding_lets_go": "هيا نبدأ",
+  "@onboarding_lets_go": {
+    "description": "Let's Go button on final onboarding screen"
+  },
+
+  "home_title": "محدد النباتات",
+  "@home_title": {
+    "description": "Home screen app bar title"
+  },
+
+  "appBarTitle": "المسح الأخضر",
+  "@appBarTitle": {
+    "description": "App bar title for the main screen"
+  },
+
+  "home_identify_subtitle": "تعرّف على أي نبات",
+  "@home_identify_subtitle": {
+    "description": "Subtitle for identify feature card on home screen"
+  },
+
+  "home_diagnose_subtitle": "تحقق من صحة نباتك",
+  "@home_diagnose_subtitle": {
+    "description": "Subtitle for diagnose feature card on home screen"
+  },
+
+  "home_water_subtitle": "حسّن ري نباتك",
+  "@home_water_subtitle": {
+    "description": "Subtitle for water calculator feature card on home screen"
+  },
+
+  "home_light_subtitle": "قِس الإضاءة المثالية",
+  "@home_light_subtitle": {
+    "description": "Subtitle for light meter feature card on home screen"
+  },
+
+  "home_feature_not_available": "الميزة {featureId} غير متاحة",
+  "@home_feature_not_available": {
+    "description": "Error message when feature is unavailable",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "ID of the unavailable feature"
+      }
+    }
+  },
+
+  "selectLanguage": "اختر اللغة",
+  "@selectLanguage": {
+    "description": "Title for language selection screen"
+  },
+
+"languageEnglish": "الإنجليزية",
+  "languageSpanish": "الإسبانية",
+  "languageFrench": "الفرنسية",
+
+
+  "english": "الإنجليزية",
+  "@english": {
+    "description": "English language name"
+  },
+
+  "urdu": "الأردية",
+  "@urdu": {
+    "description": "Urdu language name"
+  },
+
+  "german": "الألمانية",
+  "@german": {
+    "description": "German language name"
+  },
+
+  "french": "الفرنسية",
+  "@french": {
+    "description": "French language name"
+  },
+
+  "arabic": "العربية",
+  "@arabic": {
+    "description": "Arabic language name"
+  },
+
+  "spanish": "الإسبانية",
+  "@spanish": {
+    "description": "Spanish language name"
+  },
+
+  "japanese": "اليابانية",
+  "@japanese": {
+    "description": "Japanese language name"
+  },
+
+  "korean": "الكورية",
+  "@korean": {
+    "description": "Korean language name"
+  },
+
+  "identify": "تعرّف",
+  "@identify": {
+    "description": "Button or tab label for identify feature"
+  },
+
+  "diagnose": "شخّص",
+  "@diagnose": {
+    "description": "Button or tab label for diagnose feature"
+  },
+
+  "scanner_mode_identify": "التعرف على النبات",
+  "@scanner_mode_identify": {
+    "description": "Scanner mode indicator for plant identification"
+  },
+
+  "scanner_identify_plant": "التعرف على النبات",
+  "@scanner_identify_plant": {
+    "description": "Scanner screen identify plant button/label"
+  },
+
+  "scanner_mode_diagnose": "تشخيص النبات",
+  "@scanner_mode_diagnose": {
+    "description": "Scanner mode indicator for plant diagnosis"
+  },
+
+  "scanner_diagnose_plant": "تشخيص النبات",
+  "@scanner_diagnose_plant": {
+    "description": "Scanner screen diagnose plant button/label"
+  },
+
+  "scanner_mode_water": "حساب الري",
+  "@scanner_mode_water": {
+    "description": "Scanner mode indicator for water calculation"
+  },
+
+  "scanner_water_calculation": "حساب الري",
+  "@scanner_water_calculation": {
+    "description": "Scanner screen water calculation button/label"
+  },
+
+  "scanner_mode_default": "وضع المسح",
+  "@scanner_mode_default": {
+    "description": "Default scanner mode text"
+  },
+
+  "scanner_scan_mode": "وضع المسح",
+  "@scanner_scan_mode": {
+    "description": "Scanner screen mode indicator"
+  },
+
+  "scanner_capture_error": "فشل التقاط الصورة",
+  "@scanner_capture_error": {
+    "description": "Error message when image capture fails"
+  },
+
+  "scanner_gallery_error": "فشل اختيار الصورة من المعرض",
+  "@scanner_gallery_error": {
+    "description": "Error message when gallery image pick fails"
+  },
+
+  "scanner_take_photo": "التقط صورة",
+  "@scanner_take_photo": {
+    "description": "Button to take a photo in scanner"
+  },
+
+  "scanner_retake": "إعادة التصوير",
+  "@scanner_retake": {
+    "description": "Button to retake photo"
+  },
+
+  "scanner_use_photo": "استخدم هذه الصورة",
+  "@scanner_use_photo": {
+    "description": "Button to use the taken photo"
+  },
+
+  "preview_gallery": "المعرض",
+  "@preview_gallery": {
+    "description": "Gallery button text in preview screen"
+  },
+
+  "preview_no_image": "لا توجد صورة",
+  "@preview_no_image": {
+    "description": "Placeholder text when no image is selected"
+  },
+
+  "preview_select_image_error": "يرجى اختيار صورة أولاً",
+  "@preview_select_image_error": {
+    "description": "Error message when trying to proceed without selecting an image"
+  },
+
+  "processing_title_identify": "جارٍ التعرف على النبات",
+  "@processing_title_identify": {
+    "description": "Processing screen title for identification"
+  },
+
+  "processing_identifying": "جارٍ التعرف على النبات",
+  "@processing_identifying": {
+    "description": "Processing screen identifying text"
+  },
+
+  "processing_title_diagnose": "جارٍ تشخيص النبات",
+  "@processing_title_diagnose": {
+    "description": "Processing screen title for diagnosis"
+  },
+
+  "processing_diagnosing": "جارٍ تشخيص النبات",
+  "@processing_diagnosing": {
+    "description": "Processing screen diagnosing text"
+  },
+
+  "processing_title_water": "جارٍ حساب احتياجات الري",
+  "@processing_title_water": {
+    "description": "Processing screen title for water calculation"
+  },
+
+  "processing_calculating_water": "جارٍ حساب احتياجات الري",
+  "@processing_calculating_water": {
+    "description": "Processing screen calculating water text"
+  },
+
+  "processing_title_default": "جارٍ المعالجة",
+  "@processing_title_default": {
+    "description": "Default processing screen title"
+  },
+
+  "processing_processing": "جارٍ المعالجة",
+  "@processing_processing": {
+    "description": "Processing screen default text"
+  },
+
+  "processing_subtitle_identify": "تعرف ذكي وسريع ودقيق على النباتات",
+  "@processing_subtitle_identify": {
+    "description": "Processing subtitle for identification"
+  },
+
+  "processing_smart_fast_accurate": "تعرف ذكي وسريع ودقيق على النباتات",
+  "@processing_smart_fast_accurate": {
+    "description": "Processing subtitle for identification"
+  },
+
+  "processing_subtitle_diagnose": "نكشف الأمراض والمشكلات المحتملة",
+  "@processing_subtitle_diagnose": {
+    "description": "Processing subtitle for diagnosis"
+  },
+
+  "processing_spotting_diseases": "نكشف الأمراض والمشكلات المحتملة",
+  "@processing_spotting_diseases": {
+    "description": "Processing subtitle for diagnosis"
+  },
+
+  "processing_subtitle_water": "جارٍ تحليل النبات والبيئة المحيطة...",
+  "@processing_subtitle_water": {
+    "description": "Processing subtitle for water calculation"
+  },
+
+  "processing_analyzing": "جارٍ تحليل النبات والبيئة المحيطة...",
+  "@processing_analyzing": {
+    "description": "Processing subtitle for water calculation"
+  },
+
+  "processing_subtitle_default": "يرجى الانتظار...",
+  "@processing_subtitle_default": {
+    "description": "Default processing subtitle"
+  },
+
+  "processing_please_wait": "يرجى الانتظار...",
+  "@processing_please_wait": {
+    "description": "Default processing subtitle"
+  },
+
+  "result_plant_identified": "تم التعرف على النبات",
+  "@result_plant_identified": {
+    "description": "Title for plant identification result screen"
+  },
+
+  "result_about_plant": "عن النبات",
+  "@result_about_plant": {
+    "description": "Section heading for plant description"
+  },
+
+  "result_climate_requirements": "متطلبات المناخ",
+  "@result_climate_requirements": {
+    "description": "Section heading for climate information"
+  },
+
+  "result_temperature": "درجة الحرارة",
+  "@result_temperature": {
+    "description": "Label for temperature requirement"
+  },
+
+  "result_light": "الإضاءة",
+  "@result_light": {
+    "description": "Label for light requirement"
+  },
+
+  "result_soil": "التربة",
+  "@result_soil": {
+    "description": "Label for soil requirement"
+  },
+
+  "result_humidity": "الرطوبة",
+  "@result_humidity": {
+    "description": "Label for humidity requirement"
+  },
+
+  "result_care_schedule": "جدول الرعاية",
+  "@result_care_schedule": {
+    "description": "Section heading for care information"
+  },
+
+  "result_watering": "الري",
+  "@result_watering": {
+    "description": "Label for watering schedule"
+  },
+
+  "result_fertilizing": "التسميد",
+  "@result_fertilizing": {
+    "description": "Label for fertilizing schedule"
+  },
+
+  "result_safety_warning": "تحذير السلامة",
+  "@result_safety_warning": {
+    "description": "Section heading for toxicity/safety information"
+  },
+
+  "result_saved_success": "تم الحفظ في نباتاتي!",
+  "@result_saved_success": {
+    "description": "Success message when plant is saved"
+  },
+
+  "result_removed_success": "تمت الإزالة من نباتاتي",
+  "@result_removed_success": {
+    "description": "Success message when plant is removed"
+  },
+
+  "result_save_button": "احفظ في نباتاتي",
+  "@result_save_button": {
+    "description": "Button text to save plant (inactive state)"
+  },
+
+  "result_saved_button": "محفوظ في نباتاتي",
+  "@result_saved_button": {
+    "description": "Button text when plant is already saved (active state)"
+  },
+
+  "result_identify_another": "تعرّف على نبات آخر",
+  "@result_identify_another": {
+    "description": "Button to start new plant identification"
+  },
+
+  "result_error": "خطأ",
+  "@result_error": {
+    "description": "Error title for identification result"
+  },
+
+  "result_no_data": "لا تتوفر بيانات عن النبات",
+  "@result_no_data": {
+    "description": "Error message when plant data is missing"
+  },
+
+  "result_try_again": "حاول مجدداً",
+  "@result_try_again": {
+    "description": "Button to retry identification"
+  },
+
+  "diagnosis_title": "نتيجة التشخيص",
+  "@diagnosis_title": {
+    "description": "Title for plant diagnosis result screen"
+  },
+
+  "diagnosis_result": "نتيجة التشخيص",
+  "@diagnosis_result": {
+    "description": "Title for diagnosis result screen"
+  },
+
+  "diagnosis_severity_assessment": "تقييم الشدة",
+  "@diagnosis_severity_assessment": {
+    "description": "Section heading for severity information"
+  },
+
+  "diagnosis_severity_level": "مستوى الشدة",
+  "@diagnosis_severity_level": {
+    "description": "Label for severity level indicator"
+  },
+
+  "diagnosis_immediate_actions": "الإجراءات الفورية (خلال 24-48 ساعة)",
+  "@diagnosis_immediate_actions": {
+    "description": "Section heading for immediate care actions"
+  },
+
+  "diagnosis_treatment_plan": "خطة العلاج",
+  "@diagnosis_treatment_plan": {
+    "description": "Section heading for treatment information"
+  },
+
+  "diagnosis_daily_monitoring": "المتابعة اليومية",
+  "@diagnosis_daily_monitoring": {
+    "description": "Section heading for monitoring checklist"
+  },
+
+  "diagnosis_expected_recovery": "وقت التعافي المتوقع",
+  "@diagnosis_expected_recovery": {
+    "description": "Section heading for recovery timeline"
+  },
+
+  "diagnosis_diagnose_another": "شخّص نباتاً آخر",
+  "@diagnosis_diagnose_another": {
+    "description": "Button to start new diagnosis"
+  },
+
+  "diagnosis_back_home": "العودة إلى الرئيسية",
+  "@diagnosis_back_home": {
+    "description": "Button to return to home screen"
+  },
+
+  "diagnosis_error_title": "خطأ في التشخيص",
+  "@diagnosis_error_title": {
+    "description": "Error dialog title"
+  },
+
+  "diagnosis_error": "خطأ في التشخيص",
+  "@diagnosis_error": {
+    "description": "Error title for diagnosis result"
+  },
+
+  "diagnosis_error_no_data": "لا تتوفر بيانات التشخيص",
+  "@diagnosis_error_no_data": {
+    "description": "Error message when diagnosis data is missing"
+  },
+
+  "diagnosis_no_data": "لا تتوفر بيانات التشخيص",
+  "@diagnosis_no_data": {
+    "description": "Error message when diagnosis data is missing"
+  },
+
+  "diagnosis_try_again": "حاول مجدداً",
+  "@diagnosis_try_again": {
+    "description": "Button to retry diagnosis"
+  },
+
+  "premium_title": "الترقية إلى المميز",
+  "@premium_title": {
+    "description": "Title for premium subscription screen"
+  },
+
+  "premium_upgrade": "الترقية إلى المميز",
+  "@premium_upgrade": {
+    "description": "Button/text for premium upgrade"
+  },
+
+  "premium_subtitle": "استمتع بكل شيء بسهولة ودون انقطاع",
+  "@premium_subtitle": {
+    "description": "Subtitle text for premium screen"
+  },
+
+  "premium_experience": "استمتع بكل شيء بسهولة ودون انقطاع",
+  "@premium_experience": {
+    "description": "Premium experience description"
+  },
+
+  "premium_features_header": "المميزات",
+  "@premium_features_header": {
+    "description": "Header for features comparison table"
+  },
+
+  "premium_features": "المميزات",
+  "@premium_features": {
+    "description": "Features section title"
+  },
+
+  "premium_pro_header": "احترافي",
+  "@premium_pro_header": {
+    "description": "Column header for PRO tier"
+  },
+
+  "premium_pro": "احترافي",
+  "@premium_pro": {
+    "description": "PRO tier label"
+  },
+
+  "premium_basic_header": "أساسي",
+  "@premium_basic_header": {
+    "description": "Column header for Basic tier"
+  },
+
+  "premium_basic": "أساسي",
+  "@premium_basic": {
+    "description": "Basic tier label"
+  },
+
+  "premium_price": "750.00 روبية/أسبوع بعد تجربة مجانية لمدة 3 أيام",
+  "@premium_price": {
+    "description": "Price text for premium subscription"
+  },
+
+  "premium_start_now": "ابدأ الآن",
+  "@premium_start_now": {
+    "description": "Button to start premium subscription"
+  },
+
+  "premium_footer": "يتجدد الاشتراك تلقائياً. يمكنك الإلغاء في أي وقت.",
+  "@premium_footer": {
+    "description": "Footer disclaimer text"
+  },
+
+  "light_meter_title": "مقياس الإضاءة",
+  "@light_meter_title": {
+    "description": "Title for light meter screen"
+  },
+
+  "light_meter_instruction": "ضع هاتفك في المكان الذي تنوي وضع النبات فيه.",
+  "@light_meter_instruction": {
+    "description": "Instruction text for using light meter"
+  },
+
+  "light_meter_optimal": "مثالي",
+  "@light_meter_optimal": {
+    "description": "Label for optimal light range card"
+  },
+
+  "light_meter_measuring": "جارٍ القياس",
+  "@light_meter_measuring": {
+    "description": "Status text during measurement"
+  },
+
+  "light_meter_optimal_range": "1000-10000 LUX",
+  "@light_meter_optimal_range": {
+    "description": "Optimal light range value"
+  },
+
+  "light_meter_initializing": "جارٍ تهيئة الكاميرا...",
+  "@light_meter_initializing": {
+    "description": "Loading text during camera initialization"
+  },
+
+  "light_meter_starting": "جارٍ تشغيل الكاميرا...",
+  "@light_meter_starting": {
+    "description": "Placeholder text when camera is starting"
+  },
+
+  "light_meter_measure": "قِس",
+  "@light_meter_measure": {
+    "description": "Button to take light measurement"
+  },
+
+  "light_meter_reset": "إعادة ضبط",
+  "@light_meter_reset": {
+    "description": "Button to reset measurement"
+  },
+
+  "light_meter_error_title": "فشل التهيئة",
+  "@light_meter_error_title": {
+    "description": "Error dialog title"
+  },
+
+  "light_meter_retry": "حاول مجدداً",
+  "@light_meter_retry": {
+    "description": "Button to retry camera initialization"
+  },
+
+  "light_info_title": "كيف تستخدم مقياس الإضاءة؟",
+  "@light_info_title": {
+    "description": "Title for light meter info screen"
+  },
+
+  "light_info_how_to_use": "كيف تستخدم مقياس الإضاءة؟",
+  "@light_info_how_to_use": {
+    "description": "Title for light meter info screen"
+  },
+
+  "light_info_step1": "وجّه الكاميرا الأمامية نحو مصدر الضوء.",
+  "@light_info_step1": {
+    "description": "First instruction step"
+  },
+
+  "light_info_step2": "حرّك الهاتف حول النبات لقياس الضوء من جميع الجهات",
+  "@light_info_step2": {
+    "description": "Second instruction step"
+  },
+
+  "light_info_step3": "قِس مستوى الضوء عند الظهيرة للحصول على أدق النتائج",
+  "@light_info_step3": {
+    "description": "Third instruction step"
+  },
+
+  "light_info_continue": "متابعة",
+  "@light_info_continue": {
+    "description": "Button to close info screen"
+  },
+
+  "light_info_image_error": "الصورة غير متاحة",
+  "@light_info_image_error": {
+    "description": "Error text when instruction image fails to load"
+  },
+
+  "privacy_policy_title": "سياسة الخصوصية",
+  "@privacy_policy_title": {
+    "description": "Title for privacy policy screen"
+  },
+
+  "settings_title": "الإعدادات",
+  "@settings_title": {
+    "description": "Title for settings screen"
+  },
+
+  "settings_app_language": "لغة التطبيق",
+  "@settings_app_language": {
+    "description": "Settings option for language selection"
+  },
+
+  "settings_rate_us": "قيّمنا",
+  "@settings_rate_us": {
+    "description": "Settings option to rate the app"
+  },
+
+  "settings_share_app": "شارك التطبيق",
+  "@settings_share_app": {
+    "description": "Settings option to share the app"
+  },
+
+  "settings_feedback": "أرسل ملاحظاتك",
+  "@settings_feedback": {
+    "description": "Settings option to send feedback"
+  },
+
+  "settings_privacy_policy": "سياسة الخصوصية",
+  "@settings_privacy_policy": {
+    "description": "Settings option to view privacy policy"
+  },
+
+  "settings_feature_unavailable": "الميزة {featureId} غير متاحة",
+  "@settings_feature_unavailable": {
+    "description": "Error message when a feature is not available",
+    "placeholders": {
+      "featureId": {
+        "type": "String",
+        "description": "ID of the unavailable feature"
+      }
+    }
+  },
+
+  "settings_could_not_open_email": "تعذّر فتح البريد الإلكتروني. يرجى مراسلتنا على {email}",
+  "@settings_could_not_open_email": {
+    "description": "Error message when email cannot be opened",
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "description": "Email address to contact"
+      }
+    }
+  },
+
+  "debug_token_copied": "تم نسخ الرمز إلى الحافظة",
+  "@debug_token_copied": {
+    "description": "Message shown when FCM token is copied"
+  },
+
+  "debug_get_token": "الحصول على رمز FCM",
+  "@debug_get_token": {
+    "description": "Button text to get FCM token (debug)"
+  },
+
+  "settings_token_copied": "تم نسخ الرمز إلى الحافظة",
+  "@settings_token_copied": {
+    "description": "Message shown when FCM token is copied"
+  },
+
+  "settings_get_fcm_token": "الحصول على رمز FCM",
+  "@settings_get_fcm_token": {
+    "description": "Button text to get FCM token (debug)"
+  },
+
+  "settings_test_crash": "اختبار التعطل",
+  "@settings_test_crash": {
+    "description": "Button text to test crash (debug)"
+  },
+
+  "water_calculator": "حاسبة الري",
+  "@water_calculator": {
+    "description": "Title for water calculator feature"
+  },
+
+  "water_continue": "متابعة",
+  "@water_continue": {
+    "description": "Button to continue to next question"
+  },
+
+  "water_question_location": "أين تنوي وضع النبات؟",
+  "@water_question_location": {
+    "description": "Question about plant location"
+  },
+
+  "water_location_q1": "أين تنوي وضع النبات؟",
+  "@water_location_q1": {
+    "description": "First water calculation question"
+  },
+
+  "water_question_temperature": "ما درجة الحرارة الحالية؟",
+  "@water_question_temperature": {
+    "description": "Question about current temperature"
+  },
+
+  "water_location_q2": "ما درجة الحرارة الحالية؟",
+  "@water_location_q2": {
+    "description": "Second water calculation question"
+  },
+
+  "water_question_frequency": "كم مرة تسقي نباتك؟",
+  "@water_question_frequency": {
+    "description": "Question about watering frequency"
+  },
+
+  "water_location_q3": "كم مرة تسقي نباتك؟",
+  "@water_location_q3": {
+    "description": "Third water calculation question"
+  },
+
+  "water_location_indoor_window": "داخلي، بالقرب من النافذة",
+  "@water_location_indoor_window": {
+    "description": "Option for indoor location near window"
+  },
+
+  "water_location_indoor_shaded": "داخلي، في زاوية مظللة",
+  "@water_location_indoor_shaded": {
+    "description": "Option for indoor shaded location"
+  },
+
+  "water_location_outdoor_sun": "خارجي، في الشمس الكاملة",
+  "@water_location_outdoor_sun": {
+    "description": "Option for outdoor full sun location"
+  },
+
+  "water_location_outdoor_shade": "خارجي، في الظل الجزئي",
+  "@water_location_outdoor_shade": {
+    "description": "Option for outdoor partial shade location"
+  },
+
+  "water_temperature_very_cold": "بارد جداً (أقل من 5°م / 41°ف)",
+  "@water_temperature_very_cold": {
+    "description": "Very cold temperature option"
+  },
+
+  "water_temperature_cold": "بارد (أقل من 15°م / 59°ف)",
+  "@water_temperature_cold": {
+    "description": "Cold temperature option"
+  },
+
+  "water_temperature_moderate": "معتدل (15°م - 25°م / 59°ف - 77°ف)",
+  "@water_temperature_moderate": {
+    "description": "Moderate temperature option"
+  },
+
+  "water_temperature_warm": "دافئ (25°م - 30°م / 77°ف - 86°ف)",
+  "@water_temperature_warm": {
+    "description": "Warm temperature option"
+  },
+
+  "water_temperature_hot": "حار (أكثر من 30°م / 86°ف)",
+  "@water_temperature_hot": {
+    "description": "Hot temperature option"
+  },
+
+  "water_frequency_daily": "يومياً",
+  "@water_frequency_daily": {
+    "description": "Daily watering frequency"
+  },
+
+  "water_frequency_2_3_days": "كل 2-3 أيام",
+  "@water_frequency_2_3_days": {
+    "description": "Every 2-3 days watering frequency"
+  },
+
+  "water_frequency_weekly": "مرة في الأسبوع",
+  "@water_frequency_weekly": {
+    "description": "Weekly watering frequency"
+  },
+
+  "water_frequency_biweekly": "كل أسبوعين",
+  "@water_frequency_biweekly": {
+    "description": "Every two weeks watering frequency"
+  },
+
+  "water_frequency_rarely": "نادراً / عند الجفاف",
+  "@water_frequency_rarely": {
+    "description": "Rarely or when dry watering frequency"
+  },
+
+  "water_result_title": "احتياج النبات من الماء",
+  "@water_result_title": {
+    "description": "Title for water calculation result screen"
+  },
+
+  "water_plant_water_need": "احتياج النبات من الماء",
+  "@water_plant_water_need": {
+    "description": "Title for water calculation result screen"
+  },
+
+  "water_result_schedule": "جدول الري",
+  "@water_result_schedule": {
+    "description": "Section heading for watering schedule"
+  },
+
+  "water_schedule": "جدول الري",
+  "@water_schedule": {
+    "description": "Watering schedule section title"
+  },
+
+  "water_result_frequency_label": "التكرار:",
+  "@water_result_frequency_label": {
+    "description": "Label for watering frequency"
+  },
+
+  "water_frequency": "التكرار:",
+  "@water_frequency": {
+    "description": "Frequency label"
+  },
+
+  "water_result_best_time_label": "أفضل وقت:",
+  "@water_result_best_time_label": {
+    "description": "Label for best watering time"
+  },
+
+  "water_best_time": "أفضل وقت:",
+  "@water_best_time": {
+    "description": "Best time label"
+  },
+
+  "water_result_tips": "نصائح الرعاية",
+  "@water_result_tips": {
+    "description": "Section heading for care tips"
+  },
+
+  "water_care_tips": "نصائح الرعاية",
+  "@water_care_tips": {
+    "description": "Care tips section title"
+  },
+
+  "water_result_thank_you": "شكراً لك",
+  "@water_result_thank_you": {
+    "description": "Button to return to home"
+  },
+
+  "water_thank_you": "شكراً لك",
+  "@water_thank_you": {
+    "description": "Thank you message"
+  },
+
+  "water_result_guide": "اتبع هذا الدليل للحفاظ على نباتك سعيداً ومروياً جيداً",
+  "@water_result_guide": {
+    "description": "Guide text on water result screen"
+  },
+
+  "water_result_amount": "76 مل",
+  "@water_result_amount": {
+    "description": "Water amount recommendation"
+  },
+
+  "water_result_loading": "جارٍ حساب احتياجات الري...",
+  "@water_result_loading": {
+    "description": "Loading text during water calculation"
+  },
+
+  "water_calculating": "جارٍ حساب احتياجات الري...",
+  "@water_calculating": {
+    "description": "Loading text during water calculation"
+  },
+
+  "water_result_error_title": "خطأ في الحساب",
+  "@water_result_error_title": {
+    "description": "Error dialog title"
+  },
+
+  "water_error_title": "خطأ في الحساب",
+  "@water_error_title": {
+    "description": "Error title for water calculation"
+  },
+
+  "water_result_error_no_data": "لا تتوفر بيانات حساب الري",
+  "@water_result_error_no_data": {
+    "description": "Error message when water calculation data is missing"
+  },
+
+  "water_no_data": "لا تتوفر بيانات حساب الري",
+  "@water_no_data": {
+    "description": "Error message when water data is missing"
+  },
+
+  "water_result_back_home": "العودة إلى الرئيسية",
+  "@water_result_back_home": {
+    "description": "Button to return home from error state"
+  },
+
+  "water_back_home": "العودة إلى الرئيسية",
+  "@water_back_home": {
+    "description": "Button to return home"
+  },
+
+  "history_title": "سجل المسح",
+  "@history_title": {
+    "description": "Title for history screen"
+  },
+
+  "history_empty_my_plants": "لا توجد نباتات محفوظة",
+  "@history_empty_my_plants": {
+    "description": "Empty state title for My Plants tab"
+  },
+
+  "history_empty_history": "لا يوجد شيء لعرضه",
+  "@history_empty_history": {
+    "description": "Empty state title for History tab"
+  },
+
+  "history_empty_my_plants_desc": "احفظ النباتات من سجل المسح لتظهر هنا",
+  "@history_empty_my_plants_desc": {
+    "description": "Empty state description for My Plants tab"
+  },
+
+  "history_empty_history_desc": "ستظهر هنا جميع عمليات المسح الخاصة بك",
+  "@history_empty_history_desc": {
+    "description": "Empty state description for History tab"
+  },
+
+  "history_light_dialog_title": "نتيجة قياس الإضاءة",
+  "@history_light_dialog_title": {
+    "description": "Dialog title for light measurement history item"
+  },
+
+  "history_light_level": "مستوى الإضاءة:",
+  "@history_light_level": {
+    "description": "Label for light level value"
+  },
+
+  "history_lux_unit": "LUX",
+  "@history_lux_unit": {
+    "description": "Unit for light measurement"
+  },
+
+  "history_status": "الحالة:",
+  "@history_status": {
+    "description": "Label for light status"
+  },
+
+  "history_status_unknown": "غير معروف",
+  "@history_status_unknown": {
+    "description": "Unknown status text"
+  },
+
+  "history_optimal_range": "النطاق المثالي:",
+  "@history_optimal_range": {
+    "description": "Label for optimal light range"
+  },
+
+  "history_time": "الوقت:",
+  "@history_time": {
+    "description": "Label for timestamp"
+  },
+
+  "history_close": "إغلاق",
+  "@history_close": {
+    "description": "Button to close dialog"
+  },
+
+  "history_timestamp_just_now": "الآن",
+  "@history_timestamp_just_now": {
+    "description": "Timestamp for very recent scans"
+  },
+
+  "history_timestamp_min_ago": "دقيقة مضت",
+  "@history_timestamp_min_ago": {
+    "description": "Suffix for minutes ago"
+  },
+
+  "history_timestamp_hours_ago": "ساعة مضت",
+  "@history_timestamp_hours_ago": {
+    "description": "Suffix for hours ago"
+  },
+
+  "history_timestamp_days_ago": "يوم مضى",
+  "@history_timestamp_days_ago": {
+    "description": "Suffix for days ago"
+  },
+
+  "history_delete_title": "حذف؟",
+  "@history_delete_title": {
+    "description": "Title for delete confirmation dialog"
+  },
+
+  "history_delete_confirmation": "هل أنت متأكد أنك تريد حذف هذا؟",
+  "@history_delete_confirmation": {
+    "description": "Confirmation message for delete action"
+  },
+
+  "history_delete_button": "حذف",
+  "@history_delete_button": {
+    "description": "Button to confirm deletion"
+  },
+
+  "history_cancel_button": "إلغاء",
+  "@history_cancel_button": {
+    "description": "Button to cancel deletion"
+  },
+
+  "history_remove_from_my_plants": "إزالة من نباتاتي",
+  "@history_remove_from_my_plants": {
+    "description": "Action sheet option to remove from saved plants"
+  },
+
+  "history_save_to_my_plants": "حفظ في نباتاتي",
+  "@history_save_to_my_plants": {
+    "description": "Action sheet option to save to plants"
+  },
+
+  "history_share": "مشاركة",
+  "@history_share": {
+    "description": "Share option in action sheet"
+  },
+
+  "bottom_nav_home": "الرئيسية",
+  "@bottom_nav_home": {
+    "description": "Home tab label in bottom navigation"
+  },
+
+  "bottom_nav_history": "السجل",
+  "@bottom_nav_history": {
+    "description": "History tab label in bottom navigation"
+  },
+
+  "bottom_nav_settings": "الإعدادات",
+  "@bottom_nav_settings": {
+    "description": "Settings tab label in bottom navigation"
+  },
+
+  "language_updated": "تم تغيير اللغة إلى {language}",
+  "@language_updated": {
+    "description": "Message when language is changed",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "description": "Name of the selected language"
+      }
+    }
+  },
+
+  "language_english": "الإنجليزية",
+  "@language_english": {
+    "description": "English language name"
+  },
+
+  "language_urdu": "الأردية",
+  "@language_urdu": {
+    "description": "Urdu language name"
+  },
+
+  "language_german": "الألمانية",
+  "@language_german": {
+    "description": "German language name"
+  },
+
+  "language_french": "الفرنسية",
+  "@language_french": {
+    "description": "French language name"
+  },
+
+  "language_arabic": "العربية",
+  "@language_arabic": {
+    "description": "Arabic language name"
+  },
+
+  "language_spanish": "الإسبانية",
+  "@language_spanish": {
+    "description": "Spanish language name"
+  },
+
+  "language_japanese": "اليابانية",
+  "@language_japanese": {
+    "description": "Japanese language name"
+  },
+
+  "language_korean": "الكورية",
+  "@language_korean": {
+    "description": "Korean language name"
+  },
+
+  "widget_language_app_bar_title": "اختر اللغة",
+  "@widget_language_app_bar_title": {
+    "description": "Title for language selection screen app bar"
+  },
+
+  "widget_severity_level": "مستوى الشدة",
+  "@widget_severity_level": {
+    "description": "Label for severity level indicator"
+  },
+
+  "widget_severity_assessment": "تقييم الشدة",
+  "@widget_severity_assessment": {
+    "description": "Section heading for severity assessment"
+  },
+
+  "widget_no_plant_detected": "لم يتم اكتشاف أي نبات في الصورة",
+  "@widget_no_plant_detected": {
+    "description": "Message when no plant is found in image"
+  },
+
+  "widget_treatment_badge": "علاج",
+  "@widget_treatment_badge": {
+    "description": "Badge label for treatment items"
+  },
+
+  "widget_bullet_separator": "•",
+  "@widget_bullet_separator": {
+    "description": "Bullet point separator character"
+  },
+
+  "widget_severity_mild": "خفيف",
+  "@widget_severity_mild": {
+    "description": "Severity level badge text - mild"
+  },
+
+  "widget_severity_moderate": "متوسط",
+  "@widget_severity_moderate": {
+    "description": "Severity level badge text - moderate"
+  },
+
+  "widget_severity_severe": "شديد",
+  "@widget_severity_severe": {
+    "description": "Severity level badge text - severe"
+  },
+
+  "widget_severity_critical": "حرج",
+  "@widget_severity_critical": {
+    "description": "Severity level badge text - critical"
+  },
+
+  "widget_severity_healthy": "صحي",
+  "@widget_severity_healthy": {
+    "description": "Severity level badge text - healthy"
+  },
+
+  "widget_premium_banner_text": "جرّب المميزات الاحترافية\nمجاناً",
+  "@widget_premium_banner_text": {
+    "description": "Premium banner text with line break"
+  },
+
+  "widget_premium_banner_button": "الترقية إلى الاحترافي",
+  "@widget_premium_banner_button": {
+    "description": "Button text on premium banner"
+  },
+
+  "widget_premium_card_text": "جرّب المميزات الاحترافية\nمجاناً",
+  "@widget_premium_card_text": {
+    "description": "Premium card text with line break"
+  },
+
+  "widget_premium_card_button": "الترقية إلى الاحترافي",
+  "@widget_premium_card_button": {
+    "description": "Button text on premium card"
+  },
+
+  "widget_pro_button": "احترافي",
+  "@widget_pro_button": {
+    "description": "Text on Pro/Premium button"
+  },
+
+  "widget_rating_title": "قيّم تجربتك مع\nتطبيقنا",
+  "@widget_rating_title": {
+    "description": "Title for rating bottom sheet with line break"
+  },
+
+  "widget_rating_description": "يرجى تقييم تجربتك ومساعدتنا\nعلى التحسين. شكراً لك",
+  "@widget_rating_description": {
+    "description": "Description text for rating sheet with line break"
+  },
+
+  "widget_rating_submit": "إرسال",
+  "@widget_rating_submit": {
+    "description": "Button to submit rating"
+  },
+
+  "widget_rating_thank_you": "شكراً على تقييمك بـ {rating} نجوم!",
+  "@widget_rating_thank_you": {
+    "description": "Thank you message with placeholder for rating value",
+    "placeholders": {
+      "rating": {
+        "type": "int",
+        "description": "Number of stars selected by user"
+      }
+    }
+  },
+
+  "widget_history_badge_identified": "تم التعرف عليه",
+  "@widget_history_badge_identified": {
+    "description": "Badge text for identification scan type"
+  },
+
+  "widget_history_badge_diagnosed": "تم تشخيصه",
+  "@widget_history_badge_diagnosed": {
+    "description": "Badge text for diagnosis scan type"
+  },
+
+  "widget_history_badge_calculated": "تم الحساب",
+  "@widget_history_badge_calculated": {
+    "description": "Badge text for water calculation scan type"
+  },
+
+  "widget_history_badge_measured": "تم القياس",
+  "@widget_history_badge_measured": {
+    "description": "Badge text for light meter scan type"
+  },
+
+  "widget_history_timestamp_just_now": "الآن",
+  "@widget_history_timestamp_just_now": {
+    "description": "Timestamp text for very recent scans"
+  },
+
+  "widget_history_timestamp_min_ago": "دقيقة مضت",
+  "@widget_history_timestamp_min_ago": {
+    "description": "Suffix for minutes ago"
+  },
+
+  "widget_history_timestamp_hours_ago": "ساعة مضت",
+  "@widget_history_timestamp_hours_ago": {
+    "description": "Suffix for hours ago"
+  },
+
+  "widget_history_timestamp_days_ago": "يوم مضى",
+  "@widget_history_timestamp_days_ago": {
+    "description": "Suffix for days ago"
+  },
+
+  "widget_history_tab_my_plants": "نباتاتي",
+  "@widget_history_tab_my_plants": {
+    "description": "Tab label for My Plants section"
+  },
+
+  "widget_history_tab_history": "السجل",
+  "@widget_history_tab_history": {
+    "description": "Tab label for History section"
+  },
+
+  "widget_history_tab_open_paren": "(",
+  "@widget_history_tab_open_paren": {
+    "description": "Opening parenthesis for count display"
+  },
+
+  "widget_history_tab_close_paren": ")",
+  "@widget_history_tab_close_paren": {
+    "description": "Closing parenthesis for count display"
+  }
+}
