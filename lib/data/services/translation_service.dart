@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class TranslationService {
-  static const String _apiKey = "AIzaSyB5WOR8vCAIi-66HSNWx4N6A5nGLNX8094";
+  static const String _apiKey = "MY_API_KEY";
   static const String _model = 'gemini-2.5-flash';
   
   static Future<String> translateText(String text, String targetLanguage) async {
