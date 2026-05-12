@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 import '../../data/services/analytics_service.dart';
 import '../../l10n/app_localizations.dart';
-import '../screens/onboarding_screen.dart';
+import '../../app/navigation/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
+import '../../../utils/constants.dart';
+import '../../../view_models/ad_config_view_model.dart';
+import '../../../view_models/ad_view_model.dart';
+import '../../../view_models/onboarding_view_model.dart';
 import '../../../view_models/splash_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import '../widgets/common/app_logo.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,12 +22,15 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
+  static const Duration _splashAdLoadTimeout = Duration(seconds: 2);
+
   late AnimationController _progressController;
+  bool _didNavigate = false;
 
   @override
   void initState() {
     super.initState();
-    debugPrint('💣 ${runtimeType} INIT STATE');
+    debugPrint('💣 $runtimeType INIT STATE');
 
     _progressController = AnimationController(
       vsync: this,
@@ -46,11 +55,94 @@ class _SplashScreenState extends State<SplashScreen>
     // Navigate after total 3 seconds (matches loader duration)
     await viewModel.navigateAfterDelay();
 
-    if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
-      );
+    await _showSplashInterstitialThenContinue();
+  }
+
+  Future<void> _showSplashInterstitialThenContinue() async {
+    if (!mounted || _didNavigate) {
+      return;
     }
+
+    final adConfigViewModel = context.read<AdConfigViewModel>();
+    final adViewModel = context.read<AdViewModel>();
+
+    adViewModel.showAdLoader();
+
+    try {
+      await adViewModel
+          .loadSplashInterstitial(adConfigViewModel.config)
+          .timeout(_splashAdLoadTimeout);
+    } on TimeoutException {
+      debugPrint('Splash interstitial load timed out.');
+    } catch (error) {
+      debugPrint('Splash interstitial load failed safely: $error');
+    } finally {
+      adViewModel.hideAdLoader();
+    }
+
+    if (!mounted || _didNavigate) {
+      return;
+    }
+
+    if (!adViewModel.hasSplashInterstitial) {
+      _continueToLaunchFlow();
+      return;
+    }
+
+    final adCompletion = Completer<void>();
+
+    void completeAdFlow() {
+      if (!adCompletion.isCompleted) {
+        adCompletion.complete();
+      }
+    }
+
+    try {
+      await adViewModel.showSplashInterstitial(
+        onDismissed: completeAdFlow,
+        onFailedToShow: completeAdFlow,
+      );
+      await adCompletion.future;
+    } catch (error) {
+      debugPrint('Splash interstitial show failed safely: $error');
+    }
+
+    _continueToLaunchFlow();
+  }
+
+  Future<void> _continueToLaunchFlow() async {
+    if (!mounted || _didNavigate) {
+      return;
+    }
+
+    _didNavigate = true;
+
+    var onboardingCompleted = false;
+    try {
+      onboardingCompleted = await context
+          .read<OnboardingViewModel>()
+          .isOnboardingCompleted();
+    } catch (error) {
+      debugPrint('Failed to read onboarding completion state: $error');
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    final premiumArguments = onboardingCompleted
+        ? <String, dynamic>{'nextRouteAfterPremium': AppRoutes.home}
+        : <String, dynamic>{
+            'nextRouteAfterPremium': AppRoutes.language,
+            'nextRouteArguments': {
+              'showBackButton': false,
+              'nextRouteAfterSave': AppRoutes.onboarding,
+            },
+          };
+
+    Navigator.of(
+      context,
+    ).pushReplacementNamed(AppRoutes.premium, arguments: premiumArguments);
   }
 
   @override
@@ -61,7 +153,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('💣 ${runtimeType} BUILD CALLED');
+    debugPrint('💣 $runtimeType BUILD CALLED');
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -101,35 +193,20 @@ class _SplashScreenState extends State<SplashScreen>
   Widget _buildLogo(double screenWidth) {
     double logoSize = screenWidth * 0.25; // 25% of screen width
 
-    return Container(
-      width: logoSize,
-      height: logoSize,
-      decoration: BoxDecoration(
-        color: AppColors.primaryGreen,
-        borderRadius: BorderRadius.circular(logoSize / 2), // Perfect circle
-      ),
-      child: Center(
-        child: SvgPicture.asset(
-          'assets/images/app_logo.svg',
-          width: logoSize * 0.6, // 60% of container
-          height: logoSize * 0.6,
-          fit: BoxFit.contain,
-        ),
-      ),
-    );
+    return AppLogo(size: logoSize, semanticsLabel: AppConstants.appName);
   }
 
   Widget _buildAppName(double screenWidth) {
-    return Container(
+    return SizedBox(
       width: screenWidth * 0.7, // 70% of screen width
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: Text(
           AppLocalizations.of(context).splash_title,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontSize: 24,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineMedium?.copyWith(fontSize: 24),
         ),
       ),
     );
@@ -169,7 +246,6 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 }
-
 
 /*   ------ Correct but unresponsive
 import 'package:flutter/material.dart';

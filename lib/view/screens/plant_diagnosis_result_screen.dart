@@ -1,12 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../app/navigation/camera_route.dart';
 import '../../../app/navigation/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../view/widgets/common/diagnosis_widgets.dart';
 import '../../../view_models/diagnosis_view_model.dart';
 import '../../data/models/diagnosis_model.dart';
 import '../../l10n/app_localizations.dart';
+import 'scanner_screen.dart';
 
 class PlantDiagnosisResultScreen extends StatefulWidget {
   const PlantDiagnosisResultScreen({super.key});
@@ -27,26 +29,59 @@ class _PlantDiagnosisResultScreenState extends State<PlantDiagnosisResultScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) => _initializeScreen());
   }
 
-  void _initializeScreen() {
+  /*void _initializeScreen() {
     final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     if (args == null) return;
 
     final viewModel = context.read<DiagnosisViewModel>();
-
-    if (args['imageFile'] is File) {
-      final imageFile = args['imageFile'] as File;
-      viewModel.setImageFile(imageFile);
-      viewModel.diagnosePlant(imageFile);
-      return;
-    }
 
     if (args['scanData'] is Map<String, dynamic>) {
       viewModel.loadFromHistory(
         args['scanData'] as Map<String, dynamic>,
         args['imagePath'] as String?,
       );
+      return;
+    }*/
+
+    void _initializeScreen() {
+  final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+  if (args == null) return;
+
+  final viewModel = context.read<DiagnosisViewModel>();
+
+  final scanData = args['scanData'];
+  if (scanData is Map) {
+    viewModel.loadFromHistory(
+      Map<String, dynamic>.from(scanData as Map),
+      args['imagePath'] as String?,
+    );
+    return;
+  }
+
+
+   /* if (args['imageFile'] is File) {
+      final imageFile = args['imageFile'] as File;
+      final sameImage = viewModel.imageFile?.path == imageFile.path;
+
+      viewModel.setImageFile(imageFile);
+
+      if (viewModel.diagnosis == null || !sameImage) {
+        viewModel.diagnosePlant(imageFile);
+      }
+    }
+  }*/
+
+    final imageFile = args['imageFile'] as File?;
+  if (imageFile != null) {
+    final sameImage = viewModel.imageFile?.path == imageFile.path;
+    viewModel.setImageFile(imageFile);
+
+    if (viewModel.diagnosis == null || !sameImage) {
+      viewModel.diagnosePlant(imageFile);
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,19 +101,19 @@ class _PlantDiagnosisResultScreenState extends State<PlantDiagnosisResultScreen>
                   );
                 }
 
+                if (viewModel.diagnosis != null) {
+                  return _buildSuccessState(context, viewModel, viewModel.diagnosis!, isTablet);
+                }
+
                 if (viewModel.error.isNotEmpty) {
                   return _buildErrorState(context, viewModel.error, isTablet);
                 }
 
-                if (viewModel.diagnosis == null) {
-                  return _buildErrorState(
-                    context,
-                    AppLocalizations.of(context).diagnosis_no_data,
-                    isTablet,
-                  );
-                }
-
-                return _buildSuccessState(context, viewModel, viewModel.diagnosis!, isTablet);
+                return _buildErrorState(
+                  context,
+                  AppLocalizations.of(context).diagnosis_no_data,
+                  isTablet,
+                );
               },
             ),
           ),
@@ -358,11 +393,13 @@ class _PlantDiagnosisResultScreenState extends State<PlantDiagnosisResultScreen>
           width: double.infinity,
           height: buttonHeight,
           child: ElevatedButton(
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutes.scanner,
+            onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+              CameraRoute.blackFade(
+                routeName: AppRoutes.scanner,
+                child: const ScannerScreen(),
+                arguments: {'mode': 'diagnose'},
+              ),
               (route) => route.isFirst,
-              arguments: {'mode': 'diagnose'},
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
@@ -481,7 +518,6 @@ class _PlantDiagnosisResultScreenState extends State<PlantDiagnosisResultScreen>
     );
   }
 }
-
 
 
 // Still no Problem - Commenting out for Enhanced Responsiveness 13/03/26 - 07:55am

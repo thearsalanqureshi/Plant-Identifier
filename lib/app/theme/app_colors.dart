@@ -11,6 +11,7 @@ class AppColors {
   static const Color lightGray = Color(0xFFE6E6E6);
   static const Color mediumGray = Color(0xFF80828D);
   static const Color darkGray = Color(0xFF666666);
+  static const Color cameraAccent = Color(0xFFF2D15C);
 
   // Background Colors
   static const Color scaffoldBackground = white;
@@ -42,5 +43,4 @@ class AppColors {
 
 
 }
-
 

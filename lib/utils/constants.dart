@@ -57,7 +57,7 @@ class AppConstants {
   static const String defaultLanguage = 'en';
 
   // API Configuration
-  static const String geminiApiKey = String.fromEnvironment("MY_API_KEY");
+  static const String geminiApiKey = String.fromEnvironment("AIzaSyB5WOR8vCAIi-66HSNWx4N6A5nGLNX8094");
   static const String geminiBaseUrl = 'https://generativelanguage.googleapis.com/v1beta';
   
   // App Configuration

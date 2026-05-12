@@ -34,6 +34,7 @@ debugPrint('🟡 Rating bottom sheet opening');
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
+      constraints: const BoxConstraints(maxWidth: 560),
       builder: (context) => RatingBottomSheet(
          onRateNow: () {
            debugPrint('🟢 Rate Now tapped'); 

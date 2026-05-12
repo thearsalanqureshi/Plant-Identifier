@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../app/navigation/camera_route.dart';
 import '../../../app/navigation/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../view_models/diagnosis_view_model.dart';
@@ -9,6 +10,7 @@ import '../../../view_models/plant_result_view_model.dart';
 import '../../../view_models/water_calculation_view_model.dart';
 import '../../data/services/analytics_service.dart';
 import '../../l10n/app_localizations.dart';
+import 'scanner_screen.dart';
 
 class ProcessingScreen extends StatefulWidget {
   const ProcessingScreen({super.key});
@@ -66,7 +68,8 @@ class _ProcessingScreenState extends State<ProcessingScreen>
   }
 
   void _initializeArguments() {
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
     if (args == null) return;
 
@@ -77,7 +80,7 @@ class _ProcessingScreenState extends State<ProcessingScreen>
     _wateringFrequency = (args['wateringFrequency'] ?? '') as String;
   }
 
-  Future<void> _startProcessing() async {
+  /*Future<void> _startProcessing() async {
     if (_didStartProcessing || !mounted) return;
     _didStartProcessing = true;
 
@@ -112,6 +115,70 @@ class _ProcessingScreenState extends State<ProcessingScreen>
         Navigator.pushReplacementNamed(context, _getFallbackRoute());
       }
     }
+  }*/
+
+  Future<void> _startProcessing() async {
+    if (_didStartProcessing || !mounted) return;
+    _didStartProcessing = true;
+
+    if (_imageFile == null) {
+      _logProcessingEvent(success: false, error: 'Missing image file');
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          CameraRoute.blackFade(
+            routeName: AppRoutes.scanner,
+            child: const ScannerScreen(),
+            arguments: {'mode': 'diagnose'},
+          ),
+        );
+      }
+      return;
+    }
+
+    try {
+      switch (_mode) {
+        case 'identify':
+          await _processPlantIdentification();
+          break;
+        case 'diagnose':
+          await _processPlantDiagnosis();
+          break;
+        case 'water':
+          await _processWaterCalculation();
+          break;
+        default:
+          throw Exception('Unsupported mode: $_mode');
+      }
+    } catch (e) {
+      _logProcessingEvent(success: false, error: e.toString());
+      if (!mounted) return;
+
+      if (_mode == 'diagnose') {
+        final diagnosis = context.read<DiagnosisViewModel>().diagnosis;
+
+        if (diagnosis != null) {
+          _openPremiumBeforeResult(
+            AppRoutes.plantDiagnosisResult,
+            arguments: {
+              'scanData': diagnosis.toMap(),
+              'imagePath': _imageFile?.path,
+            },
+          );
+          return;
+        }
+
+        Navigator.of(context).pushReplacement(
+          CameraRoute.blackFade(
+            routeName: AppRoutes.scanner,
+            child: const ScannerScreen(),
+            arguments: {'mode': 'diagnose'},
+          ),
+        );
+        return;
+      }
+
+      Navigator.pushReplacementNamed(context, _getFallbackRoute());
+    }
   }
 
   Future<void> _processPlantIdentification() async {
@@ -126,18 +193,18 @@ class _ProcessingScreenState extends State<ProcessingScreen>
       context.read<HistoryViewModel>().loadHistory(forceRefresh: true);
     } catch (_) {}
 
-    Navigator.pushReplacementNamed(
-      context,
+    _openPremiumBeforeResult(
       AppRoutes.plantIdentificationResult,
       arguments: {'imageFile': _imageFile},
     );
   }
 
-  Future<void> _processPlantDiagnosis() async {
+  /*Future<void> _processPlantDiagnosis() async {
     final diagnosisViewModel = context.read<DiagnosisViewModel>();
     diagnosisViewModel.reset();
     diagnosisViewModel.setImageFile(_imageFile!);
     await diagnosisViewModel.diagnosePlant(_imageFile!);
+    final diagnosis = diagnosisViewModel.diagnosis;
 
     _logProcessingEvent(success: true);
 
@@ -145,7 +212,34 @@ class _ProcessingScreenState extends State<ProcessingScreen>
     Navigator.pushReplacementNamed(
       context,
       AppRoutes.plantDiagnosisResult,
-      arguments: {'imageFile': _imageFile},
+      arguments: {
+        'scanData': diagnosis?.toMap(),
+        'imagePath': _imageFile?.path,
+        'imageFile': diagnosis == null ? _imageFile : null,
+      },
+    );
+  }*/
+
+  Future<void> _processPlantDiagnosis() async {
+    final diagnosisViewModel = context.read<DiagnosisViewModel>();
+
+    diagnosisViewModel.reset();
+    diagnosisViewModel.setImageFile(_imageFile!);
+
+    await diagnosisViewModel.diagnosePlant(_imageFile!);
+
+    final diagnosis = diagnosisViewModel.diagnosis;
+    if (diagnosis == null) {
+      throw Exception('Diagnosis result was not generated');
+    }
+
+    _logProcessingEvent(success: true);
+
+    if (!mounted) return;
+
+    _openPremiumBeforeResult(
+      AppRoutes.plantDiagnosisResult,
+      arguments: {'scanData': diagnosis.toMap(), 'imagePath': _imageFile!.path},
     );
   }
 
@@ -163,14 +257,29 @@ class _ProcessingScreenState extends State<ProcessingScreen>
     _logProcessingEvent(success: true);
 
     if (!mounted) return;
-    Navigator.pushReplacementNamed(context, AppRoutes.waterResult);
+    _openPremiumBeforeResult(AppRoutes.waterResult);
+  }
+
+  void _openPremiumBeforeResult(String routeName, {Object? arguments}) {
+    if (!mounted) return;
+
+    Navigator.pushReplacementNamed(
+      context,
+      AppRoutes.premium,
+      arguments: {
+        'nextRouteAfterPremium': routeName,
+        'nextRouteArguments': arguments,
+        'showRewardedInterstitialOnClose': true,
+      },
+    );
   }
 
   void _logProcessingEvent({required bool success, String? error}) {
     if (_hasLoggedProcessing) return;
 
-    final processingTime =
-        DateTime.now().difference(_processingStartTime).inMilliseconds;
+    final processingTime = DateTime.now()
+        .difference(_processingStartTime)
+        .inMilliseconds;
 
     AnalyticsService.logProcessingComplete(
       mode: _mode,
@@ -277,8 +386,6 @@ class _ProcessingScreenState extends State<ProcessingScreen>
     }
   }
 }
-
-
 
 // Still no Problem - Commenting out for Enhanced Responsiveness 13/03/26 - 08:11am
 /*import 'dart:io';

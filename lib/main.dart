@@ -1,12 +1,11 @@
-import 'dart:ui';
 import 'dart:io';
 // import 'app.dart';
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'data/models/history_model.dart';
 import 'app/app.dart';
@@ -18,9 +17,9 @@ import 'data/services/version_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart'; 
 import 'package:provider/provider.dart';
-import 'view_models/language_view_model.dart'; 
+import 'view_models/language_view_model.dart';
+import 'package:flutter/services.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
 
 
 @pragma('vm:entry-point')
@@ -34,18 +33,23 @@ void main() async {
     debugPrint('📱 Disabling Impeller for camera compatibility');
   }
 
-  print('🚀 APP START - SIMPLE HIVE SETUP');
+  debugPrint('🚀 APP START - SIMPLE HIVE SETUP');
    developer.log('🎯 MAIN START', name: 'APP');
   
   WidgetsFlutterBinding.ensureInitialized();
 
+ await SystemChrome.setPreferredOrientations([
+   DeviceOrientation.portraitUp,
+ ]);
    // Background handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
    await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  print('🔥 Firebase Project ID: ${DefaultFirebaseOptions.currentPlatform.projectId}');
+  await MobileAds.instance.initialize();
+  debugPrint('Google Mobile Ads SDK initialized');
+  debugPrint('🔥 Firebase Project ID: ${DefaultFirebaseOptions.currentPlatform.projectId}');
    debugPrint('🔥 Firebase Project ID: ${DefaultFirebaseOptions.currentPlatform.projectId}');
   debugPrint('🔥 Firebase App ID: ${DefaultFirebaseOptions.currentPlatform.appId}');
   developer.log('🔥 Firebase Initialized', 
@@ -96,10 +100,10 @@ FirebaseCrashlytics.instance.log("App started successfully");
   try {
     await Hive.openBox<ScanHistory>('scanHistory');
     await Hive.openBox<Plant>('plants');
-    print('✅ Hive Ready - Existing data loaded');
+    debugPrint('✅ Hive Ready - Existing data loaded');
   } catch (e) {
-    print('⚠️ Hive corruption detected: $e');
-    print('🧹 Cleaning corrupted boxes...');
+    debugPrint('⚠️ Hive corruption detected: $e');
+    debugPrint('🧹 Cleaning corrupted boxes...');
     
     await Hive.close();
     await Hive.deleteBoxFromDisk('scanHistory');
@@ -112,12 +116,12 @@ FirebaseCrashlytics.instance.log("App started successfully");
     await Hive.openBox<ScanHistory>('scanHistory');
     await Hive.openBox<Plant>('plants');
     
-    print('✅ Hive recovered from corruption');
+    debugPrint('✅ Hive recovered from corruption');
   }
   
 } catch (e) {
-  print('⚠️ Hive corruption detected: $e');
-  print('🧹 Cleaning corrupted boxes...');
+  debugPrint('⚠️ Hive corruption detected: $e');
+  debugPrint('🧹 Cleaning corrupted boxes...');
   
   try {
     await Hive.close();
@@ -134,7 +138,7 @@ FirebaseCrashlytics.instance.log("App started successfully");
   // Re-initialize fresh
   await Hive.initFlutter();
   
-  print('✅ Hive recovered from corruption');
+  debugPrint('✅ Hive recovered from corruption');
 }
 
 /*

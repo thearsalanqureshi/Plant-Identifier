@@ -111,7 +111,7 @@ class DiagnosisViewModel with ChangeNotifier {
 
   void reset() {
     _diagnosis = null;
-    _isLoading = true;
+    _isLoading = false;
     _error = '';
     _safeNotifyListeners();
   }

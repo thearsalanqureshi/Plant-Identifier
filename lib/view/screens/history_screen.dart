@@ -44,6 +44,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
+        top: true,
+        bottom: false,
         child: Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxContentWidth),
@@ -112,11 +114,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
           onRefresh: () async => vm.loadHistory(),
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-          //  padding: const EdgeInsets.only(top: 6, bottom: 16),
-          padding: EdgeInsets.only(
-              top: 6,
-           bottom: MediaQuery.of(context).padding.bottom + 16,
-             ),
+            padding: const EdgeInsets.only(top: 6, bottom: 16),
+         // padding: EdgeInsets.only(
+          //    top: 6,
+         //  bottom: MediaQuery.of(context).padding.bottom + 16,
+           //  ),
             itemCount: scans.length,
             separatorBuilder: (_, __) => const SizedBox(height: 0),
             itemBuilder: (context, index) {
@@ -259,50 +261,49 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   void _showActionSheet(BuildContext context, ScanHistory scan, HistoryViewModel vm) {
-    final width = MediaQuery.sizeOf(context).width;
-    final isTablet = width >= 600;
-
     showModalBottomSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,
       backgroundColor: AppColors.white,
+      constraints: const BoxConstraints(maxWidth: 560),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
       ),
       builder: (sheetContext) {
-        return Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: isTablet ? 680 : double.infinity),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildActionOption(
-                    context: sheetContext,
-                    icon: scan.isSaved ? Icons.bookmark_remove : Icons.bookmark_add,
-                    title: scan.isSaved
-                        ? AppLocalizations.of(context).history_remove_from_my_plants
-                        : AppLocalizations.of(context).history_save_to_my_plants,
-                    onTap: () {
-                      Navigator.pop(sheetContext);
-                      vm.toggleSaveStatus(scan.id);
-                    },
-                  ),
-                  const Divider(height: 1),
-                  _buildActionOption(
-                    context: sheetContext,
-                    icon: Icons.delete_outline,
-                    title: AppLocalizations.of(context).history_delete_button,
-                    isDelete: true,
-                    onTap: () {
-                      Navigator.pop(sheetContext);
-                      _showDeleteConfirmation(context, scan, vm);
-                    },
-                  ),
-                ],
-              ),
+        return SafeArea(
+          top: false,
+          left: false,
+          right: false,
+          bottom: true,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildActionOption(
+                  context: sheetContext,
+                  icon: scan.isSaved ? Icons.bookmark_remove : Icons.bookmark_add,
+                  title: scan.isSaved
+                      ? AppLocalizations.of(context).history_remove_from_my_plants
+                      : AppLocalizations.of(context).history_save_to_my_plants,
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    vm.toggleSaveStatus(scan.id);
+                  },
+                ),
+                const Divider(height: 1),
+                _buildActionOption(
+                  context: sheetContext,
+                  icon: Icons.delete_outline,
+                  title: AppLocalizations.of(context).history_delete_button,
+                  isDelete: true,
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    _showDeleteConfirmation(context, scan, vm);
+                  },
+                ),
+              ],
             ),
           ),
         );
@@ -347,90 +348,89 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   void _showDeleteConfirmation(BuildContext context, ScanHistory scan, HistoryViewModel vm) {
-    final width = MediaQuery.sizeOf(context).width;
-    final isTablet = width >= 600;
-
     showModalBottomSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,
       backgroundColor: Colors.white,
+      constraints: const BoxConstraints(maxWidth: 560),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
       ),
       builder: (sheetContext) {
-        return Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: isTablet ? 680 : double.infinity),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 22, 20, 18),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    AppLocalizations.of(context).history_delete_title,
-                    style: const TextStyle(
-                      fontFamily: 'DMSans',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
-                      color: Color(0xFF111827),
-                    ),
+        return SafeArea(
+          top: false,
+          left: false,
+          right: false,
+          bottom: true,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 22, 20, 18),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  AppLocalizations.of(context).history_delete_title,
+                  style: const TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20,
+                    color: Color(0xFF111827),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    AppLocalizations.of(context).history_delete_confirmation,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontFamily: 'DMSans',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      height: 1.4,
-                      color: Color(0xFF6B7280),
-                    ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  AppLocalizations.of(context).history_delete_confirmation,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'DMSans',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    height: 1.4,
+                    color: Color(0xFF6B7280),
                   ),
-                  const SizedBox(height: 22),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: 52,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(sheetContext);
-                              vm.deleteScan(scan.id);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF589C68),
-                              foregroundColor: Colors.white,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                              ),
+                ),
+                const SizedBox(height: 22),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 52,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(sheetContext);
+                            vm.deleteScan(scan.id);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF589C68),
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
                             ),
-                            child: Text(AppLocalizations.of(context).history_delete_button),
                           ),
+                          child: Text(AppLocalizations.of(context).history_delete_button),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: SizedBox(
-                          height: 52,
-                          child: OutlinedButton(
-                            onPressed: () => Navigator.pop(sheetContext),
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Color(0xFFD1D5DB)),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                              ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: SizedBox(
+                        height: 52,
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.pop(sheetContext),
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Color(0xFFD1D5DB)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
                             ),
-                            child: Text(AppLocalizations.of(context).history_cancel_button),
                           ),
+                          child: Text(AppLocalizations.of(context).history_cancel_button),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         );

@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import '../../../app/navigation/camera_route.dart';
 import '../../../app/navigation/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../data/models/plant_model.dart';
 import '../../../utils/constants.dart';
 import '../../../view_models/plant_result_view_model.dart';
 import '../../l10n/app_localizations.dart';
+import 'scanner_screen.dart';
 
 class PlantIdentificationResultScreen extends StatefulWidget {
   const PlantIdentificationResultScreen({super.key});
@@ -539,11 +541,13 @@ class _PlantIdentificationResultScreenState
           width: double.infinity,
           height: buttonHeight,
           child: OutlinedButton(
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutes.scanner,
+            onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+              CameraRoute.blackFade(
+                routeName: AppRoutes.scanner,
+                child: const ScannerScreen(),
+                arguments: {'mode': 'identify'},
+              ),
               (route) => route.isFirst,
-              arguments: {'mode': 'identify'},
             ),
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: AppColors.primaryGreen, width: 0.8),

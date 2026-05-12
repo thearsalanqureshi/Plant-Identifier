@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class TranslationService {
-  static const String _apiKey = "AIzaSyDBclzBXD5TkzWB4Dcnud2O4yGOHNRMkTw"; 
+  static const String _apiKey = "AIzaSyB5WOR8vCAIi-66HSNWx4N6A5nGLNX8094";
   static const String _model = 'gemini-2.5-flash';
   
   static Future<String> translateText(String text, String targetLanguage) async {
@@ -17,8 +17,11 @@ Text to translate: "$text"
 ''';
       
       final response = await http.post(
-        Uri.parse('https://generativelanguage.googleapis.com/v1/models/$_model:generateContent?key=$_apiKey'),
-        headers: {'Content-Type': 'application/json'},
+        Uri.parse('https://generativelanguage.googleapis.com/v1beta/models/$_model:generateContent'),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': _apiKey,
+        },
         body: jsonEncode({
           'contents': [
             {

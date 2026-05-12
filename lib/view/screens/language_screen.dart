@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../view_models/language_view_model.dart';
+import '../../../app/navigation/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../view/widgets/common/language_app_bar.dart';
 import '../../view/widgets/common/language_item.dart';
@@ -8,8 +9,13 @@ import '../../../app/navigation/navigation_service.dart';
 
 class LanguageScreen extends StatefulWidget {
   final bool showBackButton;
+  final String? nextRouteAfterSave;
 
-  const LanguageScreen({super.key, this.showBackButton = true});
+  const LanguageScreen({
+    super.key,
+    this.showBackButton = true,
+    this.nextRouteAfterSave,
+  });
 
   @override
   State<LanguageScreen> createState() => _LanguageScreenState();
@@ -24,9 +30,12 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('💣 ${runtimeType} BUILD CALLED');
+    debugPrint('💣 $runtimeType BUILD CALLED');
 
-    final navigationService = Provider.of<NavigationService>(context, listen: false);
+    final navigationService = Provider.of<NavigationService>(
+      context,
+      listen: false,
+    );
     final viewModel = Provider.of<LanguageViewModel>(context);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -36,8 +45,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
         ? () => _handleBackPressed(navigationService)
         : null;
 
-    print(' LanguageScreen - showBackButton: ${widget.showBackButton}');
-    print(' LanguageScreen - backButtonCallback: $backButtonCallback');
+    debugPrint('LanguageScreen - showBackButton: ${widget.showBackButton}');
+    debugPrint('LanguageScreen - backButtonCallback: $backButtonCallback');
 
     return Scaffold(
       backgroundColor: AppColors.languageScreenBg,
@@ -47,7 +56,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
             // App Bar
             LanguageAppBar(
               onBackPressed: backButtonCallback,
-              onSavePressed: () => _handleSavePressed(viewModel, navigationService),
+              onSavePressed: () =>
+                  _handleSavePressed(viewModel, navigationService),
               canSave: true,
             ),
 
@@ -61,7 +71,11 @@ class _LanguageScreenState extends State<LanguageScreen> {
     );
   }
 
-  Widget _buildLanguageList(LanguageViewModel viewModel, double screenHeight, double screenWidth) {
+  Widget _buildLanguageList(
+    LanguageViewModel viewModel,
+    double screenHeight,
+    double screenWidth,
+  ) {
     return ListView.separated(
       padding: EdgeInsets.only(
         top: screenHeight * 0.015, // 1.5% of screen height
@@ -70,7 +84,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
         right: screenWidth * 0.04, // 4% of screen width
       ),
       itemCount: viewModel.supportedLanguages.length,
-      separatorBuilder: (context, index) => SizedBox(height: screenHeight * 0.015), // 1.5% spacing
+      separatorBuilder: (context, index) =>
+          SizedBox(height: screenHeight * 0.015), // 1.5% spacing
       itemBuilder: (context, index) {
         final language = viewModel.supportedLanguages[index];
         return LanguageItem(
@@ -92,14 +107,23 @@ class _LanguageScreenState extends State<LanguageScreen> {
   ) async {
     await viewModel.saveLanguageSelection();
 
+    if (!mounted) {
+      return;
+    }
+
+    final nextRoute = widget.nextRouteAfterSave;
+    if (nextRoute != null) {
+      navigationService.pushReplacementNamed(nextRoute);
+      return;
+    }
+
     if (Navigator.canPop(context)) {
       Navigator.pop(context);
     } else {
-      navigationService.pushReplacementNamed('/home');
+      navigationService.pushReplacementNamed(AppRoutes.home);
     }
   }
 }
-
 
 /* ----- Correct but unresponsive ------
 import 'package:flutter/material.dart';
@@ -227,4 +251,3 @@ class _LanguageScreenState extends State<LanguageScreen> {
     */
   }
 }*/
-

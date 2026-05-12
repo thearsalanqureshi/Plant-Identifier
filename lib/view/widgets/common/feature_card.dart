@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import '../../../utils/app_types.dart';
 
 class FeatureCard extends StatelessWidget {
@@ -31,8 +32,8 @@ class FeatureCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: isLarge ? screenWidth * 0.9 : screenWidth * 0.44,
-        height: isLarge ? 100 : 165,
+        width: isLarge ? screenWidth * 0.94 : screenWidth * 0.44,
+        height: isLarge ? 100 : 172,
         decoration: BoxDecoration(
           color: config.backgroundColor,
           borderRadius: BorderRadius.circular(12),
@@ -49,7 +50,7 @@ class FeatureCard extends StatelessWidget {
                   alignment: Alignment.center,
                   transform: Matrix4.identity()..scale(isRtl ? -1.0 : 1.0, 1.0),
                   child: Opacity(
-                    opacity: 0.4,
+                    opacity: 0.9,
                     child: Image.asset(
                       config.backgroundImage!,
                       width: isLarge ? 148 : 155,
@@ -82,8 +83,9 @@ class FeatureCard extends StatelessWidget {
                             BlendMode.srcIn,
                           ),
                         ),
-                        SizedBox(height: isLarge ? 8 : 36),
-                        Text(
+                        SizedBox(height: isLarge ? 8 : 32),
+
+                        /*Text(
                           title,
                           style: (isLarge
                               ? AppTypography.featureCardTitle
@@ -92,9 +94,34 @@ class FeatureCard extends StatelessWidget {
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
+                        ),*/
+                        isLarge
+                            ?
+                        Text(
+                          title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTypography.featureCardTitle.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            height: 1.0,
+                          ),
+                        )
+                            : AutoSizeText(
+                          title,
+                          maxLines: 2,
+                          minFontSize: 14,
+                          stepGranularity: 0.5,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTypography.featureCardTitle.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            height: 1.0,
+                          ),
                         ),
                         SizedBox(height: isLarge ? 3 : 4),
-                        Text(
+
+                       /* Text(
                           subtitle,
                           style: (isLarge
                               ? AppTypography.featureCardSubtitle
@@ -103,6 +130,30 @@ class FeatureCard extends StatelessWidget {
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
+                        ),*/
+                        isLarge
+                            ?
+                        Text(
+                          subtitle,
+                          maxLines: 2,
+                        //  overflow: TextOverflow.ellipsis,
+                          style: AppTypography.featureCardSubtitle.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            height: 1.0,
+                          ),
+                        )
+                            : AutoSizeText(
+                          subtitle,
+                          maxLines: 2,
+                          minFontSize: 11,
+                          stepGranularity: 0.5,
+                       //   overflow: TextOverflow.ellipsis,
+                          style: AppTypography.featureCardSubtitle.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            height: 1.0,
+                          ),
                         ),
                       ],
                     ),

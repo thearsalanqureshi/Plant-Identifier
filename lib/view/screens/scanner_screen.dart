@@ -1,11 +1,26 @@
-/*import 'dart:io';
-import 'package:camera/camera.dart';
+import 'dart:math' as math;
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../app/navigation/camera_route.dart';
 import '../../../app/navigation/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
+import '../../../data/models/scanner_camera_options.dart';
 import '../../../view_models/scanner_view_model.dart';
 import '../../l10n/app_localizations.dart';
+import 'scanner_preview_screen.dart';
+import '../widgets/camera/camera_widgets.dart';
+
+enum _ScannerExpandedTopControl {
+  overlay,
+  timer,
+  aspectRatio,
+  flash,
+}
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key});
@@ -14,11 +29,16 @@ class ScannerScreen extends StatefulWidget {
   State<ScannerScreen> createState() => _ScannerScreenState();
 }
 
-class _ScannerScreenState extends State<ScannerScreen> with SingleTickerProviderStateMixin {
-  bool _hasInitialized = false;
+class _ScannerScreenState extends State<ScannerScreen>
+    with TickerProviderStateMixin {
   bool _isCapturing = false;
-  bool _isMounted = true;
+  bool _isPreviewTransitionActive = false;
   bool _argsApplied = false;
+  _ScannerExpandedTopControl? _expandedTopControl;
+  bool _isScalingGesture = false;
+  double _gestureStartZoom = 1.0;
+  double _lastRequestedZoom = 1.0;
+  ScannerViewModel? _scannerViewModel;
 
   late final AnimationController _fadeController;
   late final Animation<double> _fadeAnimation;
@@ -27,71 +47,248 @@ class _ScannerScreenState extends State<ScannerScreen> with SingleTickerProvider
   void initState() {
     super.initState();
     _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 280),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_fadeController);
+    _fadeAnimation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(_fadeController);
     _preloadCamera();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_argsApplied) return;
-    _argsApplied = true;
-
-    final args = ModalRoute.of(context)?.settings.arguments;
-    if (args is Map<String, dynamic>) {
-      final mode = (args['mode'] ?? 'identify') as String;
-      context.read<ScannerViewModel>().setMode(mode);
-    }
-  }
-
-  void _preloadCamera() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final vm = context.read<ScannerViewModel>();
-      await vm.initializeCamera();
-      _hasInitialized = true;
-      _fadeController.forward();
-      if (mounted) setState(() {});
-    });
+    _scannerViewModel ??= context.read<ScannerViewModel>();
+    _initializeArguments();
   }
 
   @override
   void dispose() {
-    _isMounted = false;
+    _scannerViewModel?.cancelCaptureCountdown();
     _fadeController.dispose();
-    final vm = context.read<ScannerViewModel>();
-    WidgetsBinding.instance.addPostFrameCallback((_) => vm.disposeCamera());
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isTablet = MediaQuery.sizeOf(context).width >= 600;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final topInset = MediaQuery.of(context).padding.top;
+    final isSmallDevice = screenHeight < 700;
+    final dockHeight = (screenHeight * 0.14).clamp(108.0, 120.0).toDouble();
+    // Keep a fixed header slot so the compact and expanded rows share one anchor.
+    final headerInnerHeight = 88.0;
 
-    return Scaffold(
-      backgroundColor: AppColors.black,
-      body: Stack(
-        children: [
-          Positioned.fill(child: _buildCameraPreview()),
-          Positioned.fill(
-            child: SafeArea(
-              child: FadeTransition(
-                opacity: _fadeAnimation,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isTablet ? 28 : 16,
-                    vertical: isTablet ? 14 : 12,
-                  ),
-                  child: Column(
-                    children: [
-                      _buildTopControls(),
-                      const Spacer(),
-                      _buildBottomControls(isTablet),
-                    ],
+    return Consumer<ScannerViewModel>(
+      builder: (context, viewModel, _) {
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              Positioned.fill(
+                child: _buildPreviewRegion(context, viewModel),
+              ),
+              if (_expandedTopControl != null)
+                Positioned.fill(
+                  top: topInset + headerInnerHeight,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: _collapseTopControl,
+                    child: const SizedBox.expand(),
                   ),
                 ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: SafeArea(
+                  bottom: false,
+                  child: FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: _buildTopHeader(context, viewModel, headerInnerHeight),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: SafeArea(
+    top: false,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: _buildBottomDock(
+                    context,
+                    viewModel,
+                    screenWidth,
+                    dockHeight,
+                    isSmallDevice,
+                  ),
+                ),
+              ),
+              ),
+              if (_isPreviewTransitionActive)
+                const Positioned.fill(
+                  child: ModalBarrier(
+                    color: AppColors.black,
+                    dismissible: false,
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTopHeader(
+    BuildContext context,
+    ScannerViewModel viewModel,
+    double headerInnerHeight,
+  ) {
+    final bool immersiveChrome = viewModel.aspectRatio == ScannerAspectRatio.full;
+    final double headerContentTopInset =
+        _resolveHeaderContentTopInset(MediaQuery.sizeOf(context).height);
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 480),
+      curve: Curves.easeOutCubic,
+      height: headerInnerHeight,
+      width: double.infinity,
+      alignment: Alignment.topCenter,
+      color: _scannerChromeColor(immersiveChrome),
+      padding: EdgeInsets.fromLTRB(12, headerContentTopInset, 12, 0),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 660),
+        switchInCurve: Curves.easeOut,
+        switchOutCurve: Curves.easeIn,
+        layoutBuilder: (currentChild, previousChildren) {
+          return Stack(
+            alignment: Alignment.topCenter,
+            children: <Widget>[
+              ...previousChildren,
+              if (currentChild != null) currentChild,
+            ],
+          );
+        },
+        transitionBuilder: (child, animation) {
+          final fade = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          );
+          return FadeTransition(
+            opacity: fade,
+            child: ScaleTransition(
+              alignment: Alignment.topCenter,
+              scale: Tween<double>(begin: 0.97, end: 1.0).animate(fade),
+              child: child,
+            ),
+          );
+        },
+        child: _expandedTopControl == null
+            ? KeyedSubtree(
+                key: const ValueKey<String>('compact_top_row'),
+                child: _buildCompactTopHeader(context, viewModel),
+              )
+            : KeyedSubtree(
+                key: ValueKey<String>(
+                  'expanded_${_expandedTopControl!.name}',
+                ),
+                child: _buildExpandedTopHeader(context, viewModel),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildCompactTopHeader(
+    BuildContext context,
+    ScannerViewModel viewModel,
+  ) {
+    final bool overlaySelected = viewModel.overlayMode.isActive;
+    final bool timerSelected =
+        viewModel.captureTimerOption != ScannerCaptureTimerOption.off;
+    final bool aspectSelected =
+        viewModel.aspectRatio != ScannerAspectRatio.ratio3x4;
+    final Color flashColor =
+        viewModel.isFlashOn ? AppColors.cameraAccent : AppColors.white;
+
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: CameraRoundActionButton(
+                icon: Icons.close,
+                onTap: () => Navigator.of(context).pop(),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: CameraTopGlyphButton(
+                size: 44,
+                selected: overlaySelected,
+                onTap: () => _toggleExpandedTopControl(
+                  viewModel,
+                  _ScannerExpandedTopControl.overlay,
+                ),
+                child: CameraBracketFrame(
+                  size: 16,
+                  color: overlaySelected
+                      ? AppColors.cameraAccent
+                      : AppColors.white,
+                  strokeWidth: 2.0,
+                  cornerRadiusFactor: 0.24,
+                  cornerLengthFactor: 0.30,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: CameraTopGlyphButton(
+                selected: timerSelected,
+                onTap: () => _toggleExpandedTopControl(
+                  viewModel,
+                  _ScannerExpandedTopControl.timer,
+                ),
+                child: const Icon(
+                  Icons.timer_outlined,
+                  size: 22,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: CameraAspectRatioCompactBadge(
+                label: viewModel.aspectRatio.label,
+                selected: aspectSelected,
+                onTap: () => _toggleExpandedTopControl(
+                  viewModel,
+                  _ScannerExpandedTopControl.aspectRatio,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: CameraRoundActionButton(
+                icon: viewModel.isFlashOn ? Icons.flash_on : Icons.flash_off,
+                backgroundColor: AppColors.black.withOpacity(0.0),
+                onTap: () => _toggleExpandedTopControl(
+                  viewModel,
+                  _ScannerExpandedTopControl.flash,
+                ),
+                iconColor: flashColor,
               ),
             ),
           ),
@@ -100,182 +297,449 @@ class _ScannerScreenState extends State<ScannerScreen> with SingleTickerProvider
     );
   }
 
-  Widget _buildCameraPreview() {
-    return Consumer<ScannerViewModel>(
-      builder: (context, vm, _) {
-        if (!vm.isCameraInitialized || vm.cameraController == null) {
-          return const ColoredBox(color: AppColors.black);
-        }
-
-        final CameraController controller = vm.cameraController!;
-        final previewSize = controller.value.previewSize;
-        if (previewSize == null) {
-          return CameraPreview(controller);
-        }
-
-        return ClipRect(
-          child: OverflowBox(
-            alignment: Alignment.center,
-            minWidth: 0,
-            minHeight: 0,
-            maxWidth: double.infinity,
-            maxHeight: double.infinity,
-            child: FittedBox(
-              fit: BoxFit.cover,
-              child: SizedBox(
-                width: previewSize.height,
-                height: previewSize.width,
-                child: CameraPreview(controller),
-              ),
+  Widget _buildExpandedTopHeader(
+    BuildContext context,
+    ScannerViewModel viewModel,
+  ) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: _collapseTopControl,
+            child: const SizedBox.expand(),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 660),
+            switchInCurve: Curves.easeOut,
+            switchOutCurve: Curves.easeIn,
+            transitionBuilder: (child, animation) {
+              final fade = CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOut,
+              );
+              return FadeTransition(
+                opacity: fade,
+                child: ScaleTransition(
+                  scale: Tween<double>(begin: 0.96, end: 1.0).animate(fade),
+                  child: child,
+                ),
+              );
+            },
+            child: KeyedSubtree(
+              key: ValueKey<String>(_expandedTopControl!.name),
+              child: _buildExpandedOptionsRow(viewModel),
             ),
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 
-  Widget _buildTopControls() {
-    return Consumer<ScannerViewModel>(
-      builder: (context, vm, _) {
+  Widget _buildExpandedOptionsRow(ScannerViewModel viewModel) {
+    switch (_expandedTopControl!) {
+      case _ScannerExpandedTopControl.overlay:
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildCircleControlButton(
-              icon: Icons.close,
-              onTap: () => Navigator.of(context).pop(),
-            ),
-            vm.isCameraInitialized
-                ? _buildCircleControlButton(
-                    icon: vm.isFlashOn ? Icons.flash_on : Icons.flash_off,
-                    onTap: vm.toggleFlash,
-                  )
-                : const SizedBox(width: 44, height: 44),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildBottomControls(bool isTablet) {
-    final modeTextStyle = TextStyle(
-      color: AppColors.white,
-      fontSize: isTablet ? 14 : 13,
-      fontWeight: FontWeight.w600,
-    );
-
-    return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: isTablet ? 560 : 420),
-        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Consumer<ScannerViewModel>(
-              builder: (context, vm, _) {
-                return Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isTablet ? 18 : 14,
-                    vertical: isTablet ? 10 : 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.black.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    _getModeText(vm.currentMode),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: modeTextStyle,
-                  ),
-                );
-              },
+            CameraContextualOptionPill(
+              label: 'Off',
+              selected: viewModel.overlayMode == ScannerOverlayMode.off,
+              onTap: () => _selectOverlayMode(
+                viewModel,
+                ScannerOverlayMode.off,
+              ),
             ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: _buildCircleControlButton(
-                      icon: Icons.photo_library,
-                      onTap: () => _pickFromGallery(context),
-                    ),
-                  ),
-                ),
-                _buildCaptureButton(isTablet),
-                const Expanded(child: SizedBox()),
-              ],
+            const SizedBox(width: 8),
+            CameraContextualOptionPill(
+              label: 'Grid',
+              selected: viewModel.overlayMode == ScannerOverlayMode.grid,
+              onTap: () => _selectOverlayMode(
+                viewModel,
+                ScannerOverlayMode.grid,
+              ),
             ),
-            SizedBox(height: isTablet ? 8 : 4),
+            const SizedBox(width: 8),
+            CameraContextualOptionPill(
+              label: 'Focus',
+              selected: viewModel.overlayMode == ScannerOverlayMode.focus,
+              onTap: () => _selectOverlayMode(
+                viewModel,
+                ScannerOverlayMode.focus,
+              ),
+            ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCircleControlButton({
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(24),
-      child: Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: AppColors.black.withOpacity(0.5),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(icon, color: AppColors.white, size: 22),
-      ),
-    );
-  }
-
-  Widget _buildCaptureButton(bool isTablet) {
-    final size = isTablet ? 76.0 : 70.0;
-    return InkWell(
-      onTap: () => _captureImage(context),
-      borderRadius: BorderRadius.circular(size / 2),
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          color: AppColors.primaryGreen,
-          shape: BoxShape.circle,
-          border: Border.all(color: AppColors.white, width: 3),
-        ),
-        child: const Icon(Icons.camera_alt, color: AppColors.white, size: 30),
-      ),
-    );
-  }
-
-  String _getModeText(String mode) {
-    final l10n = AppLocalizations.of(context);
-    switch (mode) {
-      case 'identify':
-        return l10n.scanner_identify_plant;
-      case 'diagnose':
-        return l10n.scanner_diagnose_plant;
-      case 'water':
-        return l10n.scanner_water_calculation;
-      default:
-        return l10n.scanner_scan_mode;
+        );
+      case _ScannerExpandedTopControl.timer:
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CameraContextualOptionPill(
+              label: 'Off',
+              selected:
+                  viewModel.captureTimerOption == ScannerCaptureTimerOption.off,
+              onTap: () => _selectTimerOption(
+                viewModel,
+                ScannerCaptureTimerOption.off,
+              ),
+            ),
+            const SizedBox(width: 8),
+            CameraContextualOptionPill(
+              label: '3s',
+              selected: viewModel.captureTimerOption ==
+                  ScannerCaptureTimerOption.threeSeconds,
+              onTap: () => _selectTimerOption(
+                viewModel,
+                ScannerCaptureTimerOption.threeSeconds,
+              ),
+            ),
+            const SizedBox(width: 8),
+            CameraContextualOptionPill(
+              label: '5s',
+              selected: viewModel.captureTimerOption ==
+                  ScannerCaptureTimerOption.fiveSeconds,
+              onTap: () => _selectTimerOption(
+                viewModel,
+                ScannerCaptureTimerOption.fiveSeconds,
+              ),
+            ),
+            const SizedBox(width: 8),
+            CameraContextualOptionPill(
+              label: '10s',
+              selected: viewModel.captureTimerOption ==
+                  ScannerCaptureTimerOption.tenSeconds,
+              onTap: () => _selectTimerOption(
+                viewModel,
+                ScannerCaptureTimerOption.tenSeconds,
+              ),
+            ),
+          ],
+        );
+      case _ScannerExpandedTopControl.aspectRatio:
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CameraContextualOptionPill(
+              label: ScannerAspectRatio.ratio3x4.label,
+              selected: viewModel.aspectRatio == ScannerAspectRatio.ratio3x4,
+              onTap: () => _selectAspectRatio(
+                viewModel,
+                ScannerAspectRatio.ratio3x4,
+              ),
+            ),
+            const SizedBox(width: 8),
+            CameraContextualOptionPill(
+              label: ScannerAspectRatio.ratio1x1.label,
+              selected: viewModel.aspectRatio == ScannerAspectRatio.ratio1x1,
+              onTap: () => _selectAspectRatio(
+                viewModel,
+                ScannerAspectRatio.ratio1x1,
+              ),
+            ),
+            const SizedBox(width: 8),
+            CameraContextualOptionPill(
+              label: ScannerAspectRatio.ratio9x16.label,
+              selected: viewModel.aspectRatio == ScannerAspectRatio.ratio9x16,
+              onTap: () => _selectAspectRatio(
+                viewModel,
+                ScannerAspectRatio.ratio9x16,
+              ),
+            ),
+            const SizedBox(width: 8),
+            CameraContextualOptionPill(
+              label: ScannerAspectRatio.full.label,
+              selected: viewModel.aspectRatio == ScannerAspectRatio.full,
+              onTap: () => _selectAspectRatio(
+                viewModel,
+                ScannerAspectRatio.full,
+              ),
+            ),
+          ],
+        );
+      case _ScannerExpandedTopControl.flash:
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CameraContextualOptionPill(
+              label: 'Off',
+              selected: !viewModel.isFlashOn,
+              onTap: () => _selectFlashEnabled(viewModel, false),
+            ),
+            const SizedBox(width: 8),
+            CameraContextualOptionPill(
+              label: 'On',
+              selected: viewModel.isFlashOn,
+              onTap: () => _selectFlashEnabled(viewModel, true),
+            ),
+          ],
+        );
     }
   }
 
+  Widget _buildPreviewRegion(
+    BuildContext context,
+    ScannerViewModel viewModel,
+  ) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final previewRect = _resolvePreviewRect(
+          constraints.biggest,
+          viewModel.aspectRatio.value,
+        );
+        if (kDebugMode) {
+          debugPrint(
+            'Scanner preview viewport | ratio=${viewModel.aspectRatio.label} '
+            'available=${constraints.biggest} rect=$previewRect',
+          );
+        }
+        final previewSize = previewRect.size;
+        final shortestSide = math.min(previewSize.width, previewSize.height);
+        final focusOverlaySize = math.min(shortestSide * 0.38, 150.0);
+        final tapFocusSize = math.min(shortestSide * 0.22, 84.0);
+
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            const ColoredBox(color: Colors.black),
+            AnimatedPositioned.fromRect(
+              duration: const Duration(milliseconds: 480),
+              curve: Curves.easeOutCubic,
+              rect: previewRect,
+              child: KeyedSubtree(
+                key: ValueKey<String>(
+                  'preview_viewport_${viewModel.aspectRatio.name}',
+                ),
+                child: ClipRect(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTapUp: (details) => _handlePreviewTap(
+                          context,
+                          viewModel,
+                          details,
+                          previewSize,
+                        ),
+                        onScaleStart: (_) => _handleScaleStart(viewModel),
+                        onScaleUpdate: (details) =>
+                            _handleScaleUpdate(viewModel, details),
+                        onScaleEnd: (_) => _handleScaleEnd(),
+                        child: CameraPreviewHost(
+                          controller: viewModel.cameraController,
+                          backgroundColor: Colors.black,
+                          isReady: viewModel.isCameraInitialized &&
+                              !viewModel.isInitializing,
+                        ),
+                      ),
+                      if (viewModel.isGridEnabled)
+                        const CameraRuleOfThirdsGridOverlay(),
+                      if (viewModel.isFocusOverlayEnabled)
+                        CameraFocusReticleOverlay(
+                          normalizedPosition: const Offset(0.5, 0.5),
+                          size: focusOverlaySize,
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      if (viewModel.showFocusReticle &&
+                          viewModel.focusPoint != null)
+                        CameraFocusReticleOverlay(
+                          normalizedPosition: viewModel.focusPoint!,
+                          size: tapFocusSize,
+                          color: AppColors.cameraAccent,
+                          strokeWidth: 2.2,
+                        ),
+                      if (viewModel.isCaptureTimerRunning)
+                        CameraCountdownOverlay(
+                          remainingSeconds: viewModel.captureCountdownRemaining,
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomDock(
+    BuildContext context,
+    ScannerViewModel viewModel,
+    double screenWidth,
+    double dockHeight,
+    bool isSmallDevice,
+  ) {
+    final bool immersiveChrome = viewModel.aspectRatio == ScannerAspectRatio.full;
+
+    return RepaintBoundary(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 360),
+        curve: Curves.easeOutCubic,
+        width: double.infinity,
+        height: dockHeight,
+        color: _scannerChromeColor(immersiveChrome),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CameraRoundActionButton(
+                  icon: Icons.photo_library,
+                  size: 48,
+                  iconSize: 24,
+                  backgroundColor: AppColors.black.withOpacity(0.0),
+                  onTap: () => _pickFromGallery(context),
+                ),
+                CameraCaptureButton(
+                  enabled: !_isCapturing &&
+                      !_isPreviewTransitionActive &&
+                      !viewModel.isCaptureTimerRunning,
+                  size: isSmallDevice ? 64 : 72,
+                  iconSize: 32,
+                  onTap: () => _captureImage(context),
+                ),
+                SizedBox(width: screenWidth * 0.1),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _scannerChromeColor(bool immersiveChrome) {
+    return immersiveChrome
+        ? Colors.black.withOpacity(0.25)
+        : Colors.black;
+  }
+
+  double _resolveHeaderContentTopInset(double screenHeight) {
+    return math.max(
+      8.0,
+      math.min(11.0, screenHeight * 0.0105),
+    ).toDouble();
+  }
+
+  Rect _resolvePreviewRect(Size availableSize, double? aspectRatio) {
+    if (availableSize.isEmpty) {
+      return Rect.zero;
+    }
+
+    if (aspectRatio == null || aspectRatio <= 0) {
+      return Offset.zero & availableSize;
+    }
+
+    final availableRatio = availableSize.width / availableSize.height;
+    late final double width;
+    late final double height;
+
+    if (availableRatio > aspectRatio) {
+      height = availableSize.height;
+      width = height * aspectRatio;
+    } else {
+      width = availableSize.width;
+      height = width / aspectRatio;
+    }
+
+    final left = (availableSize.width - width) / 2;
+    final top = (availableSize.height - height) / 2;
+    return Rect.fromLTWH(left, top, width, height);
+  }
+
+  void _toggleExpandedTopControl(
+    ScannerViewModel viewModel,
+    _ScannerExpandedTopControl control,
+  ) {
+    if (_isCapturing ||
+        _isPreviewTransitionActive ||
+        viewModel.isCaptureTimerRunning) {
+      return;
+    }
+
+    setState(() {
+      _expandedTopControl =
+          _expandedTopControl == control ? null : control;
+    });
+  }
+
+  void _collapseTopControl() {
+    if (!mounted || _expandedTopControl == null) {
+      return;
+    }
+
+    setState(() {
+      _expandedTopControl = null;
+    });
+  }
+
+  Future<void> _selectOverlayMode(
+    ScannerViewModel viewModel,
+    ScannerOverlayMode mode,
+  ) async {
+    viewModel.setOverlayMode(mode);
+    _collapseTopControl();
+  }
+
+  Future<void> _selectTimerOption(
+    ScannerViewModel viewModel,
+    ScannerCaptureTimerOption option,
+  ) async {
+    viewModel.setCaptureTimerOption(option);
+    _collapseTopControl();
+  }
+
+  Future<void> _selectAspectRatio(
+    ScannerViewModel viewModel,
+    ScannerAspectRatio aspectRatio,
+  ) async {
+    viewModel.setAspectRatio(aspectRatio);
+    _collapseTopControl();
+  }
+
+  Future<void> _selectFlashEnabled(
+    ScannerViewModel viewModel,
+    bool enabled,
+  ) async {
+    await viewModel.setFlashEnabled(enabled);
+    _collapseTopControl();
+  }
+
   Future<void> _captureImage(BuildContext context) async {
-    if (_isCapturing) return;
+    if (_isCapturing || _isPreviewTransitionActive) return;
+
     _isCapturing = true;
 
     try {
-      final vm = context.read<ScannerViewModel>();
-      final File? imageFile = await vm.captureImage();
+      final viewModel = context.read<ScannerViewModel>();
+      final bool proceedToCapture = await viewModel.startCaptureCountdown();
+      if (!mounted || !proceedToCapture) {
+        return;
+      }
+
+      final File? imageFile = await viewModel.captureImage();
+
       if (imageFile != null && mounted) {
-        _navigateToPreview(context, imageFile, vm.currentMode);
+        await _navigateToPreview(
+          context,
+          imageFile,
+          viewModel.currentMode,
+        );
       }
     } catch (_) {
+      _setPreviewTransitionActive(false);
       _showError(AppLocalizations.of(context).scanner_capture_error);
     } finally {
+      if (!mounted) {
+        _isCapturing = false;
+        return;
+      }
+
       Future.delayed(const Duration(milliseconds: 700), () {
         _isCapturing = false;
       });
@@ -283,27 +747,142 @@ class _ScannerScreenState extends State<ScannerScreen> with SingleTickerProvider
   }
 
   Future<void> _pickFromGallery(BuildContext context) async {
+    if (_isCapturing || _isPreviewTransitionActive) return;
+
     try {
-      final vm = context.read<ScannerViewModel>();
-      final File? imageFile = await vm.pickImageFromGallery();
+      final viewModel = context.read<ScannerViewModel>();
+      final File? imageFile = await viewModel.pickImageFromGallery();
+
       if (imageFile != null && mounted) {
-        _navigateToPreview(context, imageFile, vm.currentMode);
+        await _navigateToPreview(
+          context,
+          imageFile,
+          viewModel.currentMode,
+        );
       }
     } catch (_) {
+      _setPreviewTransitionActive(false);
       _showError(AppLocalizations.of(context).scanner_gallery_error);
     }
   }
 
-  void _navigateToPreview(BuildContext context, File imageFile, String mode) {
-    Navigator.pushNamed(
-      context,
-      AppRoutes.scannerPreview,
-      arguments: {'imageFile': imageFile, 'mode': mode},
+  Future<void> _navigateToPreview(
+    BuildContext context,
+    File imageFile,
+    String mode,
+  ) async {
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.of(context).push(
+      CameraRoute.blackFade(
+        routeName: AppRoutes.scannerPreview,
+        child: ScannerPreviewScreen(
+          initialImageFile: imageFile,
+          initialMode: mode,
+          onFirstFrame: _releasePreviewTransitionShield,
+        ),
+        arguments: {'imageFile': imageFile, 'mode': mode},
+      ),
+    );
+  }
+
+  void _setPreviewTransitionActive(bool value) {
+    if (!mounted || _isPreviewTransitionActive == value) {
+      return;
+    }
+
+    setState(() {
+      _isPreviewTransitionActive = value;
+    });
+  }
+
+  void _releasePreviewTransitionShield() {
+    if (!mounted || !_isPreviewTransitionActive) {
+      return;
+    }
+
+    setState(() {
+      _isPreviewTransitionActive = false;
+    });
+  }
+
+  Future<void> _handlePreviewTap(
+    BuildContext context,
+    ScannerViewModel viewModel,
+    TapUpDetails details,
+    Size previewSize,
+  ) async {
+    if (_isCapturing ||
+        _isPreviewTransitionActive ||
+        viewModel.isCaptureTimerRunning ||
+        _isScalingGesture ||
+        !viewModel.isCameraInitialized) {
+      return;
+    }
+
+    final normalizedPoint = _normalizePreviewPoint(
+      details.localPosition,
+      previewSize,
+    );
+
+    await viewModel.focusCameraAt(normalizedPoint);
+  }
+
+  void _handleScaleStart(ScannerViewModel viewModel) {
+    if (_isCapturing ||
+        _isPreviewTransitionActive ||
+        viewModel.isCaptureTimerRunning ||
+        !viewModel.isCameraInitialized) {
+      return;
+    }
+
+    _isScalingGesture = true;
+    _gestureStartZoom = viewModel.zoomLevel;
+    _lastRequestedZoom = viewModel.zoomLevel;
+  }
+
+  void _handleScaleUpdate(
+    ScannerViewModel viewModel,
+    ScaleUpdateDetails details,
+  ) {
+    if (!_isScalingGesture ||
+        _isCapturing ||
+        _isPreviewTransitionActive ||
+        viewModel.isCaptureTimerRunning ||
+        !viewModel.isCameraInitialized) {
+      return;
+    }
+
+    final targetZoom = _gestureStartZoom * details.scale;
+    if ((targetZoom - _lastRequestedZoom).abs() < 0.02) {
+      return;
+    }
+
+    _lastRequestedZoom = targetZoom;
+    unawaited(viewModel.setZoomLevel(targetZoom));
+  }
+
+  void _handleScaleEnd() {
+    _isScalingGesture = false;
+  }
+
+  Offset _normalizePreviewPoint(Offset localPosition, Size size) {
+    if (size.width <= 0 || size.height <= 0) {
+      return const Offset(0.5, 0.5);
+    }
+
+    final clampedDx = localPosition.dx.clamp(0.0, size.width);
+    final clampedDy = localPosition.dy.clamp(0.0, size.height);
+    return Offset(
+      (clampedDx / size.width).clamp(0.0, 1.0).toDouble(),
+      (clampedDy / size.height).clamp(0.0, 1.0).toDouble(),
     );
   }
 
   void _showError(String message) {
-    if (!_isMounted || !mounted) return;
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -312,436 +891,36 @@ class _ScannerScreenState extends State<ScannerScreen> with SingleTickerProvider
       ),
     );
   }
-}*/
-
-
-// Before Refact 12/03/26 02:51pm 
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:camera/camera.dart';
-import '../../../utils/responsive_helper.dart';
-import '../../../app/theme/app_colors.dart';
-import '../../../app/navigation/app_routes.dart';
-import '../../../view_models/scanner_view_model.dart';
-import 'dart:developer' as developer;
-
-import '../../l10n/app_localizations.dart';
-
-class ScannerScreen extends StatefulWidget {
-  const ScannerScreen({super.key});
-
-  @override
-  State<ScannerScreen> createState() => _ScannerScreenState();
-}
-
-class _ScannerScreenState extends State<ScannerScreen> with TickerProviderStateMixin {
-  bool _hasInitialized = false;
-   bool _isCapturing = false; 
-   bool _isMounted = true;
-  late AnimationController _fadeController;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    debugPrint('💣 ${widget.runtimeType} INIT STATE CALLED');
-
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_fadeController);
-    _preloadCamera();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _initializeArguments();
-  }
-
- void _safeSetState(VoidCallback fn) {
-    if (_isMounted) {
-      setState(fn);
-    }
-  }
-
 
   void _initializeArguments() {
+    if (_argsApplied) return;
+    _argsApplied = true;
+
     final args = ModalRoute.of(context)?.settings.arguments;
-    if (args != null && args is Map<String, dynamic>) {
-      final viewModel = Provider.of<ScannerViewModel>(context, listen: false);
-      viewModel.setMode(args['mode'] ?? 'identify');
+    if (args is Map<String, dynamic>) {
+      final viewModel = context.read<ScannerViewModel>();
+      viewModel.setMode((args['mode'] ?? 'identify') as String);
     }
   }
 
   void _preloadCamera() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final viewModel = Provider.of<ScannerViewModel>(context, listen: false);
-      await viewModel.initializeCamera();
-      _hasInitialized = true;
-      
-      
+      if (!mounted) {
+        return;
+      }
+
+      final viewModel = context.read<ScannerViewModel>();
+      final success = await viewModel.initializeCamera();
+
+      if (!mounted) {
+        return;
+      }
+
       _fadeController.forward();
-      
-      if (mounted)  _safeSetState(() {});
+
+      if (!success && viewModel.error.isNotEmpty) {
+        _showError(viewModel.error);
+      }
     });
   }
-
-
-
-@override
-void dispose() {
-  _isMounted = false;
-  developer.log('🔄 ScannerScreen DISPOSE SEQUENCE START', name: 'CAMERA');
-  
-  // 1. Stop animations first
-  _fadeController.stop();
-  _fadeController.dispose();
-  developer.log('✅ Animations disposed', name: 'CAMERA');
-  
-  // 2. Get viewModel reference before context becomes invalid
-  ScannerViewModel? viewModel;
-  try {
-    viewModel = Provider.of<ScannerViewModel>(context, listen: false);
-    developer.log('📸 ViewModel acquired for disposal', name: 'CAMERA');
-  } catch (e) {
-    developer.log('⚠️ Could not get ViewModel: $e', name: 'CAMERA');
-  }
-  
-  // 3. Call super.dispose() to clean up widget tree
-  super.dispose();
-  developer.log('✅ super.dispose() completed', name: 'CAMERA');
-  
-  // 4. Schedule camera cleanup for next frame (AFTER widget is fully disposed)
-  if (viewModel != null) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      developer.log('📸 Post-frame camera cleanup scheduled', name: 'CAMERA');
-      
-      // Add small delay to ensure complete disposal
-      Future.delayed(Duration(milliseconds: 100), () {
-        developer.log('📸 Executing delayed camera disposal', name: 'CAMERA');
-        viewModel!.disposeCamera();
-      });
-    });
-  }
-  
-  developer.log('✅ ScannerScreen dispose() sequence complete', name: 'CAMERA');
 }
-
-
-
-@override
-Widget build(BuildContext context) {
-  debugPrint('💣 ${runtimeType} BUILD CALLED');
-  debugPrint('💣💣💣 SCANNER SCREEN: BUILD() CALLED');
-
-  final screenHeight = MediaQuery.of(context).size.height;
-  final screenWidth = MediaQuery.of(context).size.width;
-  final isSmallDevice = screenHeight < 700;
-  
-  return Scaffold(
-    backgroundColor: AppColors.black,
-    body: SafeArea(
-      child: Stack(
-         clipBehavior: Clip.none,
-        children: [
-          // Camera Preview - FILLS ENTIRE SCREEN
-          Positioned.fill(
-            child: _buildCameraPreview(),
-          ),
-          
-          // Top Controls - SINGLE Positioned widget
-    Positioned(
-      top: 16,
-      left: 16,
-      right: 16,
-      child:
-      Consumer<ScannerViewModel>(
-            builder: (context, viewModel, child) {
-              return  Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                    _buildControlButton(
-                      icon: Icons.close,
-                      onTap: () => Navigator.of(context).pop(),
-                    ),
-                    
-                    if (viewModel.isCameraInitialized)
-                      _buildControlButton(
-                        icon: viewModel.isFlashOn ? Icons.flash_on : Icons.flash_off,
-                        onTap: () => viewModel.toggleFlash(),
-                      )
-                    else
-                      const SizedBox(width: 44),
-                ],
-              );
-            },
-      ),
-    ),
-          
-          // Bottom Controls - SINGLE Positioned widget
-          Positioned(
-            bottom: screenHeight * 0.05, // 5% from bottom
-            left: 0,
-            right: 0,
-            child: _buildBottomControls(screenHeight, screenWidth, isSmallDevice),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-  Widget _buildCameraPreview() {
-  return Consumer<ScannerViewModel>(
-    builder: (context, viewModel, child) {
-      if (viewModel.isCameraInitialized && viewModel.cameraController != null) {
-        final cameraController = viewModel.cameraController!;
-        
-        // Get camera aspect ratio from controller
-        final aspectRatio = cameraController.value.aspectRatio;
-        
-        // Uses AspectRatio widget to prevent stretching
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: CameraPreview(cameraController),
-        );
-      }
-      return Container(color: AppColors.black);
-    },
-  );
-}
-
- 
-  Widget _buildTopControls() {
-    return Consumer<ScannerViewModel>(
-      builder: (context, viewModel, child) {
-        return Positioned(
-          top: ResponsiveHelper.responsiveHeight(16, context),
-          left: ResponsiveHelper.responsiveWidth(16, context),
-          right: ResponsiveHelper.responsiveWidth(16, context),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Close Button
-              _buildControlButton(
-                icon: Icons.close,
-                onTap: () => Navigator.of(context).pop(),
-              ),
-              
-              
-              if (viewModel.isCameraInitialized)
-                _buildControlButton(
-                  icon: viewModel.isFlashOn ? Icons.flash_on : Icons.flash_off,
-                  onTap: () => viewModel.toggleFlash(),
-                )
-              else
-                const SizedBox(width: 44), 
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildBottomControls(double screenHeight, double screenWidth,
-      bool isSmallDevice) {
-    return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Consumer<ScannerViewModel>(
-            builder: (context, viewModel, child) {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: AppColors.black.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  _getModeText(viewModel.currentMode),
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              );
-            },
-          ),
-
-          SizedBox(height: screenHeight * 0.03), // 3% spacing
-          
-          // Camera & Gallery Buttons
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1), // 10% horizontal padding
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Gallery Button
-                _buildGalleryButton(),
-                
-                // Capture Button
-                _buildCaptureButton(isSmallDevice),
-                
-                // Spacer for symmetry
-                SizedBox(width: screenWidth * 0.1), // Spacer for symmetry
-              ],
-            ),
-          ),
-        ],
-    );
-  }
-
-  
-
-  Widget _buildControlButton({required IconData icon, required VoidCallback onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: AppColors.black.withOpacity(0.5),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(icon, color: AppColors.white, size: 24),
-      ),
-    );
-  }
-
-  Widget _buildCaptureButton(bool isSmallDevice) {
-     debugPrint('🎯 CAPTURE BUTTON WIDGET BUILDING');
-
-  return GestureDetector(
-      onTap: () => _captureImage(context),
-
-    child: Container(
-      width: isSmallDevice ? 64 : 72,
-      height: isSmallDevice ? 64 : 72,
-      decoration: BoxDecoration(
-        color: AppColors.primaryGreen,
-        shape: BoxShape.circle,
-        border: Border.all(color: AppColors.white, width: 3),
-      ),
-      child: Center(
-        child: Icon(Icons.camera_alt, color: AppColors.white, size: 32),
-      ),
-    ),
-  );
-}
-
-  Widget _buildGalleryButton() {
-    return GestureDetector(
-      onTap: () => _pickFromGallery(context),
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: AppColors.black.withOpacity(0.5),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(Icons.photo_library, color: AppColors.white, size: 24),
-      ),
-    );
-  }
-
-  String _getModeText(String mode) {
-    switch (mode) {
-
-    //  case 'identify': return 'Identify Plant';
-      case 'identify': return AppLocalizations.of(context).scanner_identify_plant;
-
-    //  case 'diagnose': return 'Diagnose Plant';
-      case 'diagnose': return AppLocalizations.of(context).scanner_diagnose_plant;
-
-    //  case 'water': return 'Water Calculation';
-      case 'water': return AppLocalizations.of(context).scanner_water_calculation;
-      
-    //  default: return 'Scan Mode';
-      default: return AppLocalizations.of(context).scanner_scan_mode;
-    }
-  }
-
-  Future<void> _captureImage(BuildContext context) async {
-    
-     // PREVENT DOUBLE TAP
-  if (_isCapturing) return;
-
-    _isCapturing = true; // LOCK
-     debugPrint('🎯 [1/6] CAMERA CAPTURE STARTED');
-
-
-    try {
-      final viewModel = Provider.of<ScannerViewModel>(context, listen: false);
-      final File? imageFile = await viewModel.captureImage();
-
-       debugPrint('📸 [1/6] CAPTURE RESULT: ${imageFile?.path ?? "NULL"}');
-      
-      if (imageFile != null) {
-        debugPrint('✅ [1/6] CAPTURE SUCCESS - Navigating to preview');
-        _navigateToPreview(context, imageFile, viewModel.currentMode);
-
-      } else {
-         debugPrint('❌❌❌ CAPTURE FAILED: No image file or not mounted');
-
-      }
-    } catch (e) {
-      debugPrint('❌ [1/6] CAPTURE ERROR: $e');
-    //  _showError('Failed to capture image');
-        _showError(AppLocalizations.of(context).scanner_capture_error);
-
-    } finally {
-      // RELEASE LOCK AFTER DELAY - SIMPLIFIED
-      Future.delayed(Duration(milliseconds: 1000), () {
-        _isCapturing = false;
-      });
-    }
-  }
-  
-
-  Future<void> _pickFromGallery(BuildContext context) async {
-    try {
-      final viewModel = Provider.of<ScannerViewModel>(context, listen: false);
-      final File? imageFile = await viewModel.pickImageFromGallery();
-
-      if (imageFile != null && mounted) {
-        _navigateToPreview(context, imageFile, viewModel.currentMode);
-      }
-    } catch (e) {
-    //  _showError('Failed to pick image');
-        _showError(AppLocalizations.of(context).scanner_gallery_error);
-
-    }
-  }
-
-  void _navigateToPreview(BuildContext context, File imageFile, String mode) {
-   
-  debugPrint('🎯 NAVIGATING TO PREVIEW with mode: $mode');
-  debugPrint('📁 Image path: ${imageFile.path}');
-   
-    Navigator.pushNamed(
-      context, 
-      AppRoutes.scannerPreview,
-      arguments: {'imageFile': imageFile, 'mode': mode},
-       ).then((_) {
-         debugPrint('✅ NAVIGATION COMPLETE');
-           }).catchError((e) {
-             debugPrint('❌ NAVIGATION ERROR: $e');
-              }
-    );
-  }
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
-}
-
-

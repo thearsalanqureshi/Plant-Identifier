@@ -32,6 +32,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFFCFCFD),
       body: SafeArea(
+        top: true,
+        bottom: false,
         child: Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: isTablet ? 980 : 560),
@@ -85,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       SettingsCard(
                         title: l10n.settings_feedback,
-                        iconPath: AppConstants.feedbackIcon,
+                        iconPath: AppConstants.rateIcon,
                         onTap: _sendFeedback,
                       ),
                       SettingsCard(

@@ -19,7 +19,7 @@ class HomeAppBar extends StatelessWidget {
     final appBarHeight = context.h(56); // 56 from design height
     final horizontalPadding = context.w(16);
 
-    return SafeArea(
+    /* return SafeArea(
       bottom: false,
       child: Container(
         width: double.infinity,
@@ -31,7 +31,7 @@ class HomeAppBar extends StatelessWidget {
         decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: AppColors.lightGray,
+              color: AppColors.white,
               width: 0.5,
             ),
           ),
@@ -53,6 +53,47 @@ class HomeAppBar extends StatelessWidget {
             const Spacer(),
             // Premium Button - Commented out for now
             // _buildPremiumButton(context),
+          ],
+        ),
+      ),
+    );
+  */
+
+    return SafeArea(
+      bottom: false,
+      child: Container(
+        width: double.infinity,
+        height: appBarHeight,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
+        ),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: AppColors.white,
+              width: 0.5,
+            ),
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(
+              AppLocalizations
+                  .of(context)
+                  .appBarTitle,
+              style: TextStyle(
+                fontFamily: 'Gabarito',
+                fontWeight: FontWeight.w900,
+                fontSize: isTablet
+                    ? context.sp(28)
+                    : (isMobile ? context.sp(22) : context.sp(24)),
+                height: 1.15,
+                letterSpacing: 0,
+                color: AppColors.black,
+              ),
+            ),
+            const Spacer(),
           ],
         ),
       ),

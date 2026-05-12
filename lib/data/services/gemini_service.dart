@@ -11,7 +11,8 @@ import '../models/water_calculation_model.dart';
 import 'analytics_service.dart';
 
 class GeminiService {
-  static const String apiKey =  "AIzaSyDBclzBXD5TkzWB4Dcnud2O4yGOHNRMkTw";
+  static const String apiKey =  "AIzaSyB3WOR8vCAIi-66HSNWx4N6Y5nGLNX6194"
+  ;
   static const String model = 'gemini-2.5-flash'; 
   static const Duration timeout = Duration(seconds: 30);
 
@@ -219,10 +220,10 @@ bool _isValidJSONResponse(String text) {
         debugPrint('📊 API Call Start - Feature: $feature, Image: ${imageSizeKB.round()}KB');
 
     final response = await http.post(
-      Uri.parse('https://generativelanguage.googleapis.com/v1/models/$model:generateContent?key=$apiKey'),
+      Uri.parse('https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent'),
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json', // CRITICAL: Request JSON only
+        'x-goog-api-key': apiKey, 
       },
 
       body: jsonEncode({
@@ -231,8 +232,8 @@ bool _isValidJSONResponse(String text) {
             'parts': [
               {'text': prompt},
               {
-                'inlineData': {
-                  'mimeType': 'image/jpeg',
+                'inline_data': {
+                  'mime_type': 'image/png',
                   'data': base64Image
                 }
               }
@@ -257,6 +258,7 @@ bool _isValidJSONResponse(String text) {
 
 
       }),
+      
     //   ).timeout(timeout);
           ).timeout(Duration(seconds: 45)); // Increased timeout
 
@@ -300,12 +302,13 @@ bool _isValidJSONResponse(String text) {
        AnalyticsService.logApiError(
         errorType: 'http_error',
         statusCode: response.statusCode,
-        errorDetail: 'HTTP ${response.statusCode}',
+        errorDetail: response.body,
         feature: feature,
       );
       
       debugPrint('API Error: ${response.statusCode}');
-      throw Exception('API error: ${response.statusCode}');
+      debugPrint('API Error body: ${response.body}');
+      throw Exception('API error: ${response.statusCode}: ${response.body}');
     }
 
     final responseData = jsonDecode(response.body);
@@ -913,7 +916,7 @@ String _fixMissingQuotes(String jsonString) {
   prompt,
   base64Image,
   'water',
-  overrideMaxTokens: 1500, 
+  overrideMaxTokens: 1600, 
 );
      //  WATER-ONLY PARSING
 final jsonData = _parseWaterJsonSafely(responseText);
@@ -1049,6 +1052,5 @@ Map<String, dynamic> _createWaterFallback() {
   };
 }
 }
-
 
 

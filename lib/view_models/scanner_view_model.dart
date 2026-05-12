@@ -1,349 +1,527 @@
+import 'dart:async';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import '../data/services/scanner_service.dart';
-import '../data/services/camera_manager.dart';
+
 import '../data/services/analytics_service.dart';
+import '../data/services/camera_manager.dart';
+import '../data/models/scanner_camera_options.dart';
+import '../data/services/scanner_service.dart';
 
 class ScannerViewModel with ChangeNotifier {
   final ScannerService _scannerService;
-   final CameraManager _cameraManager = CameraManager();
-  
-  CameraController? _cameraController;
-  bool _isFlashOn = false;
-  bool _isCameraInitialized = false;
+  final CameraManager _cameraManager = CameraManager();
+
+  bool _isDisposed = false;
   bool _isInitializing = false;
+  bool _isCameraSessionAttached = false;
+  int _cameraLifecycleToken = 0;
   String _currentMode = 'identify';
   String _error = '';
-  double _cameraOpacity = 0.0; 
-   bool _mounted = true;
+  double _cameraOpacity = 0.0;
+  double _zoomLevel = 1.0;
+  Offset? _focusPoint;
+  bool _showFocusReticle = false;
+  ScannerAspectRatio _aspectRatio = ScannerAspectRatio.ratio3x4;
+  ScannerOverlayMode _overlayMode = ScannerOverlayMode.off;
+  ScannerCaptureTimerOption _captureTimerOption =
+      ScannerCaptureTimerOption.off;
+  bool _isCaptureTimerRunning = false;
+  int _captureCountdownRemaining = 0;
+  Timer? _focusReticleTimer;
+  Timer? _captureCountdownTimer;
+  Completer<bool>? _captureCountdownCompleter;
 
-  ScannerViewModel(this._scannerService);
-    @override
+  ScannerViewModel(this._scannerService) {
+    _cameraManager.addListener(_onCameraManagerChanged);
+  }
+
+  @override
   void dispose() {
-    _mounted = false; // MARK AS DISPOSED
+    _isDisposed = true;
+    _cameraLifecycleToken++;
+    _focusReticleTimer?.cancel();
+    _captureCountdownTimer?.cancel();
+    _completeCaptureCountdown(false);
+    _cameraManager.removeListener(_onCameraManagerChanged);
+
+    if (_isCameraSessionAttached) {
+      unawaited(_cameraManager.releaseCamera());
+      _isCameraSessionAttached = false;
+    }
+
     super.dispose();
   }
 
- double get cameraOpacity => _cameraOpacity;
-
-  // Getters
-  CameraController? get cameraController => _cameraController;
-  bool get isFlashOn => _isFlashOn;
-  bool get isCameraInitialized => _isCameraInitialized;
-  bool get isInitializing => _isInitializing;
+  CameraController? get cameraController => _cameraManager.controller;
+  bool get isFlashOn => cameraController?.value.flashMode == FlashMode.torch;
+  bool get isCameraInitialized => _cameraManager.hasController;
+  bool get isInitializing => _cameraManager.isInitializing;
   String get currentMode => _currentMode;
   String get error => _error;
+  double get cameraOpacity => _cameraOpacity;
+  double get zoomLevel => _zoomLevel;
+  Offset? get focusPoint => _focusPoint;
+  bool get showFocusReticle => _showFocusReticle;
+  ScannerAspectRatio get aspectRatio => _aspectRatio;
+  ScannerOverlayMode get overlayMode => _overlayMode;
+  bool get isGridEnabled => _overlayMode == ScannerOverlayMode.grid;
+  bool get isFocusOverlayEnabled => _overlayMode == ScannerOverlayMode.focus;
+  ScannerCaptureTimerOption get captureTimerOption => _captureTimerOption;
+  bool get isCaptureTimerRunning => _isCaptureTimerRunning;
+  int get captureCountdownRemaining => _captureCountdownRemaining;
 
-
-   Future<bool> initializeCamera() async {
-    debugPrint('📸 ScannerViewModel: initializeCamera() called');
-    
-    if (_isInitializing || _isCameraInitialized) {
-      debugPrint('📸 Already initializing or initialized, skipping');
-      return _isCameraInitialized;
+  void _onCameraManagerChanged() {
+    if (_isDisposed) {
+      return;
     }
-    
+
+    _cameraOpacity = isCameraInitialized ? 1.0 : 0.0;
+    _safeNotifyListeners();
+  }
+
+  Future<bool> initializeCamera() async {
+    debugPrint('ScannerViewModel: initializeCamera() called');
+
+    if (_isDisposed) {
+      debugPrint('ScannerViewModel: view model disposed, skipping init');
+      return false;
+    }
+
+    if (_isInitializing) {
+      return isCameraInitialized;
+    }
+
+    if (_isCameraSessionAttached && isCameraInitialized) {
+      _cameraOpacity = 1.0;
+      _safeNotifyListeners();
+      return true;
+    }
+
     _isInitializing = true;
-     _safeNotifyListeners();
+    _error = '';
+    _cameraLifecycleToken++;
+    final int requestToken = _cameraLifecycleToken;
+    _safeNotifyListeners();
+
+    bool acquiredNewSession = false;
 
     try {
-      debugPrint('📸 Requesting camera from CameraManager...');
-      _cameraController = await _cameraManager.getCamera(forLightMeter: false);
-       
-      // CHECK IF STILL MOUNTED BEFORE CONTINUING
-      if (!_mounted) return false;
+      final CameraController? cameraController = _isCameraSessionAttached
+          ? await _cameraManager.ensureCameraReady(forLightMeter: false)
+          : await _cameraManager.acquireCamera(forLightMeter: false);
 
-      if (_cameraController == null) {
-        _error = 'Camera not available';
-        _isInitializing = false;
-        debugPrint('❌ CameraManager returned null');
+      acquiredNewSession = !_isCameraSessionAttached && cameraController != null;
 
-     
-         // Log camera error
-      AnalyticsService.logCameraError(
-        errorType: 'camera_not_available',
-        errorDetail: 'CameraManager returned null',
-      );
-
-
-          _safeNotifyListeners();
+      if (_isDisposed || requestToken != _cameraLifecycleToken) {
+        if (acquiredNewSession) {
+          await _cameraManager.releaseCamera();
+        }
         return false;
       }
-      
-      _isCameraInitialized = true;
-      _isInitializing = false;
+
+      if (cameraController == null || !cameraController.value.isInitialized) {
+        _error = _cameraManager.lastError ?? 'Camera not available';
+        debugPrint('ScannerViewModel: camera unavailable');
+
+        AnalyticsService.logCameraError(
+          errorType: 'camera_not_available',
+          errorDetail: _error,
+        );
+
+        _cameraOpacity = 0.0;
+        _safeNotifyListeners();
+        return false;
+      }
+
+      _isCameraSessionAttached = true;
+      final appliedZoom = await _cameraManager.applyScannerCameraSettings(
+        zoomLevel: _zoomLevel,
+        focusPoint: _focusPoint,
+      );
+      if (appliedZoom != null) {
+        _zoomLevel = appliedZoom;
+      }
       _cameraOpacity = 1.0;
-      
-      debugPrint('✅ Scanner camera initialized successfully');
-       _safeNotifyListeners();
+      debugPrint('ScannerViewModel: camera initialized successfully');
+      _safeNotifyListeners();
       return true;
-      
     } catch (e) {
-      // CHECK IF STILL MOUNTED
-      if (!_mounted) return false;
+      if (_isDisposed || requestToken != _cameraLifecycleToken) {
+        return false;
+      }
 
-      _error = 'Camera setup failed: ${e.toString()}';
-      _isInitializing = false;
-      debugPrint('❌ Scanner camera initialization error: $e');
+      _error = 'Camera setup failed: $e';
+      debugPrint('ScannerViewModel: camera initialization error: $e');
 
+      AnalyticsService.logCameraError(
+        errorType: 'initialization_failed',
+        errorDetail: e.toString(),
+      );
 
-       // Log camera error
-    AnalyticsService.logCameraError(
-      errorType: 'initialization_failed',
-      errorDetail: e.toString(),
-    );
+      if (acquiredNewSession) {
+        await _cameraManager.releaseCamera();
+      }
 
-       _safeNotifyListeners();
+      _cameraOpacity = 0.0;
+      _safeNotifyListeners();
       return false;
+    } finally {
+      _isInitializing = false;
+      if (!_isDisposed) {
+        _safeNotifyListeners();
+      }
     }
   }
 
   void _safeNotifyListeners() {
-
-    // ADD CHECK FOR MOUNTED STATE
-    if (!_mounted || !hasListeners) return;
-
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (hasListeners) {
-      notifyListeners();
+    if (_isDisposed || !hasListeners) {
+      return;
     }
-  });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_isDisposed && hasListeners) {
+        notifyListeners();
+      }
+    });
   }
 
-
-  // Flash toggle
   Future<void> toggleFlash() async {
-    if (_cameraController == null || !_cameraController!.value.isInitialized) return;
-
-    try {
-      _isFlashOn = !_isFlashOn;
-      await _cameraController!.setFlashMode(
-        _isFlashOn ? FlashMode.torch : FlashMode.off,
-      );
-       _safeNotifyListeners();
-    } catch (e) {
-      debugPrint('Flash toggle error: $e');
-    }
+    await setFlashEnabled(!isFlashOn);
   }
 
-
-Future<File?> captureImage() async {
-  debugPrint('📸 CAPTURE IMAGE STARTED');
-  debugPrint('📸📸📸 CAPTURE IMAGE CALLED - START OF FLOW');
-   debugPrint('📸 ScannerViewModel: captureImage() called');
-
-
-  if (!_mounted) {
-      debugPrint('❌ ViewModel not mounted, skipping capture');
-      return null;
+  Future<void> setFlashEnabled(bool enabled) async {
+    if (_isDisposed || !isCameraInitialized) {
+      return;
     }
 
-  if (_cameraController == null || !_cameraController!.value.isInitialized) {
-    debugPrint('❌ Camera not ready');
+    await _cameraManager.setFlashEnabled(enabled);
+    _safeNotifyListeners();
+  }
 
+  Future<void> setZoomLevel(double zoomLevel) async {
+    if (_isDisposed || !isCameraInitialized) {
+      return;
+    }
 
-   // Log camera error
-    AnalyticsService.logCameraError(
-      errorType: 'camera_not_ready',
-      errorDetail: 'Camera controller not initialized',
+    final appliedZoom = await _cameraManager.setZoomLevel(zoomLevel);
+    if (_isDisposed || appliedZoom == null) {
+      return;
+    }
+
+    if ((_zoomLevel - appliedZoom).abs() < 0.01) {
+      return;
+    }
+
+    _zoomLevel = appliedZoom;
+    _safeNotifyListeners();
+  }
+
+  Future<void> focusCameraAt(Offset normalizedPoint) async {
+    if (_isDisposed || !isCameraInitialized) {
+      return;
+    }
+
+    final clampedPoint = Offset(
+      normalizedPoint.dx.clamp(0.0, 1.0).toDouble(),
+      normalizedPoint.dy.clamp(0.0, 1.0).toDouble(),
     );
 
+    _focusPoint = clampedPoint;
+    _showFocusReticle = true;
+    _focusReticleTimer?.cancel();
+    _focusReticleTimer = Timer(const Duration(milliseconds: 900), () {
+      if (_isDisposed) {
+        return;
+      }
 
-    throw Exception('Camera not ready');
+      _showFocusReticle = false;
+      _safeNotifyListeners();
+    });
+    _safeNotifyListeners();
+
+    await _cameraManager.setFocusPoint(clampedPoint);
   }
 
-  try {
-    debugPrint('📸 Taking picture...');
-    final xFile = await _cameraController!.takePicture();
-    debugPrint('📸 Picture taken: ${xFile.path}');
+  void setAspectRatio(ScannerAspectRatio aspectRatio) {
+    if (_isDisposed || _isCaptureTimerRunning || _aspectRatio == aspectRatio) {
+      return;
+    }
 
+    _aspectRatio = aspectRatio;
+    _safeNotifyListeners();
+  }
 
-     // CHECK IF STILL MOUNTED
-      if (!_mounted) return null;
-     debugPrint('📸 Picture taken: ${xFile.path}');
+  void setOverlayMode(ScannerOverlayMode mode) {
+    if (_isDisposed || _isCaptureTimerRunning || _overlayMode == mode) {
+      return;
+    }
 
+    _overlayMode = mode;
+    _safeNotifyListeners();
+  }
 
-    // CRITICAL: Convert and verify file
-    final File? imageFile = await _scannerService.convertToFile(xFile);
-    
-    if (imageFile == null) {
-      debugPrint('❌❌❌ CONVERT TO FILE RETURNED NULL');
+  void toggleGridOverlay() {
+    setOverlayMode(
+      _overlayMode == ScannerOverlayMode.grid
+          ? ScannerOverlayMode.off
+          : ScannerOverlayMode.grid,
+    );
+  }
 
+  void setGridOverlayEnabled(bool enabled) {
+    setOverlayMode(
+      enabled ? ScannerOverlayMode.grid : ScannerOverlayMode.off,
+    );
+  }
 
-     // Log camera error
-      AnalyticsService.logCameraError(
-        errorType: 'file_conversion_failed',
-        errorDetail: 'convertToFile returned null',
-      );
-    
+  void setCaptureTimerOption(ScannerCaptureTimerOption option) {
+    if (_isDisposed || _isCaptureTimerRunning || _captureTimerOption == option) {
+      return;
+    }
+
+    _captureTimerOption = option;
+    _safeNotifyListeners();
+  }
+
+  Future<bool> startCaptureCountdown() async {
+    if (_isDisposed) {
+      return false;
+    }
+
+    final seconds = _captureTimerOption.seconds;
+    if (seconds == null || seconds <= 0) {
+      return true;
+    }
+
+    if (_isCaptureTimerRunning) {
+      return _captureCountdownCompleter?.future ?? Future.value(false);
+    }
+
+    _isCaptureTimerRunning = true;
+    _captureCountdownRemaining = seconds;
+    _captureCountdownCompleter = Completer<bool>();
+    _captureCountdownTimer?.cancel();
+    _safeNotifyListeners();
+
+    _captureCountdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_isDisposed) {
+        timer.cancel();
+        _completeCaptureCountdown(false);
+        return;
+      }
+
+      _captureCountdownRemaining--;
+      if (_captureCountdownRemaining <= 0) {
+        timer.cancel();
+        _completeCaptureCountdown(true);
+        return;
+      }
+
+      _safeNotifyListeners();
+    });
+
+    return _captureCountdownCompleter!.future;
+  }
+
+  void cancelCaptureCountdown() {
+    _completeCaptureCountdown(false);
+  }
+
+  void _completeCaptureCountdown(bool completed) {
+    _captureCountdownTimer?.cancel();
+    _captureCountdownTimer = null;
+
+    if (!_isCaptureTimerRunning && _captureCountdownCompleter == null) {
+      return;
+    }
+
+    _isCaptureTimerRunning = false;
+    _captureCountdownRemaining = 0;
+
+    final completer = _captureCountdownCompleter;
+    _captureCountdownCompleter = null;
+    if (completer != null && !completer.isCompleted) {
+      completer.complete(completed);
+    }
+
+    _safeNotifyListeners();
+  }
+
+  Future<File?> captureImage() async {
+    debugPrint('ScannerViewModel: captureImage() called');
+
+    if (_isDisposed) {
+      debugPrint('ScannerViewModel: disposed, skipping capture');
       return null;
     }
-    
-    
-    // VERIFY FILE EXISTS
-    final exists = await imageFile.exists();
-    debugPrint('📸 File conversion: ${exists ? "SUCCESS" : "FAILED"}');
-    debugPrint('📸 File path: ${imageFile.path}');
-    debugPrint('📸 File size: ${await imageFile.length()} bytes');
-    
-    if (!exists) {
-      debugPrint('❌❌❌ CAPTURED FILE DOES NOT EXIST ON DISK');
 
+    final controller = cameraController;
+    if (controller == null || !controller.value.isInitialized) {
+      debugPrint('ScannerViewModel: camera not ready');
 
-     // Log camera error
       AnalyticsService.logCameraError(
-        errorType: 'file_not_found',
-        errorDetail: 'Captured file does not exist on disk',
+        errorType: 'camera_not_ready',
+        errorDetail: 'Camera controller not initialized',
       );
 
-      return null;
+      throw Exception('Camera not ready');
     }
-    
-    debugPrint('✅✅✅ CAPTURE IMAGE COMPLETE - READY FOR NAVIGATION');
 
+    try {
+      final xFile = await controller.takePicture();
 
-     // Log camera usage
+      if (_isDisposed) {
+        return null;
+      }
+
+      final File imageFile = File(xFile.path);
+
+      final exists = await imageFile.exists();
+      if (!exists) {
+        AnalyticsService.logCameraError(
+          errorType: 'file_not_found',
+          errorDetail: 'Captured file does not exist on disk',
+        );
+        return null;
+      }
+
       AnalyticsService.logCameraUsed(
         source: 'camera',
         mode: _currentMode,
       );
 
+      return imageFile;
+    } catch (e, stackTrace) {
+      debugPrint('ScannerViewModel: capture error: $e');
+      debugPrint('Stack trace: $stackTrace');
 
-    return imageFile;
-    
-  } catch (e, stackTrace) {
-    debugPrint('💥 CAPTURE ERROR: $e');
-    debugPrint('Stack trace: $stackTrace');
+      AnalyticsService.logCameraError(
+        errorType: 'capture_failed',
+        errorDetail: e.toString(),
+      );
 
-
-
-    // Log camera error
-    AnalyticsService.logCameraError(
-      errorType: 'capture_failed',
-      errorDetail: e.toString(),
-    );
-   
-
-   
-    // SAFE STATE UPDATE WITH MOUNTED CHECK
-     if (_mounted) {
-      Future.microtask(() {
-          if (_mounted) {
-        _error = 'Capture failed: $e';
-         _safeNotifyListeners();
+      if (!_isDisposed) {
+        Future.microtask(() {
+          if (!_isDisposed) {
+            _error = 'Capture failed: $e';
+            _safeNotifyListeners();
           }
-      });
-     }
-    rethrow;
+        });
+      }
+
+      rethrow;
+    }
   }
-}
 
-  // Gallery pick
   Future<File?> pickImageFromGallery() async {
-    debugPrint('🖼️ PICK FROM GALLERY STARTED');
-     if (!_mounted)  {
-       debugPrint('❌ ViewModel not mounted, skipping gallery pick');
-     
-     return null;
-     }
+    debugPrint('ScannerViewModel: pickImageFromGallery() called');
 
+    if (_isDisposed) {
+      debugPrint('ScannerViewModel: disposed, skipping gallery pick');
+      return null;
+    }
 
     try {
-       debugPrint('🖼️ Opening gallery...');
       final xFile = await _scannerService.pickImageFromGallery();
-     
-       if (!_mounted) return null;
-     
-       if (xFile == null) {
-         debugPrint('❌ No image selected from gallery');
-      return null;
-    }
-         debugPrint('🖼️ Image selected: ${xFile.path}');
 
-           // Convert to File
-    final File? imageFile = await _scannerService.convertToFile(xFile);
+      if (_isDisposed) {
+        return null;
+      }
 
+      if (xFile == null) {
+        debugPrint('ScannerViewModel: no image selected from gallery');
+        return null;
+      }
 
-      if (imageFile == null) {
-      debugPrint('❌❌❌ CONVERT TO FILE RETURNED NULL');
-      return null;
+      final File imageFile = File(xFile.path);
+
+      final exists = await imageFile.exists();
+      if (!exists) {
+        debugPrint('ScannerViewModel: gallery file does not exist on disk');
+        return null;
+      }
+
+      AnalyticsService.logCameraUsed(
+        source: 'gallery',
+        mode: _currentMode,
+      );
+
+      return imageFile;
+    } catch (e, stackTrace) {
+      debugPrint('ScannerViewModel: gallery pick error: $e');
+      debugPrint('Stack trace: $stackTrace');
+
+      if (!_isDisposed) {
+        Future.microtask(() {
+          if (!_isDisposed) {
+            _error = 'Gallery pick failed: $e';
+            _safeNotifyListeners();
+          }
+        });
+      }
+
+      rethrow;
     }
-    
-    // Verify file exists
-    final exists = await imageFile.exists();
-    debugPrint('🖼️ File conversion: ${exists ? "SUCCESS" : "FAILED"}');
-    debugPrint('🖼️ File path: ${imageFile.path}');
-    debugPrint('🖼️ File size: ${await imageFile.length()} bytes');
-    
-    if (!exists) {
-      debugPrint('❌❌❌ GALLERY FILE DOES NOT EXIST ON DISK');
-      return null;
-    }
-    
-    debugPrint('✅✅✅ GALLERY PICK COMPLETE - READY FOR NAVIGATION');
-    
-    // Log gallery usage
-    AnalyticsService.logCameraUsed(
-      source: 'gallery',
-      mode: _currentMode,
-    );
-    
-    return imageFile;
-    
-  } catch (e, stackTrace) {
-    debugPrint('💥 GALLERY PICK ERROR: $e');
-    debugPrint('Stack trace: $stackTrace');
-    
-    // Safe state update with mounted check
-    if (_mounted) {
-      Future.microtask(() {
-        if (_mounted) {
-          _error = 'Gallery pick failed: $e';
-          _safeNotifyListeners();
-        }
-      });
-    }
-    rethrow;
   }
-}
 
-  
-
-  // Mode setting - FIXED: Use safe notify
   void setMode(String mode) {
-
-    if (!_mounted) return;
+    if (_isDisposed) {
+      return;
+    }
 
     if (_currentMode != mode) {
       _currentMode = mode;
-       _safeNotifyListeners();
+      _safeNotifyListeners();
     }
   }
 
-  Future<void> disposeCamera() async {
-    debugPrint('📸 ScannerViewModel: disposeCamera() called');
+  Future<bool> reinitializeCamera() async {
+    debugPrint('ScannerViewModel: reinitializeCamera() called');
 
+    if (_isDisposed) {
+      return false;
+    }
 
-    // Mark as unmounted first
-    _mounted = false;
-    
-    // Release camera back to manager
-    _cameraManager.releaseCamera();
-    
-    // Clear local state
-    _cameraController = null;
-    _isCameraInitialized = false;
-    _isFlashOn = false;
-    _isInitializing = false;
-    
-    debugPrint('✅ Scanner camera disposed via CameraManager');
-    
+    if (isCameraInitialized && _isCameraSessionAttached) {
+      _cameraOpacity = 1.0;
+      _safeNotifyListeners();
+      return true;
+    }
+
+    return initializeCamera();
   }
-  
-  // OPTIONAL: If you need to check camera status
+
+  Future<void> disposeCamera() async {
+    await detachCameraSession();
+  }
+
+  Future<void> detachCameraSession() async {
+    debugPrint('ScannerViewModel: detachCameraSession() called');
+
+    _cameraLifecycleToken++;
+
+    if (_isCameraSessionAttached) {
+      await _cameraManager.releaseCamera();
+      _isCameraSessionAttached = false;
+    }
+
+    _cameraOpacity = isCameraInitialized ? 1.0 : 0.0;
+    _safeNotifyListeners();
+  }
+
+  Future<void> forceDisposeCamera() async {
+    debugPrint('ScannerViewModel: forceDisposeCamera() called');
+
+    _cameraLifecycleToken++;
+    _isCameraSessionAttached = false;
+    _cameraOpacity = 0.0;
+    await _cameraManager.forceDispose();
+    _safeNotifyListeners();
+  }
+
   bool isCameraAvailable() {
-    return _cameraController != null && _isCameraInitialized;
+    return isCameraInitialized;
   }
 }

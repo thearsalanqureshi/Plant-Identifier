@@ -3,10 +3,10 @@ description: "Plant Identifier App"
 publish_to: 'none'
 version: 1.0.0+1
 
-flutter_icons:
-  android: "launcher_icon"
+flutter_launcher_icons:
+  android: true
   ios: true
-  image_path: "assets/images/app_logo.svg"
+  image_path: "assets/images/app_logo.png"
 
 environment:
   sdk: ^3.9.2
@@ -25,7 +25,8 @@ dependencies:
   url_launcher: 
   connectivity_plus: 
   flutter_dotenv: 
-  google_fonts: 
+  google_fonts:
+  auto_size_text:
   flutter_launcher_icons:
   permission_handler:
   cupertino_icons:
@@ -45,7 +46,10 @@ dependencies:
   firebase_analytics:
   firebase_crashlytics:
   firebase_messaging:
+  firebase_remote_config:
   flutter_local_notifications: ^17.2.2
+  google_mobile_ads:
+
   test_api: 
   share_plus:
   flutter_gen: ^5.9.0

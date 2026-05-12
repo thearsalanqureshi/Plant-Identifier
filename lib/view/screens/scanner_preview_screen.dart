@@ -1,14 +1,27 @@
-/*import 'dart:io';
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../app/navigation/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
-import '../../../utils/constants.dart';
+import '../../../data/models/scanner_preview_payload.dart';
+import '../../../data/services/scanner_service.dart';
+import '../widgets/camera/camera_widgets.dart';
 import '../../l10n/app_localizations.dart';
 
 class ScannerPreviewScreen extends StatefulWidget {
-  const ScannerPreviewScreen({super.key});
+  const ScannerPreviewScreen({
+    super.key,
+    this.initialPayload,
+    this.initialImageFile,
+    this.initialMode,
+    this.onFirstFrame,
+  });
+
+  final ScannerPreviewPayload? initialPayload;
+  final File? initialImageFile;
+  final String? initialMode;
+  final VoidCallback? onFirstFrame;
 
   @override
   State<ScannerPreviewScreen> createState() => _ScannerPreviewScreenState();
@@ -16,572 +29,333 @@ class ScannerPreviewScreen extends StatefulWidget {
 
 class _ScannerPreviewScreenState extends State<ScannerPreviewScreen> {
   final ImagePicker _imagePicker = ImagePicker();
+  final ScannerService _scannerService = ScannerService();
 
+  ScannerPreviewPayload? _previewPayload;
   File? _imageFile;
   String _mode = 'identify';
   bool _argsInitialized = false;
+  bool _isPreparingPayload = false;
+  bool _hasNotifiedFirstFrame = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _bootstrapInitialSource();
+    debugPrint('ScannerPreviewScreen initState');
+  }
+
+  @override
+  void dispose() {
+    _notifyFirstFrameIfNeeded();
+    _previewPayload?.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_argsInitialized) return;
     _argsInitialized = true;
-
-    final args = ModalRoute.of(context)?.settings.arguments;
-    if (args is Map<String, dynamic>) {
-      _imageFile = args['imageFile'] as File?;
-      _mode = (args['mode'] ?? 'identify') as String;
+    if (_previewPayload != null || _imageFile != null) {
+      return;
     }
+    _initializeArguments();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isTablet = MediaQuery.sizeOf(context).width >= 600;
-    final horizontalPadding = isTablet ? 28.0 : 16.0;
-    final topSpacing = isTablet ? 10.0 : 6.0;
-    final controlsGap = isTablet ? 18.0 : 14.0;
+    debugPrint('ScannerPreviewScreen build');
+
+    final mediaQuery = MediaQuery.of(context);
+    final screenHeight = mediaQuery.size.height;
+    final screenWidth = mediaQuery.size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1E1F24),
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 980),
+      backgroundColor: AppColors.black,
+      body: Column(
+        children: [
+          SafeArea(
+            bottom: false,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(horizontalPadding, topSpacing, horizontalPadding, 10),
-              child: Column(
+              padding: EdgeInsets.fromLTRB(
+                screenWidth * 0.04,
+                screenHeight * 0.01,
+                screenWidth * 0.04,
+                screenHeight * 0.01,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildTopControls(),
-                  SizedBox(height: controlsGap),
-                  Expanded(child: _buildImagePreview(isTablet)),
-                  SizedBox(height: controlsGap),
-                  _buildBottomControls(isTablet),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const SizedBox(
+                      width: 44,
+                      height: 44,
+                      child: Icon(
+                        Icons.close,
+                        color: AppColors.white,
+                        size: 24,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 44, height: 44),
                 ],
               ),
             ),
           ),
-        ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                screenWidth * 0.04,
+                screenHeight * 0.01,
+                screenWidth * 0.04,
+                screenHeight * 0.015,
+              ),
+              child: Transform.translate(
+                offset: const Offset(0, -7.5),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.zero,
+                    color: AppColors.black,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.zero,
+                    child: _previewPayload != null
+                        ? RawImage(
+                            image: _previewPayload!.thumbnailImage,
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.cover,
+                            filterQuality: FilterQuality.high,
+                          )
+                        : const ColoredBox(
+                            color: AppColors.black,
+                          ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          _buildBottomDock(context, screenWidth, screenHeight),
+        ],
       ),
     );
   }
 
-  Widget _buildTopControls() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildCircleIconButton(
-          icon: Icons.close,
-          onTap: () => Navigator.of(context).pop(),
-        ),
-        const SizedBox(width: 44, height: 44),
-      ],
-    );
-  }
-
-  Widget _buildImagePreview(bool isTablet) {
-    final radius = isTablet ? 16.0 : 12.0;
+  Widget _buildBottomDock(
+    BuildContext context,
+    double screenWidth,
+    double screenHeight,
+  ) {
+    final isLandscape = screenWidth > screenHeight;
+    final dockHeight = isLandscape
+        ? (screenHeight * 0.20).clamp(88.0, 110.0).toDouble()
+        : (screenWidth * 0.307).clamp(92.0, 115.0).toDouble();
+    final confirmButtonSize =
+        (screenWidth * 0.16).clamp(56.0, 60.0).toDouble();
 
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.black,
-        borderRadius: BorderRadius.circular(radius),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(radius),
-        child: _imageFile != null
-            ? Image.file(
-                _imageFile!,
-                fit: BoxFit.cover,
-              )
-            : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.photo, color: AppColors.white.withOpacity(0.5), size: isTablet ? 56 : 48),
-                    const SizedBox(height: 12),
-                    Text(
-                      AppLocalizations.of(context).preview_no_image,
-                      style: TextStyle(
-                        color: AppColors.white.withOpacity(0.75),
-                        fontSize: isTablet ? 18 : 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-      ),
-    );
-  }
-
-  Widget _buildBottomControls(bool isTablet) {
-    final labelStyle = TextStyle(
-      color: AppColors.white,
-      fontSize: isTablet ? 13 : 12,
-      fontWeight: FontWeight.w500,
-    );
-
-    return Row(
-      children: [
-        Expanded(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: InkWell(
-              onTap: _pickDifferentImage,
-              borderRadius: BorderRadius.circular(8),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SvgPicture.asset(
-                      AppConstants.galleryIcon,
-                      width: isTablet ? 26 : 24,
-                      height: isTablet ? 28 : 26,
-                      colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      AppLocalizations.of(context).preview_gallery,
-                      style: labelStyle,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        _buildConfirmButton(isTablet),
-        const Expanded(child: SizedBox()),
-      ],
-    );
-  }
-
-  Widget _buildConfirmButton(bool isTablet) {
-    final size = isTablet ? 64.0 : 58.0;
-    return InkWell(
-      onTap: _confirmImage,
-      borderRadius: BorderRadius.circular(size / 2),
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          color: AppColors.primaryGreen,
-          shape: BoxShape.circle,
-          border: Border.all(color: AppColors.white, width: 2),
-        ),
-        child: const Center(
-          child: Icon(Icons.check, color: AppColors.white, size: 28),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCircleIconButton({
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(22),
-      child: SizedBox(
-        width: 44,
-        height: 44,
-        child: Icon(icon, color: AppColors.white, size: 24),
-      ),
-    );
-  }
-
-  Future<void> _pickDifferentImage() async {
-    try {
-      final image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 85,
-      );
-
-      if (image != null && mounted) {
-        setState(() {
-          _imageFile = File(image.path);
-        });
-      }
-    } catch (e) {
-      _showError('Gallery error: $e');
-    }
-  }
-
-  void _confirmImage() {
-    if (_imageFile == null) {
-      _showError(AppLocalizations.of(context).preview_select_image_error);
-      return;
-    }
-
-    if (_mode == 'water') {
-      Navigator.pushNamed(
-        context,
-        AppRoutes.waterQuestions,
-        arguments: {'imageFile': _imageFile, 'mode': _mode},
-      );
-      return;
-    }
-
-    Navigator.pushNamed(
-      context,
-      AppRoutes.processing,
-      arguments: {'imageFile': _imageFile, 'mode': _mode},
-    );
-  }
-
-  void _showError(String message) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: const Duration(seconds: 3)),
-    );
-  }
-}*/
-
-
-// Before Refact 12/03/26 02:51pm 
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-//import '../../../utils/responsive_helper.dart';
-import '../../../app/theme/app_colors.dart';
-import '../../../app/navigation/app_routes.dart';
-import '../../../utils/constants.dart';
-import '../../l10n/app_localizations.dart';
-
-class ScannerPreviewScreen extends StatefulWidget {
-  const ScannerPreviewScreen({super.key});
-
-  @override
-  State<ScannerPreviewScreen> createState() => _ScannerPreviewScreenState();
-}
-
-class _ScannerPreviewScreenState extends State<ScannerPreviewScreen> {
-   @override
-  void initState() {
-    super.initState();
-    debugPrint('💣 ${widget.runtimeType} INIT STATE CALLED');
-  }
-  final ImagePicker _imagePicker = ImagePicker();
-  File? _imageFile;
-  String _mode = 'identify';
-
-
-  @override
-Widget build(BuildContext context) {
-debugPrint('💣 ${runtimeType} BUILD CALLED');
-
-  _initializeArguments(context);
-
-final screenHeight = MediaQuery.of(context).size.height;
-final screenWidth = MediaQuery.of(context).size.width;
-final isSmallDevice = screenHeight < 700;
-  
-  return Scaffold(
-    backgroundColor: Color(0xFF1E1F24),
-    body: SafeArea(
-      
-      child: Stack(
-        children: [ // Image Preview
-          Positioned(
-            top: screenHeight * 0.08, // 8% from top
-            left: screenWidth * 0.04, // 4% from left
-            right: screenWidth * 0.04, // 4% from right
-            child: Container(
-              height: screenHeight * 0.65, // 65% of screen height
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: AppColors.black,
-              ),
-              child: _imageFile != null
-                  ? ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.file(
-                  _imageFile!,
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              )
-                  : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.photo,
-                      color: AppColors.white.withOpacity(0.5),
-                      size: 48,
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      AppLocalizations.of(context).preview_no_image,
-                      style: TextStyle(
-                        color: AppColors.white.withOpacity(0.7),
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          // Top Controls
-          Positioned(
-            top: 16,
-            left: 16,
-            right: 16,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Container(
-                    width: 44,
-                    height: 44,
-                    child: Icon(
-                      Icons.close,
-                      color: AppColors.white,
-                      size: 24,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 44), // Empty for balance
-              ],
-            ),
-          ),
-
-          // Gallery Button (Bottom Left)
-          Positioned(
-            bottom: screenHeight * 0.05, // 5% from bottom
-            left: screenWidth * 0.1, // 10% from left
-            child: GestureDetector(
-              onTap: _pickDifferentImage,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgPicture.asset(
-                    AppConstants.galleryIcon,
-                    width: 24,
-                    height: 26,
-                    color: AppColors.white,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    AppLocalizations.of(context).preview_gallery,
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Confirm Button (Bottom Center)
-          Positioned(
-            bottom: screenHeight * 0.04, // 4% from bottom
-            left: 0,
-            right: 0,
-            child: Center(
-              child: GestureDetector(
-                onTap: _confirmImage,
-                child: Container(
-                  width: 58,
-                  height: 58,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryGreen,
-                    border: Border.all(
-                      color: AppColors.white,
-                      width: 2,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.check,
-                      color: AppColors.white,
-                      size: 28,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-  }
-
-
-   /* Widget _buildImagePreview() {
-
-    return Positioned(
-      top: ResponsiveHelper.responsiveHeight(99, context),
-      left: ResponsiveHelper.responsiveWidth(16, context),
-      child: Container(
-        width: ResponsiveHelper.responsiveWidth(344, context),
-        height: ResponsiveHelper.responsiveHeight(569, context),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: AppColors.black,
-        ),
-        child: _imageFile != null
-            ? ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.file(
-                  _imageFile!,
-                  width: ResponsiveHelper.responsiveWidth(344, context),
-                  height: ResponsiveHelper.responsiveHeight(569, context),
-                  fit: BoxFit.cover,
-                ),
-              )
-            : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.photo,
-                      color: AppColors.white.withOpacity(0.5),
-                      size: ResponsiveHelper.responsiveWidth(48, context),
-                    ),
-                    SizedBox(height: ResponsiveHelper.responsiveHeight(16, context)),
-                    Text(
-                    //  'No Image',
-                      AppLocalizations.of(context).preview_no_image,
-                      style: TextStyle(
-                        color: AppColors.white.withOpacity(0.7),
-                        fontSize: ResponsiveHelper.responsiveFontSize(16, context),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-      ),
-    );
-  }*/
-
- /* Widget _buildTopControls() {
-    return Positioned(
-      top: ResponsiveHelper.responsiveHeight(46, context),
-      left: ResponsiveHelper.responsiveWidth(16, context),
-      right: ResponsiveHelper.responsiveWidth(16, context),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Cancel Button
-          GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Container(
-              width: ResponsiveHelper.responsiveWidth(24, context),
-              height: ResponsiveHelper.responsiveWidth(24, context),
-              child: Icon(
-                Icons.close,
-                color: AppColors.white,
-                size: ResponsiveHelper.responsiveWidth(24, context),
-              ),
-            ),
-          ),
-
-          // Empty container to maintain layout balance (flash button removed)
-          Container(
-            width: ResponsiveHelper.responsiveWidth(24, context),
-            height: ResponsiveHelper.responsiveWidth(24, context),
-          ),
-        ],
-      ),
-    );
-  }*/
-
-  /*Widget _buildConfirmButton() {
-    return Positioned(
-      bottom: ResponsiveHelper.responsiveHeight(34, context), // Adjusted for home indicator
-      left: ResponsiveHelper.responsiveWidth(159, context),
-      child: GestureDetector(
-        onTap: _confirmImage,
-        child: Container(
-          width: ResponsiveHelper.responsiveWidth(58, context),
-          height: ResponsiveHelper.responsiveWidth(58, context), 
-          padding: EdgeInsets.all(ResponsiveHelper.responsiveWidth(4, context)),
-          decoration: BoxDecoration(
-            color: AppColors.primaryGreen,
-            border: Border.all(
-              color: AppColors.white,
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(100),
-          ),
+      color: Colors.black,
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: dockHeight,
           child: Center(
-            child: Icon(
-              Icons.check,
-              color: AppColors.white,
-              size: ResponsiveHelper.responsiveWidth(28, context),
-              weight: 600, 
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 375),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CameraRoundActionButton(
+                      icon: Icons.photo_library,
+                      size: 48,
+                      iconSize: 24,
+                      backgroundColor: AppColors.black.withOpacity(0.0),
+                      onTap: _pickDifferentImage,
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: _confirmImage,
+                      child: Container(
+                        width: confirmButtonSize,
+                        height: confirmButtonSize,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryGreen,
+                          border: Border.all(
+                            color: AppColors.white,
+                            width: 2,
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.check,
+                            color: AppColors.white,
+                            size: 28,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: screenWidth * 0.1),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
       ),
     );
-  }*/
+  }
 
- /* Widget _buildGalleryButton() {
-    return Positioned(
-      bottom: ResponsiveHelper.responsiveHeight(38, context), 
-      left: ResponsiveHelper.responsiveWidth(48, context),
-      child: GestureDetector(
-        onTap: _pickDifferentImage,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(
-              AppConstants.galleryIcon,
-              width: ResponsiveHelper.responsiveWidth(24, context),
-              height: ResponsiveHelper.responsiveWidth(26, context),
-              color: AppColors.white,
-            ),
-            SizedBox(height: ResponsiveHelper.responsiveHeight(4, context)),
-            Text(
-            //  'Gallery',
-               AppLocalizations.of(context).preview_gallery,
-              style: TextStyle(
-                color: AppColors.white,
-                fontSize: ResponsiveHelper.responsiveFontSize(12, context),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }*/
+  void _initializeArguments() {
+    debugPrint('ScannerPreviewScreen initializing arguments');
 
-  void _initializeArguments(BuildContext context) {
-      debugPrint('🎯 [2/6] PREVIEW SCREEN INITIALIZING');
     final args = ModalRoute.of(context)?.settings.arguments;
-    if (args != null && args is Map<String, dynamic>) {
-      debugPrint('✅ [2/6] PREVIEW ARGS RECEIVED:');
-    debugPrint('   Image: ${args['imageFile'] != null ? "YES" : "NO"}');
-    debugPrint('   Mode: ${args['mode']}');
-     
-      setState(() {
-        _imageFile = args['imageFile'];
-        _mode = args['mode'] ?? 'identify';
-      });
-       } else {
-         debugPrint('❌ [2/6] NO ARGUMENTS RECEIVED');
+    if (args is ScannerPreviewPayload) {
+      _setPreviewPayload(args);
+      return;
+    }
+
+    if (args is Map<String, dynamic>) {
+      debugPrint('ScannerPreviewScreen args received');
+      _mode = (args['mode'] ?? 'identify') as String;
+      final previewPayload = args['previewPayload'];
+      if (previewPayload is ScannerPreviewPayload) {
+        _setPreviewPayload(previewPayload);
+        return;
+      }
+
+      final initialFile = args['imageFile'] as File?;
+      if (initialFile != null) {
+        _setInitialImageSource(
+          initialFile,
+          (args['mode'] ?? _mode) as String,
+        );
+      }
+    } else {
+      debugPrint('ScannerPreviewScreen received no arguments');
     }
   }
 
- // void _toggleFlash() {
- //   setState(() {
- //     _isFlashOn = !_isFlashOn;
- //   });
- // }
+  void _bootstrapInitialSource() {
+    final initialPayload = widget.initialPayload;
+    if (initialPayload != null) {
+      _previewPayload = initialPayload;
+      _imageFile = initialPayload.sourceFile;
+      _mode = initialPayload.mode;
+      _argsInitialized = true;
+      _scheduleFirstFrameCallback();
+      return;
+    }
+
+    final initialFile = widget.initialImageFile;
+    if (initialFile != null) {
+      _setInitialImageSource(
+        initialFile,
+        widget.initialMode ?? _mode,
+      );
+      _argsInitialized = true;
+      return;
+    }
+  }
+
+  void _setInitialImageSource(File imageFile, String mode) {
+    _imageFile = imageFile;
+    _mode = mode;
+    _scheduleFirstFrameCallback();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _previewPayload != null || _imageFile == null) {
+        return;
+      }
+
+      _notifyFirstFrameIfNeeded();
+      unawaited(_warmPreviewPayload(_imageFile!, _mode));
+    });
+  }
+
+  void _setPreviewPayload(ScannerPreviewPayload payload) {
+    final previousPayload = _previewPayload;
+    setState(() {
+      _previewPayload = payload;
+      _imageFile = payload.sourceFile;
+      _mode = payload.mode;
+      _isPreparingPayload = false;
+    });
+    _scheduleFirstFrameCallback();
+    if (previousPayload != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        previousPayload.dispose();
+      });
+    }
+  }
+
+  Future<void> _warmPreviewPayload(File imageFile, String mode) async {
+    try {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isPreparingPayload = true;
+      });
+
+      final previewPayload = await prepareScannerPreviewPayload(
+        sourceFile: imageFile,
+        mode: mode,
+        previewSize: Size(
+          MediaQuery.of(context).size.width * 0.92,
+          MediaQuery.of(context).size.height * 0.65,
+        ),
+        devicePixelRatio: MediaQuery.of(context).devicePixelRatio,
+      );
+
+      if (!mounted) {
+        previewPayload?.dispose();
+        return;
+      }
+
+      if (previewPayload == null) {
+        _showError('Selected image is no longer available.');
+        return;
+      }
+
+      _setPreviewPayload(previewPayload);
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isPreparingPayload = false;
+      });
+      _showError('Unable to prepare preview image: $e');
+    }
+  }
+
+  void _scheduleFirstFrameCallback() {
+    if (_hasNotifiedFirstFrame || widget.onFirstFrame == null) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _notifyFirstFrameIfNeeded();
+    });
+  }
+
+  void _notifyFirstFrameIfNeeded() {
+    if (_hasNotifiedFirstFrame || widget.onFirstFrame == null) {
+      return;
+    }
+
+    _hasNotifiedFirstFrame = true;
+    widget.onFirstFrame?.call();
+  }
 
   Future<void> _pickDifferentImage() async {
     try {
@@ -590,67 +364,69 @@ final isSmallDevice = screenHeight < 700;
         imageQuality: 85,
       );
 
-      if (image != null && mounted) {
-        setState(() {
-          _imageFile = File(image.path);
-        });
+      if (image == null || !mounted) {
+        return;
       }
+
+      final File candidateFile = File(image.path);
+      if (!await candidateFile.exists()) {
+        _showError('Selected image is no longer available.');
+        return;
+      }
+
+      if (!mounted) {
+        return;
+      }
+
+      await _warmPreviewPayload(candidateFile, _mode);
     } catch (e) {
       _showError('Gallery error: $e');
     }
   }
-void _confirmImage() {
 
-  debugPrint('💣💣💣 PREVIEW SCREEN: _confirmImage() STARTED');
-  debugPrint('💣 Mode: $_mode');
-  debugPrint('💣 Image: ${_imageFile?.path}');
+  Future<void> _confirmImage() async {
+    final imageFile = _imageFile;
+    if (imageFile == null || _isPreparingPayload) {
+      _showError(AppLocalizations.of(context).preview_select_image_error);
+      return;
+    }
 
-  if (_imageFile != null) {
-    debugPrint('✅✅✅ NAVIGATING TO PROCESSING with mode: $_mode');
-     print('PreviewScreen: Confirming image for mode $_mode');
+    final File? preparedFile =
+        await _scannerService.prepareFileForProcessing(imageFile);
+    if (!mounted || preparedFile == null) {
+      _showError('Unable to prepare selected image.');
+      return;
+    }
 
     if (_mode == 'water') {
-       debugPrint('🌊 Water calculation flow selected');
-
       Navigator.pushNamed(
-        context, 
+        context,
         AppRoutes.waterQuestions,
         arguments: {
-          'imageFile': _imageFile,
+          'imageFile': preparedFile,
           'mode': _mode,
         },
       );
-    } else {
-         debugPrint('🌿 Plant identification flow selected');
-      debugPrint('🔄 Navigating to ProcessingScreen...');
-      Navigator.pushNamed(
-        context, 
-        AppRoutes.processing,
-        arguments: {
-          'imageFile': _imageFile,
-          'mode': _mode
-        },
-           ).then((_) {
-      debugPrint('✅✅✅ NAVIGATION COMPLETE');
-    }).catchError((e) {
-      debugPrint('❌❌❌ NAVIGATION ERROR: $e');
-      });
+      return;
     }
-  } else {
-    
-      debugPrint('❌❌❌ NO IMAGE FILE');
-  //  _showError('Please select an image first');
-  _showError(AppLocalizations.of(context).preview_select_image_error);
-  }
-}
 
-//  Fix the _showError method to accept context
-void _showError(String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      duration: Duration(seconds: 3),
-    ),
-  );
-}
+    Navigator.pushNamed(
+      context,
+      AppRoutes.processing,
+      arguments: {
+        'imageFile': preparedFile,
+        'mode': _mode,
+      },
+    );
+  }
+
+  void _showError(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
 }

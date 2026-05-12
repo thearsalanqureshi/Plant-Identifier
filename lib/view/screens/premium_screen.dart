@@ -2,19 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../../utils/constants.dart';
+import '../../view_models/ad_config_view_model.dart';
+import '../../view_models/ad_view_model.dart';
 import '../../view_models/premium_view_model.dart';
 import '../widgets/common/premium_feature_row.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/navigation/navigation_service.dart';
 
 class PremiumScreen extends StatefulWidget {
-  const PremiumScreen({Key? key}) : super(key: key);
+  final String? nextRouteAfterPremium;
+  final Object? nextRouteArguments;
+  final bool showRewardedInterstitialOnClose;
+
+  const PremiumScreen({
+    super.key,
+    this.nextRouteAfterPremium,
+    this.nextRouteArguments,
+    this.showRewardedInterstitialOnClose = false,
+  });
 
   @override
   State<PremiumScreen> createState() => _PremiumScreenState();
 }
 
 class _PremiumScreenState extends State<PremiumScreen> {
+  bool _isClosing = false;
+
   @override
   void initState() {
     super.initState();
@@ -23,7 +36,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('💣 ${runtimeType} BUILD CALLED');
+    debugPrint('💣 $runtimeType BUILD CALLED');
 
     final premiumViewModel = context.watch<PremiumViewModel>();
     final screenHeight = MediaQuery.of(context).size.height;
@@ -46,15 +59,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
                     width: 24,
                     height: 24,
                   ),
-                  onPressed: () {
-                    final navigationService = context.read<NavigationService>();
-                    navigationService.pop();
-                  },
+                  onPressed: _isClosing ? null : _handleClosePressed,
                 ),
               ),
 
               SizedBox(height: screenHeight * 0.05), // 5% spacing
-
               // Crown Image
               Image.asset(
                 AppConstants.premiumCrown,
@@ -63,7 +72,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
 
               SizedBox(height: screenHeight * 0.03), // 3% spacing
-
               // Title
               Text(
                 AppLocalizations.of(context).premium_upgrade,
@@ -76,7 +84,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
 
               SizedBox(height: screenHeight * 0.02), // 2% spacing
-
               // Subtitle
               Text(
                 AppLocalizations.of(context).premium_experience,
@@ -90,7 +97,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
 
               SizedBox(height: screenHeight * 0.04), // 4% spacing
-
               // Divider
               Image.asset(
                 AppConstants.dividerLine,
@@ -99,7 +105,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
 
               SizedBox(height: screenHeight * 0.03), // 3% spacing
-
               // Features Table Header
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
@@ -119,9 +124,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
                     ),
 
                     SizedBox(width: screenWidth * 0.15), // 15% spacing
-
                     // PRO Column Header
-                    Container(
+                    SizedBox(
                       width: screenWidth * 0.1, // 10% of screen width
                       child: Text(
                         AppLocalizations.of(context).premium_pro,
@@ -136,9 +140,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
                     ),
 
                     SizedBox(width: screenWidth * 0.05), // 5% spacing
-
                     // Basic Column Header
-                    Container(
+                    SizedBox(
                       width: screenWidth * 0.1, // 10% of screen width
                       child: Text(
                         AppLocalizations.of(context).premium_basic,
@@ -156,7 +159,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
 
               SizedBox(height: screenHeight * 0.02), // 2% spacing
-
               // Features List
               Expanded(
                 child: ListView.builder(
@@ -174,7 +176,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
 
               SizedBox(height: screenHeight * 0.02), // 2% spacing
-
               // Price Text
               Text(
                 AppLocalizations.of(context).premium_price,
@@ -188,7 +189,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
 
               SizedBox(height: screenHeight * 0.02), // 2% spacing
-
               // Start Now Button
               SizedBox(
                 width: double.infinity,
@@ -196,7 +196,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 child: ElevatedButton(
                   onPressed: premiumViewModel.isLoading
                       ? null
-                      : () => premiumViewModel.purchaseSubscription(context),
+                      : () => premiumViewModel.purchaseSubscription(
+                          context,
+                          onCompleted: widget.nextRouteAfterPremium == null
+                              ? null
+                              : () => _continueAfterPremium(context),
+                        ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryGreen,
                     foregroundColor: Colors.white,
@@ -211,7 +216,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
                           ),
                         )
                       : Text(
@@ -226,7 +233,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
 
               SizedBox(height: screenHeight * 0.02), // 2% spacing
-
               // Footer Text
               Text(
                 AppLocalizations.of(context).premium_footer,
@@ -242,6 +248,105 @@ class _PremiumScreenState extends State<PremiumScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _handleClosePressed() async {
+    if (_isClosing) return;
+
+    if (!widget.showRewardedInterstitialOnClose) {
+      _continueAfterPremium(context);
+      return;
+    }
+
+    await _continueAfterPremiumWithRewardedInterstitial();
+  }
+
+  Future<void> _continueAfterPremiumWithRewardedInterstitial() async {
+    if (_isClosing) return;
+
+    setState(() => _isClosing = true);
+
+    var didContinue = false;
+
+    void continueOnce() {
+      if (didContinue || !mounted) {
+        return;
+      }
+
+      didContinue = true;
+      _continueAfterPremium(context);
+    }
+
+    try {
+      final config = context.read<AdConfigViewModel>().config;
+      final adViewModel = context.read<AdViewModel>();
+      final adUnitId = config.rewardedInterstitialAfterPremiumAdId.trim();
+
+      if (adUnitId.isEmpty || adViewModel.isFullScreenAdShowing) {
+        continueOnce();
+        return;
+      }
+
+      if (!adViewModel.hasRewardedInterstitialAfterPremium) {
+        final loaderSeconds = config.loaderTimerSeconds <= 0
+            ? 2
+            : config.loaderTimerSeconds;
+
+        adViewModel.showAdLoader();
+
+        try {
+          await adViewModel
+              .loadRewardedInterstitialAfterPremium(config)
+              .timeout(Duration(seconds: loaderSeconds));
+        } catch (error) {
+          debugPrint(
+            '[PremiumScreen] Rewarded interstitial load skipped/failed: $error',
+          );
+        } finally {
+          adViewModel.hideAdLoader();
+        }
+      }
+
+      if (!mounted) return;
+
+      if (!adViewModel.hasRewardedInterstitialAfterPremium) {
+        continueOnce();
+        return;
+      }
+
+      await adViewModel.showRewardedInterstitialAfterPremium(
+        onDismissed: continueOnce,
+        onFailedToShow: continueOnce,
+        onUserEarnedReward: (reward) {
+          debugPrint(
+            '[PremiumScreen] Reward earned before result: '
+            '${reward.amount} ${reward.type}',
+          );
+        },
+      );
+
+      if (!adViewModel.isFullScreenAdShowing) {
+        continueOnce();
+      }
+    } catch (error) {
+      debugPrint('[PremiumScreen] Rewarded interstitial flow failed: $error');
+      continueOnce();
+    }
+  }
+
+  void _continueAfterPremium(BuildContext context) {
+    final navigationService = context.read<NavigationService>();
+    final nextRoute = widget.nextRouteAfterPremium;
+
+    if (nextRoute == null) {
+      navigationService.pop();
+      return;
+    }
+
+    navigationService.pushReplacementNamed(
+      nextRoute,
+      arguments: widget.nextRouteArguments,
     );
   }
 }

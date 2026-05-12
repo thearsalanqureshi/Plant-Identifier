@@ -22,6 +22,8 @@ class SettingsCard extends StatelessWidget {
     final verticalPadding = isTablet ? 14.0 : 12.0;
     final iconContainerSize = isTablet ? 44.0 : 38.0;
     final iconSize = isTablet ? 22.0 : 20.0;
+    final arrowSize = isTablet ? 18.0 : 16.0;
+    final arrowColor = Color(0xFF6F746F);
 
     return Container(
       width: double.infinity,
@@ -87,8 +89,10 @@ class SettingsCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 SizedBox(
-                  width: isTablet ? 28 : 24,
-                  height: isTablet ? 28 : 24,
+              //    width: isTablet ? 28 : 24,
+               //   height: isTablet ? 28 : 24,
+                  width: arrowSize,
+                  height: arrowSize,
                   child: SvgPicture.asset(
                     AppConstants.rightArrow,
                     fit: BoxFit.contain,
